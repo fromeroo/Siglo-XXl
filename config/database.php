@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'oracle'),
 
     /*
     |--------------------------------------------------------------------------
@@ -90,6 +90,18 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
+
+        'oracle' => [
+            'driver' => 'oracle',
+            'host' => 'oracle.host',
+            'port' => '1521',
+            'database' => 'siglo_xxl',
+            'service_name' => 'sid_alias',
+            'username' => 'c##franco',
+            'password' => 'password',
+            'charset' => '',
+            'prefix' => '',
+        ]
 
     ],
 

@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'intranet',
         'passwords' => 'users',
     ],
 
@@ -36,9 +36,17 @@ return [
     */
 
     'guards' => [
-        'web' => [
+//        'web' => [
+//            'driver' => 'session',
+//            'provider' => 'users',
+//        ],
+        'intranet' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'intranet',
+        ],
+        'customer' => [
+            'driver' => 'session',
+            'provider' => 'customer',
         ],
     ],
 
@@ -60,15 +68,24 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+//        'users' => [
+//            'driver' => 'eloquent',
+//            'model' => App\Models\User::class,
+//        ],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+        'intranet' => [
+            'driver' => 'oracle',
+            'model' => App\Models\User::class,
+        ],
+
+        'customer' => [
+            'driver' => 'oracle',
+            'model' => App\Models\Customer::class,
+        ]
     ],
 
     /*
