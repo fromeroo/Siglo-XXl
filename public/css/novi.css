@@ -1,0 +1,218 @@
+
+[data-novi-id="38"]{
+  color: #a6a6a6;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+}
+[data-novi-id="37"]{
+  color: #a6a6a6;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+}
+[data-novi-id="36"]{
+  color: #a6a6a6;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+}
+[data-novi-id="35"]{
+  font-size: 14px;
+  color: #a6a6a6;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="34"]{
+  color: #a6a6a6;
+  font-size: 14px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="33"]{
+  color: #a6a6a6;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 14px;
+}
+[data-novi-id="32"]{
+  font-family: 'PT Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+[data-novi-id="31"]{
+  font-weight: 700;
+  font-size: 20px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="30"]{
+  font-size: 20px;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+}
+[data-novi-id="29"]{
+  font-size: 20px;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+}
+[data-novi-id="28"]{
+  font-size: 20px;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+}
+[data-novi-id="27"]{
+  font-weight: 700;
+  font-size: 20px;
+  font-family: 'PT Sans', sans-serif;
+  
+}
+@media (max-width: 1024px) {
+  [data-novi-id="26"]{
+  font-size: 30px!important;
+  font-family: 'PT Sans', sans-serif;
+  }
+  [data-novi-id="25"]{
+    font-size: 30px!important;
+    font-family: 'PT Sans', sans-serif;
+  }
+  [data-novi-id="24"]{
+    font-size: 30px!important;
+    font-family: 'PT Sans', sans-serif;
+  }
+}
+
+[data-novi-id="26"]{
+  font-size: 16px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="25"]{
+  font-size: 16px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="24"]{
+  font-size: 16px;
+  font-family: 'PT Sans', sans-serif;
+}
+
+[data-novi-id="23"]{
+  font-weight: 700;
+}
+[data-novi-id="22"]{
+  font-size: 30px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="21"]{
+  font-size: 16px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="20"]{
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="19"]{
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="18"]{
+  font-weight: 700;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="17"]{
+  font-weight: 700;
+}
+[data-novi-id="16"]{
+  font-weight: 700;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="15"]{
+  font-size: 27px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="14"]{
+  text-align: center;
+}
+[data-novi-id="13"]{
+  font-size: 54px;
+  font-family: 'PT Sans', sans-serif;
+  line-height: 65.4616px;
+  font-weight: 100;
+}
+
+
+@media (max-width: 991px) {
+  [data-novi-id="13"]{
+    font-size: 27px;
+    font-family: 'PT Sans', sans-serif;
+    line-height: 65.4616px;
+    font-weight: 100;
+  }
+}
+
+
+
+[data-novi-id="12"]{
+  font-weight: 700;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="11"]{
+  color: #6a6a6a;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="10"]{
+  color: #6a6a6a;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="9"]{
+  color: #6a6a6a;
+  font-size: 16px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="8"]{
+  text-align: center;
+}
+[data-novi-id="7"]{
+  font-size: 54px;
+  font-weight: 700;
+  color: #020202;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="6"]{
+  text-align: right;
+  font-size: 54px;
+  color: #020202;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="5"]{
+  color: #020202;
+  font-weight: 700;
+  font-size: 54px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="4"]{
+  color: #000;
+  font-weight: 700;
+}
+[data-novi-id="3"]{
+  color: #ffffff;
+  font-size: 16px;
+  color: #6a6a6a;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="2"]{
+  text-align: left;
+  color: #6a6a6a;
+  font-size: 16px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="1"]{
+  color: #ffffff;
+  color: #6a6a6a;
+  font-size: 16px;
+  font-family: 'PT Sans', sans-serif;
+}
+[data-novi-id="0"]{
+  text-align: center;
+  color: #000;
+  font-family: 'PT Sans', sans-serif;
+}
+.border-white{
+  border: 1px solid #fff;
+  border-radius: 4px;
+  
+  
+}
+.font-23{
+  font-size: 23px;
+}
