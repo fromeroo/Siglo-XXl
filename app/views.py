@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 # Create your views here.
 
 @login_required
-def intranet(request):
-    return render(request, 'app/intranet.html')
+def indexUser(request):
+    return render(request, 'app/indexUser.html')
 
 def register(request):
     return render(request, 'registration/register.html')

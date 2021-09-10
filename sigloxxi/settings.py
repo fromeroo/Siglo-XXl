@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_REDIRECT_URL = '/intranet'
+LOGIN_REDIRECT_URL = '/indexUser'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 # Application definition
 
