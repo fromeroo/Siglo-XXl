@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from .models import Usuario
+from .forms import CustomUserCreationForm
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 
 # Create your views here.
@@ -24,3 +26,17 @@ def administrador(request):
         'Usuario': usuario
     }
     return render(request, 'app/administrador.html', data)
+
+def registro(request):
+    data = {
+        'form': CustomUserCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomUserCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "El usuario ha sido registrado exitosamente!")
+        data["form"] = formulario
+
+    return render(request, 'registration/registro.html', data)
