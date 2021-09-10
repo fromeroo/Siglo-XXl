@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 {% load static %}
 
@@ -11,6 +11,7 @@
     <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
 </head>
 <body>
+    {% load crispy_forms_tags %}
     <section class="vh-100" style="background-color: #3D7A9D;">
         <div class="container py-5 h-100">
           <div class="row d-flex justify-content-center align-items-center h-100">
@@ -27,8 +28,9 @@
                   <div class="col-md-6 col-lg-7 d-flex align-items-center">
                     <div class="card-body p-4 p-lg-5 text-black">
       
-                      <form>
-      
+                      <form action="" class="" method="POST">
+                        {% csrf_token %}
+                        
                         <div class="d-flex align-items-center mb-3 pb-1">
                           <!-- <img src="{% static 'img/restaurant_login.png' %}" class="img-fluid" alt=""> -->
                           <span class="h1 fw-bold mb-0">Siglo XXI</span>
@@ -36,22 +38,14 @@
       
                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Inicio de sesión</h5>
       
-                        <div class="form-outline mb-4">
-                          <input type="email" id="form2Example17" class="form-control form-control-lg" />
-                          <label class="form-label" for="form2Example17">Correo electrónico</label>
-                        </div>
-      
-                        <div class="form-outline mb-4">
-                          <input type="password" id="form2Example27" class="form-control form-control-lg" />
-                          <label class="form-label" for="form2Example27">Contraseña</label>
-                        </div>
+                        {{ form| crispy }}
       
                         <div class="pt-1 mb-4">
-                          <button class="btn btn-dark btn-lg btn-block" type="button">Entrar</button>
+                          <button class="btn btn-dark btn-lg btn-block" type="submit">Entrar</button>
                         </div>
       
-                        <a class="small text-muted" href="#!">Olvidó su contraseña?</a>
-                        <p class="mb-5 pb-lg-2" style="color: #393f81;">No posee una cuenta? <a href="#!" style="color: #393f81;">Registrese aquí</a></p>
+                        <!-- <a class="small text-muted" href="#!">Olvidó su contraseña?</a> -->
+                        <p class="mb-5 pb-lg-2" style="color: #393f81;">No posee una cuenta? <a href="{% url 'register' %}" style="color: #393f81;">Registrese aquí</a></p>
                       </form>
       
                     </div>
@@ -62,6 +56,7 @@
           </div>
         </div>
       </section>
-      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
