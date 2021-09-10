@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Banco
+from .models import Banco, Usuario
 from django.contrib.auth.decorators import login_required, permission_required
 
 # Create your views here.
@@ -13,3 +13,10 @@ def register(request):
 
 def index(request):
     return render(request, 'app/index.html')
+
+def administrador(request):
+    Usuario = Usuario.objects.all()
+    data = {
+        'Usuario': Usuario
+    }
+    return render(request, 'app/administrador.html')

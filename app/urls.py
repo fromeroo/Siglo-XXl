@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import intranet, index, register
+from .views import intranet, index, register, administrador
 
 urlpatterns = [
     path('intranet/', intranet, name="intranet"),
     path('register/', register, name="register"),
     path('', index, name="index"),
+    path('administrador/', administrador, name="administrador"),
 ]
