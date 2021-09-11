@@ -6,7 +6,7 @@
     
     {% load crispy_forms_tags %}
     <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1" style="text-align:center;">
-      <h2>Registro de usuario</h2>
+      <h2>Editar usuario</h2>
       <hr>
       <form action="" method="post">
         {% csrf_token %}
@@ -16,9 +16,9 @@
             <button class="btn btn-primary d-flex mr-auto">
               <a href="{% url 'indexUser' %}" 
               style="color: white;"
-              >Ir al inicio</a>
+              >Cancelar</a>
             </button>
-            <button class="btn btn-primary d-flex ml-auto" type="submit">Registrar</button>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Editar</button>
           </div>
         </div>
       </form>

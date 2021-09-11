@@ -17,12 +17,12 @@
         </tr>
       </thead>
       <tbody>
-        {% for u in Usuario %}
+        {% for u in User %}
         <tr>
-          <th scope="row">{{ u.id_usr }}</th>
-          <td>{{ u.nom_usr }}</td>
-          <td>{{ u.contrasenia }}</td>
-          <td>{{ u.correo_usr }}</td>
+          <th scope="row">{{ u.username }}</th>
+          <td>{{ u.first_name }}</td>
+          <td>{{ u.last_name }}</td>
+          <td>{{ u.email }}</td>
           <td class="p-1">
             <button class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></button>
             <button class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-minus-square"> Eliminar</i></button>

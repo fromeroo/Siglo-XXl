@@ -4,7 +4,7 @@
 {% load static %}
     <!-- /.content-wrapper -->
     
-
+    {{message}}
     <div id="user-table" class="col-lg-10 col-sm-9 mt-5 mx-1" style="text-align:center;">
       <h2>Lista de usuarios</h2>
 
@@ -15,21 +15,21 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Contraseña</th>
+            <th scope="col">Apellido</th>
             <th scope="col">Correo Electrónico</th>
             <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {% for u in Usuario %}
+          {% for u in Usuarios %}
           <tr>
-            <th scope="row">{{ u.id_usr }}</th>
-            <td>{{ u.nom_usr }}</td>
-            <td>{{ u.contrasenia }}</td>
-            <td>{{ u.correo_usr }}</td>
+            <th scope="row">{{ u.id }}</th>
+            <td>{{ u.first_name }}</td>
+            <td>{{ u.last_name }}</td>
+            <td>{{ u.email }}</td>
             <td class="p-1">
-              <button class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></button>
-              <button class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-minus-square"> Eliminar</i></button>
+              <a href="{% url 'modificar_usuario' u.id %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+              <a href="{% url 'eliminar_usuario' u.id  %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-minus-square"> Eliminar</i></a>
             </td>
           </tr>
           {% endfor %}
