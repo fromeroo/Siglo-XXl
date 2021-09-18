@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'sigloxxi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': '127.0.0.1:1521/siglo_xxl',
+        'NAME': 'localhost:1521/orcl',
         'USER': 'c##franco',
         'PASSWORD': 'password',
         'TEST': {
