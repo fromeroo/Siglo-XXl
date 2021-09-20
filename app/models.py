@@ -9,7 +9,7 @@ from django.db import models
 
 
 class Banco(models.Model):
-    id_bco = models.IntegerField(primary_key=True)
+    id_bco = models.AutoField(primary_key=True)
     nom_bco = models.CharField(max_length=100)
 
     class Meta:
@@ -18,7 +18,7 @@ class Banco(models.Model):
 
 
 class Boleta(models.Model):
-    id_bol = models.IntegerField(primary_key=True)
+    id_bol = models.AutoField(primary_key=True)
     nro_boleta = models.IntegerField(unique=True)
     fec_emision = models.DateField()
     id_form_pago = models.ForeignKey('FormaPago', models.DO_NOTHING, db_column='id_form_pago')
@@ -36,8 +36,8 @@ class Boleta(models.Model):
 
 
 class Caja(models.Model):
-    id_caja = models.IntegerField(primary_key=True)
-    nro_caja = models.IntegerField(unique=True)
+    id_caja = models.AutoField(primary_key=True)
+    id_nro_caja = models.ForeignKey('NroCaja', models.DO_NOTHING, db_column='id_nro_caja')
     fec_hora_apertura = models.DateField()
     fec_hora_cierre = models.DateField()
     monto_apertura = models.IntegerField()
@@ -50,7 +50,7 @@ class Caja(models.Model):
 
 
 class CategoriaInsumo(models.Model):
-    id_cat_ins = models.IntegerField(primary_key=True)
+    id_cat_ins = models.AutoField(primary_key=True)
     nom_categoria = models.CharField(max_length=100)
 
     class Meta:
@@ -59,7 +59,7 @@ class CategoriaInsumo(models.Model):
 
 
 class CategoriaProducto(models.Model):
-    id_cat_prod = models.IntegerField(primary_key=True)
+    id_cat_prod = models.AutoField(primary_key=True)
     desc_cat_prod = models.CharField(max_length=50)
 
     class Meta:
@@ -68,7 +68,7 @@ class CategoriaProducto(models.Model):
 
 
 class Cliente(models.Model):
-    id_cliente = models.IntegerField(primary_key=True)
+    id_cliente = models.AutoField(primary_key=True)
     rut_cli = models.IntegerField()
     dv = models.CharField(max_length=1)
     nom_cli = models.CharField(max_length=50)
@@ -85,7 +85,7 @@ class Cliente(models.Model):
 
 
 class Comanda(models.Model):
-    id_comanda = models.IntegerField(primary_key=True)
+    id_comanda = models.AutoField(primary_key=True)
     id_orden = models.ForeignKey('OrdenComida', models.DO_NOTHING, db_column='id_orden')
     id_est_comanda = models.ForeignKey('EstComanda', models.DO_NOTHING, db_column='id_est_comanda')
     fec_hora_ingreso = models.DateField()
@@ -97,7 +97,7 @@ class Comanda(models.Model):
 
 
 class Comuna(models.Model):
-    id_com = models.IntegerField(primary_key=True)
+    id_com = models.AutoField(primary_key=True)
     nom_com = models.CharField(max_length=255)
     id_reg = models.ForeignKey('Region', models.DO_NOTHING, db_column='id_reg')
 
@@ -107,7 +107,7 @@ class Comuna(models.Model):
 
 
 class CuadraturaCaja(models.Model):
-    id_cuadr = models.IntegerField(primary_key=True)
+    id_cuadr = models.AutoField(primary_key=True)
     fec_cuadratura = models.DateField()
     monto_cuadrado = models.IntegerField()
     tuvo_descuadre = models.CharField(max_length=1)
@@ -121,7 +121,7 @@ class CuadraturaCaja(models.Model):
 
 
 class CuentaBancaria(models.Model):
-    id_cuenta = models.IntegerField(primary_key=True)
+    id_cuenta = models.AutoField(primary_key=True)
     nro_cta = models.BigIntegerField()
     nro_chip = models.BigIntegerField(blank=True, null=True)
     fec_expiracion = models.DateField()
@@ -137,7 +137,7 @@ class CuentaBancaria(models.Model):
 
 
 class DetPed(models.Model):
-    id_det_ped = models.IntegerField(primary_key=True)
+    id_det_ped = models.AutoField(primary_key=True)
     id_ped = models.ForeignKey('Pedido', models.DO_NOTHING, db_column='id_ped')
     id_ins = models.ForeignKey('Insumo', models.DO_NOTHING, db_column='id_ins')
     cantidad = models.IntegerField()
@@ -150,7 +150,7 @@ class DetPed(models.Model):
 
 
 class DetResAt(models.Model):
-    id_det_res_at = models.IntegerField(primary_key=True)
+    id_det_res_at = models.AutoField(primary_key=True)
     id_res_at = models.ForeignKey('ResumenAtencion', models.DO_NOTHING, db_column='id_res_at')
     valor = models.IntegerField()
     cantidad = models.IntegerField()
@@ -161,7 +161,7 @@ class DetResAt(models.Model):
 
 
 class DetalleBoleta(models.Model):
-    id_det_bol = models.IntegerField(primary_key=True)
+    id_det_bol = models.AutoField(primary_key=True)
     id_bol = models.ForeignKey(Boleta, models.DO_NOTHING, db_column='id_bol')
     detalle = models.CharField(max_length=255)
     total = models.IntegerField()
@@ -172,7 +172,7 @@ class DetalleBoleta(models.Model):
 
 
 class DetalleFactura(models.Model):
-    id_det_fact = models.IntegerField(primary_key=True)
+    id_det_fact = models.AutoField(primary_key=True)
     id_fact = models.ForeignKey('Factura', models.DO_NOTHING, db_column='id_fact')
     total_neto = models.IntegerField()
     iva = models.FloatField()
@@ -184,7 +184,7 @@ class DetalleFactura(models.Model):
 
 
 class DetalleMenu(models.Model):
-    id_det_menu = models.IntegerField(primary_key=True)
+    id_det_menu = models.AutoField(primary_key=True)
     id_menu = models.ForeignKey('Menu', models.DO_NOTHING, db_column='id_menu')
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
     descripcion = models.CharField(max_length=255)
@@ -195,7 +195,7 @@ class DetalleMenu(models.Model):
 
 
 class DetalleOc(models.Model):
-    id_det_oc = models.IntegerField(primary_key=True)
+    id_det_oc = models.AutoField(primary_key=True)
     id_oc = models.ForeignKey('OrdenCompra', models.DO_NOTHING, db_column='id_oc')
     neto_det = models.IntegerField()
     iva = models.FloatField()
@@ -207,7 +207,7 @@ class DetalleOc(models.Model):
 
 
 class DetalleOrden(models.Model):
-    id_det_orden = models.IntegerField(primary_key=True)
+    id_det_orden = models.AutoField(primary_key=True)
     id_det_menu = models.ForeignKey(DetalleMenu, models.DO_NOTHING, db_column='id_det_menu')
     cantidad = models.IntegerField()
     id_orden_com = models.ForeignKey('OrdenComida', models.DO_NOTHING, db_column='id_orden_com')
@@ -218,8 +218,7 @@ class DetalleOrden(models.Model):
 
 
 class Direccion(models.Model):
-    id_dir = models.IntegerField(primary_key=True)
-    id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cliente')
+    id_dir = models.AutoField(primary_key=True)
     calle = models.CharField(max_length=255)
     numeracion = models.IntegerField()
     nro_casa_depto = models.CharField(max_length=5, blank=True, null=True)
@@ -231,8 +230,85 @@ class Direccion(models.Model):
         db_table = 'direccion'
 
 
+class DireccionCliente(models.Model):
+    id_dir = models.OneToOneField(Direccion, models.DO_NOTHING, db_column='id_dir', primary_key=True)
+    id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cliente')
+
+    class Meta:
+        managed = False
+        db_table = 'direccion_cliente'
+        unique_together = (('id_dir', 'id_cliente'),)
+
+
+class DireccionProveedor(models.Model):
+    id_proveedor = models.OneToOneField('Proveedor', models.DO_NOTHING, db_column='id_proveedor', primary_key=True)
+    id_dir = models.ForeignKey(Direccion, models.DO_NOTHING, db_column='id_dir')
+
+    class Meta:
+        managed = False
+        db_table = 'direccion_proveedor'
+        unique_together = (('id_proveedor', 'id_dir'),)
+
+
+class Disponibilidad(models.Model):
+    id_disp = models.AutoField(primary_key=True)
+    id_est_disp = models.ForeignKey('EstDisponibilidad', models.DO_NOTHING, db_column='id_est_disp')
+    fec_disponible = models.DateField()
+    hora_disponible = models.CharField(max_length=5)
+    cant_persona = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'disponibilidad'
+
+
+class DjangoAdminLog(models.Model):
+    action_time = models.DateTimeField()
+    object_id = models.TextField(blank=True, null=True)
+    object_repr = models.CharField(max_length=200, blank=True, null=True)
+    action_flag = models.IntegerField()
+    change_message = models.TextField(blank=True, null=True)
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+    user_id = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_admin_log'
+
+
+class DjangoContentType(models.Model):
+    app_label = models.CharField(max_length=100, blank=True, null=True)
+    model = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'django_content_type'
+        unique_together = (('app_label', 'model'),)
+
+
+class DjangoMigrations(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    app = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
+
+
+class DjangoSession(models.Model):
+    session_key = models.CharField(primary_key=True, max_length=40)
+    session_data = models.TextField(blank=True, null=True)
+    expire_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_session'
+
+
 class EstCaja(models.Model):
-    id_est_caja = models.BooleanField(primary_key=True)
+    id_est_caja = models.AutoField(primary_key=True)
     desc_est_caja = models.CharField(max_length=50)
 
     class Meta:
@@ -241,7 +317,7 @@ class EstCaja(models.Model):
 
 
 class EstComanda(models.Model):
-    id_est_cmd = models.BooleanField(primary_key=True)
+    id_est_cmd = models.AutoField(primary_key=True)
     desc_est_cmd = models.CharField(max_length=50)
 
     class Meta:
@@ -249,8 +325,17 @@ class EstComanda(models.Model):
         db_table = 'est_comanda'
 
 
+class EstDisponibilidad(models.Model):
+    id_est_disp = models.AutoField(primary_key=True)
+    desc_est_disp = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'est_disponibilidad'
+
+
 class EstFormaPago(models.Model):
-    id_est_forma_pago = models.BooleanField(primary_key=True)
+    id_est_forma_pago = models.AutoField(primary_key=True)
     desc_est_forma_pago = models.CharField(max_length=255)
 
     class Meta:
@@ -259,7 +344,7 @@ class EstFormaPago(models.Model):
 
 
 class EstInsumo(models.Model):
-    id_est_ins = models.BooleanField(primary_key=True)
+    id_est_ins = models.AutoField(primary_key=True)
     desc_est_ins = models.CharField(max_length=50)
 
     class Meta:
@@ -268,7 +353,7 @@ class EstInsumo(models.Model):
 
 
 class EstOc(models.Model):
-    id_est_oc = models.BooleanField(primary_key=True)
+    id_est_oc = models.AutoField(primary_key=True)
     desc_est_oc = models.CharField(max_length=50)
 
     class Meta:
@@ -277,7 +362,7 @@ class EstOc(models.Model):
 
 
 class EstOrden(models.Model):
-    id_est_orden = models.BooleanField(primary_key=True)
+    id_est_orden = models.AutoField(primary_key=True)
     desc_est_orden = models.CharField(max_length=50)
 
     class Meta:
@@ -286,7 +371,7 @@ class EstOrden(models.Model):
 
 
 class EstPedido(models.Model):
-    id_est_ped = models.BooleanField(primary_key=True)
+    id_est_ped = models.AutoField(primary_key=True)
     desc_est_ped = models.CharField(max_length=100)
 
     class Meta:
@@ -295,7 +380,7 @@ class EstPedido(models.Model):
 
 
 class EstReceta(models.Model):
-    id_est_rec = models.BooleanField(primary_key=True)
+    id_est_rec = models.AutoField(primary_key=True)
     desc_est_rec = models.CharField(max_length=50)
 
     class Meta:
@@ -304,7 +389,7 @@ class EstReceta(models.Model):
 
 
 class EstadoFactura(models.Model):
-    id_est_fact = models.BooleanField(primary_key=True)
+    id_est_fact = models.AutoField(primary_key=True)
     desc_est_fact = models.CharField(max_length=50)
 
     class Meta:
@@ -313,7 +398,7 @@ class EstadoFactura(models.Model):
 
 
 class EstadoMenu(models.Model):
-    id_est_menu = models.BooleanField(primary_key=True)
+    id_est_menu = models.AutoField(primary_key=True)
     desc_est_menu = models.CharField(max_length=50)
 
     class Meta:
@@ -322,7 +407,7 @@ class EstadoMenu(models.Model):
 
 
 class EstadoMesa(models.Model):
-    id_est_mesa = models.BooleanField(primary_key=True)
+    id_est_mesa = models.AutoField(primary_key=True)
     desc_est_mesa = models.CharField(max_length=50)
 
     class Meta:
@@ -331,7 +416,7 @@ class EstadoMesa(models.Model):
 
 
 class EstadoResAt(models.Model):
-    id_est_res = models.BooleanField(primary_key=True)
+    id_est_res = models.AutoField(primary_key=True)
     desc_est_res_at = models.CharField(max_length=50)
 
     class Meta:
@@ -340,7 +425,7 @@ class EstadoResAt(models.Model):
 
 
 class EstadoReserva(models.Model):
-    id_est_rsv = models.BooleanField(primary_key=True)
+    id_est_rsv = models.AutoField(primary_key=True)
     desc_est_rsv = models.CharField(max_length=50)
 
     class Meta:
@@ -349,7 +434,7 @@ class EstadoReserva(models.Model):
 
 
 class EstadoUsuario(models.Model):
-    id_est_usr = models.BooleanField(primary_key=True)
+    id_est_usr = models.AutoField(primary_key=True)
     desc_est_usr = models.CharField(max_length=255)
 
     class Meta:
@@ -358,7 +443,7 @@ class EstadoUsuario(models.Model):
 
 
 class Factura(models.Model):
-    id_factura = models.IntegerField(primary_key=True)
+    id_factura = models.AutoField(primary_key=True)
     nro_factura = models.IntegerField(unique=True)
     fec_emision = models.DateField()
     fec_pago = models.DateField(blank=True, null=True)
@@ -375,7 +460,7 @@ class Factura(models.Model):
 
 
 class FormaPago(models.Model):
-    id_form_pago = models.BooleanField(primary_key=True)
+    id_form_pago = models.AutoField(primary_key=True)
     desc_form_pago = models.CharField(max_length=100)
     id_est_form_pago = models.ForeignKey(EstFormaPago, models.DO_NOTHING, db_column='id_est_form_pago')
 
@@ -385,7 +470,7 @@ class FormaPago(models.Model):
 
 
 class GiroProveedor(models.Model):
-    id_giro_proveedor = models.IntegerField(primary_key=True)
+    id_giro_proveedor = models.AutoField(primary_key=True)
     desc_giro = models.CharField(max_length=100)
 
     class Meta:
@@ -394,7 +479,7 @@ class GiroProveedor(models.Model):
 
 
 class Ingrediente(models.Model):
-    id_ingrediente = models.IntegerField(primary_key=True)
+    id_ingrediente = models.AutoField(primary_key=True)
     id_insumo = models.ForeignKey('Insumo', models.DO_NOTHING, db_column='id_insumo')
     nom_ingrediente = models.CharField(max_length=50)
 
@@ -404,7 +489,7 @@ class Ingrediente(models.Model):
 
 
 class Insumo(models.Model):
-    id_ins = models.IntegerField(primary_key=True)
+    id_ins = models.AutoField(primary_key=True)
     nom_insumo = models.CharField(max_length=100)
     id_tipo_ins = models.ForeignKey('TipoInsumo', models.DO_NOTHING, db_column='id_tipo_ins')
     id_cat_ins = models.ForeignKey(CategoriaInsumo, models.DO_NOTHING, db_column='id_cat_ins')
@@ -415,7 +500,7 @@ class Insumo(models.Model):
 
 
 class InventarioInsumo(models.Model):
-    id_inv_ins = models.IntegerField(primary_key=True)
+    id_inv_ins = models.AutoField(primary_key=True)
     id_ins = models.ForeignKey(Insumo, models.DO_NOTHING, db_column='id_ins')
     stock = models.IntegerField()
     fec_vencimiento = models.DateField()
@@ -427,8 +512,18 @@ class InventarioInsumo(models.Model):
         db_table = 'inventario_insumo'
 
 
+class LogError(models.Model):
+    id_log = models.AutoField(primary_key=True)
+    cod_error = models.CharField(max_length=255)
+    desc_error = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'log_error'
+
+
 class MarcaInsumo(models.Model):
-    id_marca = models.IntegerField(primary_key=True)
+    id_marca = models.AutoField(primary_key=True)
     nom_marca = models.CharField(max_length=100)
 
     class Meta:
@@ -436,16 +531,8 @@ class MarcaInsumo(models.Model):
         db_table = 'marca_insumo'
 
 
-class Mensajes(models.Model):
-    mensaje = models.CharField(max_length=100, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'mensajes'
-
-
 class Menu(models.Model):
-    id_menu = models.IntegerField(primary_key=True)
+    id_menu = models.AutoField(primary_key=True)
     nro_menu = models.IntegerField()
     nombre_menu = models.CharField(max_length=50)
     id_est_menu = models.ForeignKey(EstadoMenu, models.DO_NOTHING, db_column='id_est_menu')
@@ -456,7 +543,7 @@ class Menu(models.Model):
 
 
 class Mesa(models.Model):
-    id_mesa = models.IntegerField(primary_key=True)
+    id_mesa = models.AutoField(primary_key=True)
     nro_mesa = models.IntegerField()
     cant_sillas = models.IntegerField()
     id_ubicacion = models.ForeignKey('Ubicacion', models.DO_NOTHING, db_column='id_ubicacion')
@@ -468,7 +555,7 @@ class Mesa(models.Model):
 
 
 class MotivoDescuadre(models.Model):
-    id_motivo = models.BooleanField(primary_key=True)
+    id_motivo = models.AutoField(primary_key=True)
     desc_mot = models.CharField(max_length=50)
 
     class Meta:
@@ -477,7 +564,7 @@ class MotivoDescuadre(models.Model):
 
 
 class MotivoRetiro(models.Model):
-    id_motivo = models.BooleanField(primary_key=True)
+    id_motivo = models.AutoField(primary_key=True)
     desc_motivo = models.CharField(max_length=100)
 
     class Meta:
@@ -485,8 +572,18 @@ class MotivoRetiro(models.Model):
         db_table = 'motivo_retiro'
 
 
+class NroCaja(models.Model):
+    id_no_caja = models.AutoField(primary_key=True)
+    nro_caja = models.IntegerField()
+    fec_creacion = models.DateField()
+
+    class Meta:
+        managed = False
+        db_table = 'nro_caja'
+
+
 class NvlAccPerfil(models.Model):
-    id_nvl = models.BooleanField(primary_key=True)
+    id_nvl = models.AutoField(primary_key=True)
     desc_nvl = models.CharField(max_length=255)
 
     class Meta:
@@ -495,7 +592,7 @@ class NvlAccPerfil(models.Model):
 
 
 class OrdenComida(models.Model):
-    id_ord_com = models.IntegerField(primary_key=True)
+    id_ord_com = models.AutoField(primary_key=True)
     id_mesa = models.ForeignKey(Mesa, models.DO_NOTHING, db_column='id_mesa')
     fec_hora_inicio = models.DateField()
     fec_hora_termino = models.DateField()
@@ -509,7 +606,7 @@ class OrdenComida(models.Model):
 
 
 class OrdenCompra(models.Model):
-    id_oc = models.IntegerField(primary_key=True)
+    id_oc = models.AutoField(primary_key=True)
     nro_oc = models.CharField(max_length=100)
     total_neto_oc = models.IntegerField()
     iva = models.FloatField()
@@ -525,7 +622,7 @@ class OrdenCompra(models.Model):
 
 
 class Pedido(models.Model):
-    id_ped = models.IntegerField(primary_key=True)
+    id_ped = models.AutoField(primary_key=True)
     nro_pedido = models.IntegerField()
     fec_ped = models.DateField()
     id_est_ped = models.ForeignKey(EstPedido, models.DO_NOTHING, db_column='id_est_ped')
@@ -538,7 +635,7 @@ class Pedido(models.Model):
 
 
 class Perfil(models.Model):
-    id_perfil = models.BooleanField(primary_key=True)
+    id_perfil = models.AutoField(primary_key=True)
     desc_perfil = models.CharField(max_length=255)
     id_nvl = models.ForeignKey(NvlAccPerfil, models.DO_NOTHING, db_column='id_nvl')
     id_permiso = models.ForeignKey('Permiso', models.DO_NOTHING, db_column='id_permiso')
@@ -549,7 +646,7 @@ class Perfil(models.Model):
 
 
 class Permiso(models.Model):
-    id_permiso = models.BooleanField(primary_key=True)
+    id_permiso = models.AutoField(primary_key=True)
     desc_permiso = models.CharField(max_length=255)
 
     class Meta:
@@ -558,7 +655,7 @@ class Permiso(models.Model):
 
 
 class PorcDcto(models.Model):
-    id_porc_dcto = models.BooleanField(primary_key=True)
+    id_porc_dcto = models.AutoField(primary_key=True)
     porc_dcto = models.FloatField()
 
     class Meta:
@@ -567,7 +664,7 @@ class PorcDcto(models.Model):
 
 
 class PorcPropina(models.Model):
-    id_porc_prop = models.BooleanField(primary_key=True)
+    id_porc_prop = models.AutoField(primary_key=True)
     porc_prop = models.FloatField()
 
     class Meta:
@@ -576,7 +673,7 @@ class PorcPropina(models.Model):
 
 
 class Producto(models.Model):
-    id_producto = models.IntegerField(primary_key=True)
+    id_producto = models.AutoField(primary_key=True)
     precio = models.IntegerField()
     id_cat_producto = models.ForeignKey(CategoriaProducto, models.DO_NOTHING, db_column='id_cat_producto')
     id_tipo_prod = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='id_tipo_prod')
@@ -588,12 +685,11 @@ class Producto(models.Model):
 
 
 class Proveedor(models.Model):
-    id_proveedor = models.IntegerField(primary_key=True)
+    id_proveedor = models.AutoField(primary_key=True)
     rut_prv = models.IntegerField(unique=True)
     dv_prv = models.CharField(max_length=1)
     razon_social = models.CharField(max_length=255)
     nom_corto_prv = models.CharField(max_length=255)
-    id_dir = models.ForeignKey(Direccion, models.DO_NOTHING, db_column='id_dir')
     tlfn_prv = models.CharField(max_length=16)
     correo_prv = models.CharField(max_length=4000)
     id_giro = models.ForeignKey(GiroProveedor, models.DO_NOTHING, db_column='id_giro')
@@ -604,7 +700,7 @@ class Proveedor(models.Model):
 
 
 class Receta(models.Model):
-    id_receta = models.IntegerField(primary_key=True)
+    id_receta = models.AutoField(primary_key=True)
     nom_receta = models.CharField(max_length=100)
     id_est_receta = models.ForeignKey(EstReceta, models.DO_NOTHING, db_column='id_est_receta')
     tiempo_prep = models.IntegerField()
@@ -628,7 +724,7 @@ class RecetaIngrediente(models.Model):
 
 
 class Region(models.Model):
-    id_reg = models.IntegerField(primary_key=True)
+    id_reg = models.AutoField(primary_key=True)
     nom_reg = models.CharField(max_length=255)
 
     class Meta:
@@ -637,13 +733,14 @@ class Region(models.Model):
 
 
 class Reserva(models.Model):
-    id_reserva = models.IntegerField(primary_key=True)
+    id_reserva = models.AutoField(primary_key=True)
     fec_reserva = models.DateField()
     fecha_hora_reserva = models.DateField()
     cant_asistentes = models.IntegerField()
-    id_mesa = models.ForeignKey(Mesa, models.DO_NOTHING, db_column='id_mesa', blank=True, null=True)
+    id_mesa = models.ForeignKey(Mesa, models.DO_NOTHING, db_column='id_mesa')
     id_est_reserva = models.ForeignKey(EstadoReserva, models.DO_NOTHING, db_column='id_est_reserva')
-    id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cliente', blank=True, null=True)
+    id_cliente = models.ForeignKey(Cliente, models.DO_NOTHING, db_column='id_cliente')
+    id_disp = models.ForeignKey(Disponibilidad, models.DO_NOTHING, db_column='id_disp', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -651,7 +748,7 @@ class Reserva(models.Model):
 
 
 class ResumenAtencion(models.Model):
-    id_res_at = models.IntegerField(primary_key=True)
+    id_res_at = models.AutoField(primary_key=True)
     total_at = models.IntegerField()
     fec_hora_at = models.DateField()
     id_est_res_atencion = models.ForeignKey(EstadoResAt, models.DO_NOTHING, db_column='id_est_res_atencion')
@@ -663,7 +760,7 @@ class ResumenAtencion(models.Model):
 
 
 class RetiroCaja(models.Model):
-    id_retiro = models.IntegerField(primary_key=True)
+    id_retiro = models.AutoField(primary_key=True)
     fec_hora_retiro = models.DateField()
     id_motivo_ret = models.ForeignKey(MotivoRetiro, models.DO_NOTHING, db_column='id_motivo_ret')
     id_caja = models.ForeignKey(Caja, models.DO_NOTHING, db_column='id_caja')
@@ -684,7 +781,7 @@ class RevisionCaja(models.Model):
 
 
 class TipoCuenta(models.Model):
-    id_tipo_cta = models.BooleanField(primary_key=True)
+    id_tipo_cta = models.AutoField(primary_key=True)
     desc_tipo_cta = models.CharField(max_length=50)
 
     class Meta:
@@ -693,7 +790,7 @@ class TipoCuenta(models.Model):
 
 
 class TipoDireccion(models.Model):
-    id_tipo_dir = models.BooleanField(primary_key=True)
+    id_tipo_dir = models.AutoField(primary_key=True)
     desc_tipo_dir = models.CharField(max_length=50)
 
     class Meta:
@@ -702,7 +799,7 @@ class TipoDireccion(models.Model):
 
 
 class TipoInsumo(models.Model):
-    id_tipo_ins = models.IntegerField(primary_key=True)
+    id_tipo_ins = models.AutoField(primary_key=True)
     desc_tipo_ins = models.CharField(max_length=255)
 
     class Meta:
@@ -711,7 +808,7 @@ class TipoInsumo(models.Model):
 
 
 class TipoProducto(models.Model):
-    id_tip_prod = models.BooleanField(primary_key=True)
+    id_tip_prod = models.AutoField(primary_key=True)
     desc_tipo_prod = models.CharField(max_length=50)
 
     class Meta:
@@ -720,7 +817,7 @@ class TipoProducto(models.Model):
 
 
 class TipoTransaccion(models.Model):
-    id_tipo_trans = models.BooleanField(primary_key=True)
+    id_tipo_trans = models.AutoField(primary_key=True)
     desc_trans = models.CharField(max_length=50)
 
     class Meta:
@@ -729,7 +826,7 @@ class TipoTransaccion(models.Model):
 
 
 class TransaccionBancaria(models.Model):
-    id_transaccion = models.IntegerField(primary_key=True)
+    id_transaccion = models.AutoField(primary_key=True)
     id_tipo_trans = models.ForeignKey(TipoTransaccion, models.DO_NOTHING, db_column='id_tipo_trans')
     id_cta_bco = models.ForeignKey(CuentaBancaria, models.DO_NOTHING, db_column='id_cta_bco')
     fec_transaccion = models.DateField()
@@ -741,7 +838,7 @@ class TransaccionBancaria(models.Model):
 
 
 class Ubicacion(models.Model):
-    id_ubicacion = models.IntegerField(primary_key=True)
+    id_ubicacion = models.AutoField(primary_key=True)
     desc_ubicacion = models.CharField(max_length=50)
 
     class Meta:
@@ -750,7 +847,7 @@ class Ubicacion(models.Model):
 
 
 class UnidadMedida(models.Model):
-    id_un_med = models.IntegerField(primary_key=True)
+    id_un_med = models.AutoField(primary_key=True)
     desc_un_med = models.CharField(max_length=10)
 
     class Meta:
@@ -759,23 +856,29 @@ class UnidadMedida(models.Model):
 
 
 class Usuario(models.Model):
-    id_usr = models.IntegerField(primary_key=True)
-    nom_usr = models.CharField(max_length=50)
-    contrasenia = models.CharField(max_length=12)
-    correo_usr = models.CharField(max_length=255)
+    id_usr = models.AutoField(primary_key=True)
+    contrasenia = models.CharField(max_length=128)
+    last_login = models.DateField()
+    is_superuser = models.BooleanField()
+    username = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.BooleanField()
+    is_active = models.BooleanField()
+    date_joined = models.DateField()
     id_est_usr = models.ForeignKey(EstadoUsuario, models.DO_NOTHING, db_column='id_est_usr')
     id_perfil = models.ForeignKey(Perfil, models.DO_NOTHING, db_column='id_perfil')
-    token = models.CharField(max_length=255)
     usuario_id_usr = models.ForeignKey('self', models.DO_NOTHING, db_column='usuario_id_usr', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'usuario'
-        unique_together = (('nom_usr', 'correo_usr'),)
+        unique_together = (('username', 'email'),)
 
 
 class Venta(models.Model):
-    id_venta = models.IntegerField(primary_key=True)
+    id_venta = models.AutoField(primary_key=True)
     fec_venta = models.DateField()
     id_bol = models.ForeignKey(Boleta, models.DO_NOTHING, db_column='id_bol')
     id_caja = models.ForeignKey(Caja, models.DO_NOTHING, db_column='id_caja')
