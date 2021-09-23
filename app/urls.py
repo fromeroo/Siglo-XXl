@@ -8,5 +8,5 @@ urlpatterns = [
     path('administrador/', administrador, name="administrador"),
     path('registro/', registro, name="registro"),
     path('modificar-usuario/<id>/', modificar_usuario, name='modificar_usuario'),
-    path('eliminar-usuario/<id>/', eliminar_usuario, name='eliminar_usuario'),
+    path('indexUser/eliminar-usuario/<id>/', eliminar_usuario, name='eliminar_usuario'),
 ]

@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
+
 LOGIN_REDIRECT_URL = '/indexUser'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 # Application definition
@@ -82,9 +84,9 @@ WSGI_APPLICATION = 'sigloxxi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'localhost:1521/orcl',
-        'USER': 'django',
-        'PASSWORD': 'django',
+        'NAME': '127.0.0.1:1521/siglo_xxl',
+        'USER': 'c##franco',
+        'PASSWORD': 'password',
         'TEST': {
             'USER': 'default_test',
             'TBLSPACE': 'default_test_tbls',

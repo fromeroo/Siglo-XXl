@@ -1,5 +1,33 @@
 {% extends 'app/base.html' %}
 
+  
+{% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#id_username').prop('disabled', true);
+      $('#id_first_name').prop('required', true);
+      $('#id_last_name').prop('required', true);
+    });
+  </script>
+
+  <script>
+    var minLength = 3;
+
+    $("#id_first_name").on("change", function(){
+      var value = $(this).val();
+      if (value.length < minLength)
+        Swal.fire({
+          position: 'top-end',
+          icon: 'warning',
+          title: 'El nombre debe tener mínimo 3 carácteres',
+          showConfirmButton: false,
+          timer: 1500
+        })
+    });
+  </script>
+{% endblock %}
+
 {% block contenido %}
 {% load static %}
     <!-- /.content-wrapper -->
@@ -30,4 +58,6 @@
       font-size: 14px;
     }
   </style>
+  
   {% endblock %}
+

@@ -27,11 +27,6 @@ def administrador(request):
         'Usuario': usuario
     }
     return render(request, 'app/administrador.html', data)
-    user = User.objects.all()
-    data = {
-        'User' : user
-    }
-    return render(request, 'app/administrador.html', data)
 
 def registro(request):
     data = {
@@ -42,7 +37,7 @@ def registro(request):
         formulario = CustomUserCreationForm(data=request.POST)
         if formulario.is_valid():
             formulario.save()
-            messages.success(request, "El usuario ha sido registrado exitosamente!")
+            messages.success(request, "¡El usuario ha sido registrado exitosamente!")
             return redirect(to="indexUser")
         data["form"] = formulario
 
@@ -59,6 +54,7 @@ def modificar_usuario(request, id):
         formulario = CustomUserCreationForm(data=request.POST, instance=usuario)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, "¡El usuario ha sido modificado exitosamente!")
             return redirect(to='indexUser')
         data['form'] = formulario
     return render(request, 'registration/editarUsuario.html', data)
@@ -66,4 +62,5 @@ def modificar_usuario(request, id):
 def eliminar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
     usuario.delete()
+    messages.success(request, "¡El usuario ha sido desactivado exitosamente!")
     return redirect(to="indexUser")
