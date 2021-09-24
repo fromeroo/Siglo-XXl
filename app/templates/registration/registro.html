@@ -1,5 +1,80 @@
 {% extends 'app/base.html' %}
 
+{% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#id_username').prop('required', true);
+      $('#id_first_name').prop('required', true);
+      $('#id_last_name').prop('required', true);
+
+      var minLength = 3;
+
+      $("#id_username").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < minLength) {
+          $("#id_username").val("");
+
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El nombre debe tener mínimo 3 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+
+      $("#id_first_name").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < minLength) {
+          $("#id_first_name").val("");
+
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El nombre debe tener mínimo 3 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+
+      $("#id_last_name").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < minLength) {
+          $("#id_last_name").val("");
+    
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El apellido debe tener mínimo 3 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+
+      $("#id_email").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < (minLength + 5)) {
+          $("#id_email").val("");
+    
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El email debe tener mínimo 8 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+    });
+
+    
+  </script>
+{% endblock %}
+
 {% block contenido %}
 {% load static %}
     <!-- /.content-wrapper -->
