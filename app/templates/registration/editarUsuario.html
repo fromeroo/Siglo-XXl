@@ -70,10 +70,10 @@
     <!-- /.content-wrapper -->
     
     {% load crispy_forms_tags %}
-    <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1" style="text-align:center;">
-      <h2>Editar usuario</h2>
-      <hr>
+    <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
       <form action="" method="post">
+        <h2>Editar usuario</h2>
+        <hr>
         {% csrf_token %}
         {{ form | crispy }}
         <div class="col">
