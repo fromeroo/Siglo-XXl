@@ -64,3 +64,88 @@ def eliminar_usuario(request, id):
     usuario.delete()
     messages.success(request, "¡El usuario ha sido desactivado exitosamente!")
     return redirect(to="indexUser")
+
+
+def indexProveedores(request):
+     
+     
+    return render(request, 'app/indexProveedores.html')
+
+
+def indexMenus(request):
+     
+     
+    return render(request, 'app/indexMenus.html')
+
+
+def indexProductos(request):
+     
+     
+    return render(request, 'app/indexProductos.html')
+
+
+def indexRecetas(request):
+     
+     
+    return render(request, 'app/indexRecetas.html')
+
+
+def indexMesas(request):
+     
+     
+    return render(request, 'app/indexMesas.html')
+
+
+def indexPedidosProveedor(request):
+     
+     
+    return render(request, 'app/indexPedidosProveedor.html')
+
+
+def indexGestionCajas(request):
+     
+     
+    return render(request, 'app/indexGestionCajas.html')
+
+# BODEGA
+
+def indexStockProductos(request):
+     
+     
+    return render(request, 'app/indexStockProductos.html')
+
+# FINANZAS
+
+def indexGestionCajaFinanzas(request):
+     
+     
+    return render(request, 'app/indexGestionCajaFinanzas.html')
+
+def indexGestionFacturas(request):
+     
+     
+    return render(request, 'app/indexGestionFacturas.html')
+
+def indexDetalleUtilidades(request):
+     
+     
+    return render(request, 'app/indexDetalleUtilidades.html')
+
+# CAJA
+
+def indexPagoEfectivo(request):
+     
+     
+    return render(request, 'app/indexPagoEfectivo.html')
+
+# COCINA
+
+def indexTablero(request):
+     
+     
+    return render(request, 'app/indexTablero.html')
+
+
+
+
+    
