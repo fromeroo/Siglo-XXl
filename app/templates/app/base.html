@@ -14,6 +14,7 @@
   <title>Siglo XXI - Dashboard</title>
 
   <!-- Custom fonts for this template-->
+  <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
   <!-- Page level plugin CSS-->
@@ -23,6 +24,9 @@
   <link href="{% static 'css/bootstrap-table.min.css' %}" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+
+  <link href="{% static 'css/nifty.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/themify-icons.min.css' %}" rel="stylesheet">
 
   <style>
     .dropdown-container {
@@ -40,7 +44,7 @@
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Siglo XXI</a>
+    <a class="mr-1" style="font-size: 20px;" href="index.html">Siglo XXI</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
@@ -82,8 +86,8 @@
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
-      <li class="nav-item dropdown no-arrow">
-        <a class="nav-link dropdown-toggle" href="{% url 'logout' %}" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item ">
+        <a class="nav-link " href="{% url 'logout' %}" id="userDropdown" role="button">
           <i class="fas fa-user-circle fa-fw"></i>
           {% if user.is_authenticated %}
             Cerrar sesión
@@ -100,7 +104,7 @@
     <ul class="sidebar navbar-nav">
      
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'dashboard' %}">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Dashboard</span></a>
       </li>
@@ -247,7 +251,7 @@
   <script src="{% static 'vendor/datatables/dataTables.bootstrap4.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin.min.js"></script>
+  <script src="{% static 'js/sb-admin.min.js' %}"></script>
 
   <!-- Demo scripts for this page-->
   <script src="js/demo/datatables-demo.js"></script>
@@ -293,23 +297,10 @@
       
     </script>
 
-    <!-- <script>
-      var table = $('#table-bs').DataTable({
-        paging: false,
-        "language": {
-            "zeroRecords": "Los registros no coinciden con la busqueda.",
-            "info": "Pagina Actual _PAGE_ de _PAGES_",
-            "infoEmpty": "Datos no encontrados",
-            "infoFiltered": "(Buscados entre _MAX_ registros)",
-            "search": "Buscar:",
-        }
-      });
+   
 
-      // #myInput is a <input type="text"> element
-      $('#buscador').on( 'keyup', function () {
-          table.search( this.value ).draw();
-      } );
-    </script> -->
+    
+    
 
     {% block js %}
     {% endblock %}

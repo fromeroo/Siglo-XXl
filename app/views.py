@@ -145,6 +145,13 @@ def indexTablero(request):
      
     return render(request, 'app/indexTablero.html')
 
+# DASHBOARD
+
+def dashboard(request):
+     
+     
+    return render(request, 'app/dashboard.html')
+
 
 
 
