@@ -13,7 +13,7 @@ def indexUser(request):
     data = {
         'Usuarios': usuarios
     }
-    return render(request, 'app/indexUser.html', data)
+    return render(request, 'app/usuarios/indexUser.html', data)
 
 def register(request):
     return render(request, 'registration/register.html')
@@ -41,7 +41,7 @@ def registro(request):
             return redirect(to="indexUser")
         data["form"] = formulario
 
-    return render(request, 'registration/registro.html', data)
+    return render(request, 'app/usuarios/registroUser.html', data)
 
 def modificar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
@@ -57,7 +57,7 @@ def modificar_usuario(request, id):
             messages.success(request, "¡El usuario ha sido modificado exitosamente!")
             return redirect(to='indexUser')
         data['form'] = formulario
-    return render(request, 'registration/editarUsuario.html', data)
+    return render(request, 'app/usuarios/editarUser.html', data)
 
 def eliminar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
