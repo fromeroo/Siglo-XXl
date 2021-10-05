@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import indexUser, index, indexProveedores, registroProveedores, indexMenus, indexProductos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, indexGestionFacturas,indexDetalleUtilidades, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, administrador, dashboard, \
+from .views import indexUser, index, indexProveedores, registroProveedores, modificarProveedores, indexMenus, indexProductos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, indexGestionFacturas,indexDetalleUtilidades, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, administrador, dashboard, \
     registro, eliminar_usuario 
 
 urlpatterns = [
@@ -14,6 +14,8 @@ urlpatterns = [
     path('administracion/proveedores/', indexProveedores, name="indexProveedores"),
 
     path('administracion/proveedores/registro/', registroProveedores, name="registroProveedores"),
+    
+    path('administracion/proveedores/modificar/<id>/', modificarProveedores, name="modificarProveedores"),
 
     path('administracion/menus/', indexMenus, name="indexMenus"),
 

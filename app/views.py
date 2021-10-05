@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario
+from .models import Usuario, Proveedor
 from .forms import CustomUserCreationForm 
 from .forms import CustomProveedorCreationForm 
 from django.contrib import messages
@@ -68,9 +68,12 @@ def eliminar_usuario(request, id):
 
 
 def indexProveedores(request):
+    proveedores = Proveedor.objects.all()
+    data = {
+        'Proveedores': proveedores
+    }
      
-     
-    return render(request, 'app/administrador/proveedores/indexProveedores.html')
+    return render(request, 'app/administrador/proveedores/indexProveedores.html', data)
 
 def registroProveedores(request):
     data = {
@@ -87,6 +90,21 @@ def registroProveedores(request):
 
     return render(request, 'app/administrador/proveedores/registroProveedores.html', data)
 
+def modificarProveedores(request, id):
+    proveedor = get_object_or_404(Proveedor, id_proveedor=id)
+
+    data = {
+        'form': CustomProveedorCreationForm(instance=proveedor)
+    }
+
+    if request.method == 'POST':
+        formulario = CustomProveedorCreationForm(data=request.POST, instance=proveedor)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡El proveedor ha sido modificado exitosamente!")
+            return redirect(to='indexProveedores')
+        data['form'] = formulario
+    return render(request, 'app/administrador/proveedores/editarProveedores.html', data)
 
 def indexMenus(request):
      

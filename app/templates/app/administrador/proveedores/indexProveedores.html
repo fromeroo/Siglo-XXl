@@ -28,20 +28,20 @@
       </tr>
     </thead>
     <tbody>
-    
+      {% for p in Proveedores %}
       <tr>
         <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>20.380.109-2</td>
-        <td>111.222.333</td>
-        <td>Carozzi</td>
-        <td>987654566</td>
-        <td>Carozzi@gmail.com</td>
+        <td>{{p.rut_prv}} - {{p.dv_prv}}</td>
+        <td>{{p.razon_social}}</td>
+        <td>{{p.nom_corto_prv}}</td>
+        <td>{{p.tlfn_prv}}</td>
+        <td>{{p.correo_prv}}</td>
         <td class="p-1">
-          <a href="#" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+          <a href="{% url 'modificarProveedores' p.id_proveedor %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
           <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
         </td>
       </tr>
-    
+      {% endfor %}
     </tbody>
   </table>
 </div>

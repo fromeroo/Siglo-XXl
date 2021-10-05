@@ -1,34 +1,24 @@
 {% extends 'app/base.html' %}
 
+  
 {% block js %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     $(document).ready(function() {
-      $('#id_username').prop('required', true);
+      let FIRST_NAME = $("#id_first_name").val();
+      let LAST_NAME = $("#id_last_name").val();
+      let EMAIL = $("#id_email").val();
+      
+      $('#id_username').prop('readonly', true);
       $('#id_first_name').prop('required', true);
       $('#id_last_name').prop('required', true);
 
       var minLength = 3;
 
-      $("#id_username").on("blur", function(){
-        var value = $(this).val();
-        if (value.length < minLength) {
-          $("#id_username").val("");
-
-          Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'El nombre debe tener mínimo 3 carácteres',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        }
-      });
-
       $("#id_first_name").on("blur", function(){
         var value = $(this).val();
         if (value.length < minLength) {
-          $("#id_first_name").val("");
+          $("#id_first_name").val(FIRST_NAME);
 
           Swal.fire({
             position: 'center',
@@ -43,7 +33,7 @@
       $("#id_last_name").on("blur", function(){
         var value = $(this).val();
         if (value.length < minLength) {
-          $("#id_last_name").val("");
+          $("#id_last_name").val(LAST_NAME);
     
           Swal.fire({
             position: 'center',
@@ -58,7 +48,7 @@
       $("#id_email").on("blur", function(){
         var value = $(this).val();
         if (value.length < (minLength + 5)) {
-          $("#id_email").val("");
+          $("#id_email").val(EMAIL);
     
           Swal.fire({
             position: 'center',
@@ -80,20 +70,18 @@
     <!-- /.content-wrapper -->
     
     {% load crispy_forms_tags %}
-    <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
-      <h2>Registro de Proveedores</h2>
-      <hr>
+    <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
       <form action="" method="post">
+        <h2>Editar usuario</h2>
+        <hr>
         {% csrf_token %}
         {{ form | crispy }}
         <div class="col">
           <div class="row">
             <button class="btn btn-primary d-flex mr-auto">
-              <a href="{% url 'indexProveedores' %}" 
-              style="color: white;"
-              >Ir al inicio</a>
+              <a href="{% url 'indexProveedores' %}" style="color: white;">Cancelar</a>
             </button>
-            <button class="btn btn-primary d-flex ml-auto" type="submit">Registrar</button>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Editar</button>
           </div>
         </div>
       </form>
@@ -105,4 +93,6 @@
       font-size: 14px;
     }
   </style>
+  
   {% endblock %}
+
