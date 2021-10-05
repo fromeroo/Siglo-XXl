@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Usuario
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm 
+from .forms import CustomProveedorCreationForm 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
@@ -13,7 +14,7 @@ def indexUser(request):
     data = {
         'Usuarios': usuarios
     }
-    return render(request, 'app/usuarios/indexUser.html', data)
+    return render(request, 'app/administrador/usuarios/indexUser.html', data)
 
 def register(request):
     return render(request, 'registration/register.html')
@@ -41,7 +42,7 @@ def registro(request):
             return redirect(to="indexUser")
         data["form"] = formulario
 
-    return render(request, 'app/usuarios/registroUser.html', data)
+    return render(request, 'app/administrador/usuarios/registroUser.html', data)
 
 def modificar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
@@ -57,7 +58,7 @@ def modificar_usuario(request, id):
             messages.success(request, "¡El usuario ha sido modificado exitosamente!")
             return redirect(to='indexUser')
         data['form'] = formulario
-    return render(request, 'app/usuarios/editarUser.html', data)
+    return render(request, 'app/administrador/usuarios/editarUser.html', data)
 
 def eliminar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
@@ -69,7 +70,22 @@ def eliminar_usuario(request, id):
 def indexProveedores(request):
      
      
-    return render(request, 'app/indexProveedores.html')
+    return render(request, 'app/administrador/proveedores/indexProveedores.html')
+
+def registroProveedores(request):
+    data = {
+        'form': CustomProveedorCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomProveedorCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡El proveedor ha sido registrado exitosamente!")
+            return redirect(to="indexProveedores")
+        data["form"] = formulario
+
+    return render(request, 'app/administrador/proveedores/registroProveedores.html', data)
 
 
 def indexMenus(request):

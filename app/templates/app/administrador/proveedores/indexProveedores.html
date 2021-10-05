@@ -1,0 +1,57 @@
+{% extends 'app/base.html' %}
+
+
+{% block contenido %}
+{% load static %}
+
+{{message}}
+<div id="proveedores-table" class="col-lg-10 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
+  <h2>Proveedores</h2>
+
+  <div id="toolbar">
+    <button class="btn btn-primary d-flex pr-auto mb-2"><a href="{% url 'registroProveedores' %}" style="color: white; text-decoration: none;">Crear nuevo proveedor</a></button>
+  </div>
+  <table id="table" class="table table-striped table-bordered" style="width: 100%;"
+  data-toggle="table"
+  data-toolbar="#toolbar"
+  data-search="true">
+  
+    <thead class="thead-dark">
+      <tr>
+        <!-- <th scope="col">#</th> -->
+        <th scope="col">Rut</th>
+        <th scope="col">Razón Social </th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Telefono</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Acciónes</th>
+      </tr>
+    </thead>
+    <tbody>
+    
+      <tr>
+        <!-- <th scope="row">{{ u.id }}</th> -->
+        <td>20.380.109-2</td>
+        <td>111.222.333</td>
+        <td>Carozzi</td>
+        <td>987654566</td>
+        <td>Carozzi@gmail.com</td>
+        <td class="p-1">
+          <a href="#" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+          <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
+        </td>
+      </tr>
+    
+    </tbody>
+  </table>
+</div>
+</div>
+<!-- /#wrapper -->
+
+<style>
+#proveedores-table{
+  font-size: 14px;
+}
+</style>
+
+{% endblock %}

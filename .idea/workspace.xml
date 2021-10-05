@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8b718abb-4e30-440c-bffd-47a75dd93812" name="Changes" comment="" />
+    <list default="true" id="8b718abb-4e30-440c-bffd-47a75dd93812" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/app/templates/app/indexProveedores.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/app/usuarios/editarUser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/app/usuarios/indexUser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/app/usuarios/registroUser.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
