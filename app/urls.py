@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import indexUser, index, indexProveedores, registroProveedores, modificarProveedores, indexMenus, indexProductos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, indexGestionFacturas,indexDetalleUtilidades, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, administrador, dashboard, \
+from .views import indexUser, index, indexProveedores, registroProveedores, modificarProveedores, indexMenus, registroMenus, modificarMenus, indexProductos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, registroGestionCajas, modificarGestionCajas , indexGestionFacturas,indexDetalleUtilidades, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, administrador, dashboard, \
     registro, eliminar_usuario 
 
 urlpatterns = [
@@ -18,6 +18,10 @@ urlpatterns = [
     path('administracion/proveedores/modificar/<id>/', modificarProveedores, name="modificarProveedores"),
 
     path('administracion/menus/', indexMenus, name="indexMenus"),
+    
+    path('administracion/menus/registro/', registroMenus, name="registroMenus"),
+
+    path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
 
     path('administracion/productos/', indexProductos, name="indexProductos"),
 
@@ -28,6 +32,10 @@ urlpatterns = [
     path('administracion/pedidos-proveedor/', indexPedidosProveedor, name="indexPedidosProveedor"),
 
     path('administracion/gestion-cajas/', indexGestionCajas, name="indexGestionCajas"),
+    
+    path('administracion/gestion-cajas/registro/', registroGestionCajas, name="registroGestionCajas"),
+    
+    path('administracion/gestion-cajas/modificar/<id>/', modificarGestionCajas, name="modificarGestionCajas"),
 
     path('bodega/stock-productos/', indexStockProductos, name="indexStockProductos"),
 

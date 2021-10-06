@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario, Proveedor
+from .models import Usuario, Proveedor, Menu, Caja
 from .forms import CustomUserCreationForm 
 from .forms import CustomProveedorCreationForm 
+from .forms import CustomMenusCreationForm 
+from .forms import CustomCajasCreationForm 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
@@ -107,10 +109,43 @@ def modificarProveedores(request, id):
     return render(request, 'app/administrador/proveedores/editarProveedores.html', data)
 
 def indexMenus(request):
+    menus = Menu.objects.all()
+    data = {
+        'Menus': menus
+    }
      
-     
-    return render(request, 'app/indexMenus.html')
+    return render(request, 'app/administrador/menus/indexMenus.html', data)
 
+def registroMenus(request):
+    data = {
+        'form': CustomMenusCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomMenusCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡El menu ha sido registrado exitosamente!")
+            return redirect(to="indexMenus")
+        data["form"] = formulario
+
+    return render(request, 'app/administrador/menus/registroMenus.html', data)
+
+def modificarMenus(request, id):
+    menu = get_object_or_404(Menu, id_menu=id)
+
+    data = {
+        'form': CustomMenusCreationForm(instance=menu)
+    }
+
+    if request.method == 'POST':
+        formulario = CustomMenusCreationForm(data=request.POST, instance=menu)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡El menu ha sido modificado exitosamente!")
+            return redirect(to='indexMenus')
+        data['form'] = formulario
+    return render(request, 'app/administrador/menus/editarMenus.html', data)
 
 def indexProductos(request):
      
@@ -137,9 +172,43 @@ def indexPedidosProveedor(request):
 
 
 def indexGestionCajas(request):
+    cajas = Caja.objects.all()
+    data = {
+        'Cajas': cajas
+    }  
      
-     
-    return render(request, 'app/indexGestionCajas.html')
+    return render(request, 'app/administrador/gestion-cajas/indexCajas.html', data)
+
+def registroGestionCajas(request):
+    data = {
+        'form': CustomCajasCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomCajasCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡La Caja ha sido registrada exitosamente!")
+            return redirect(to="indexGestionCajas")
+        data["form"] = formulario
+
+    return render(request, 'app/administrador/gestion-cajas/registroCajas.html', data)
+
+def modificarGestionCajas(request, id):
+    caja = get_object_or_404(Menu, id_caja=id)
+
+    data = {
+        'form': CustomCajasCreationForm(instance=caja)
+    }
+
+    if request.method == 'POST':
+        formulario = CustomCajasCreationForm(data=request.POST, instance=caja)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "La Caja ha sido modificada exitosamente!")
+            return redirect(to='indexGestionCajas')
+        data['form'] = formulario
+    return render(request, 'app/administrador/gestion-cajas/editarMenus.html', data)
 
 # BODEGA
 
