@@ -1,6 +1,9 @@
 from django.urls import path
-from .views import indexUser, index, indexProveedores, registroProveedores, modificarProveedores, indexMenus, registroMenus, modificarMenus, indexProductos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, registroGestionCajas, modificarGestionCajas , indexGestionFacturas,indexDetalleUtilidades, indexPagoEfectivo ,indexMesas, registroMesas, modificarMesas, indexTablero, modificar_usuario, administrador, dashboard, \
-    registro, eliminar_usuario 
+from .views import indexUser, index, indexProveedores, registroProveedores, modificarProveedores, indexMenus, \
+    indexProductos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
+    indexGestionFacturas,indexDetalleUtilidades, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, \
+    administrador, dashboard, registro, eliminar_usuario, registroProductos, modificarProductos, registroRecetas, \
+    modificarRecetas, registroMenus, modificarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas
 
 urlpatterns = [
     path('', index, name="index"),
@@ -12,9 +15,7 @@ urlpatterns = [
     path('administracion/usuario/modificar/<id>/', modificar_usuario, name='modificar_usuario'),
 
     path('administracion/proveedores/', indexProveedores, name="indexProveedores"),
-
     path('administracion/proveedores/registro/', registroProveedores, name="registroProveedores"),
-    
     path('administracion/proveedores/modificar/<id>/', modificarProveedores, name="modificarProveedores"),
 
     path('administracion/menus/', indexMenus, name="indexMenus"),
@@ -24,6 +25,8 @@ urlpatterns = [
     path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
 
     path('administracion/productos/', indexProductos, name="indexProductos"),
+    path('administracion/productos/registro/', registroProductos, name="registroProductos"),
+    path('administracion/productos/modificar/<id>/', modificarProductos, name="modificarProductos"),
 
     path('administracion/recetas/', indexRecetas, name="indexRecetas"),
 
@@ -32,8 +35,14 @@ urlpatterns = [
     path('administracion/mesas/registro/', registroMesas, name="registroMesas"),
     
     path('administracion/mesas/modificar/<id>/', modificarMesas, name="modificarMesas"),
+    path('administracion/recetas/registro/', registroRecetas, name="registroRecetas"),
+    path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
 
     path('administracion/pedidos-proveedor/', indexPedidosProveedor, name="indexPedidosProveedor"),
+
+    path('administracion/menus/', indexMenus, name="indexMenus"),
+
+    path('administracion/mesas/', indexMesas, name="indexMesas"),
 
     path('administracion/gestion-cajas/', indexGestionCajas, name="indexGestionCajas"),
     

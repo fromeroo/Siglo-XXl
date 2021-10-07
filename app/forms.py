@@ -2,12 +2,13 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from .models import Proveedor, Menu, Caja, Mesa
+from .models import Proveedor, Menu, Caja, Mesa, Producto, Receta
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+
 class CustomProveedorCreationForm(ModelForm):
     class Meta:
         model = Proveedor
@@ -23,4 +24,13 @@ class CustomCajasCreationForm(ModelForm):
 class CustomMesasCreationForm(ModelForm):
     class Meta:
         model = Mesa
+
+class CustomProductoCreationForm(ModelForm):
+    class Meta:
+        model = Producto
+        fields = "__all__"
+
+class CustomRecetaCreationForm(ModelForm):
+    class Meta:
+        model = Receta
         fields = "__all__"

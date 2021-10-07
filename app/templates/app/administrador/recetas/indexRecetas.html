@@ -1,0 +1,57 @@
+{% extends 'app/base.html' %}
+
+
+{% block contenido %}
+{% load static %}
+
+{{message}}
+<div id="recetas-table" class="col-lg-10 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
+  <h2>Recetas</h2>
+
+  <div id="toolbar">
+    <button class="btn btn-primary d-flex pr-auto mb-2"><a href="{% url 'registroRecetas' %}" style="color: white; text-decoration: none;">Crear nueva receta</a></button>
+  </div>
+  <table id="table" class="table table-striped table-bordered" style="width: 100%;"
+  data-toggle="table"
+  data-toolbar="#toolbar"
+  data-search="true">
+  
+    <thead class="thead-dark">
+      <tr>
+        <!-- <th scope="col">#</th> -->
+        <th scope="col">Nombre</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Tiempo preparación</th>
+        <th scope="col">Temperatura ideal</th>
+        <th scope="col">Instrucciones</th>
+        <th scope="col">Acciónes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in Recetas %}
+      <tr>
+        <!-- <th scope="row">{{ u.id }}</th> -->
+        <td>{{r.nom_receta}}</td>
+        <td>{{r.id_est_receta}}</td>
+        <td>{{r.tiempo_prep}}</td>
+        <td>{{r.temp_ideal}}</td>
+        <td>{{r.instrucciones}}</td>
+        <td class="p-1">
+          <a href="{% url 'modificarRecetas' r.id_receta %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+          <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+<!-- /#wrapper -->
+
+<style>
+#recetas-table{
+  font-size: 14px;
+}
+</style>
+
+{% endblock %}

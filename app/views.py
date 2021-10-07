@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario, Proveedor, Menu, Caja, Mesa
-from .forms import CustomUserCreationForm 
-from .forms import CustomProveedorCreationForm 
-from .forms import CustomMenusCreationForm 
-from .forms import CustomCajasCreationForm 
-from .forms import CustomMesasCreationForm 
+from .models import Usuario, Proveedor, Producto, Receta, Menu, Caja, Mesa
+from .forms import CustomUserCreationForm, CustomProveedorCreationForm, CustomProductoCreationForm, CustomRecetaCreationForm, \
+    CustomMenusCreationForm, CustomCajasCreationForm, CustomMesasCreationForm
+    
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
@@ -147,17 +145,89 @@ def modificarMenus(request, id):
             return redirect(to='indexMenus')
         data['form'] = formulario
     return render(request, 'app/administrador/menus/editarMenus.html', data)
-
+    
 def indexProductos(request):
+    productos = Producto.objects.all()
+    data = {
+        'Productos': productos
+    }
      
-     
-    return render(request, 'app/indexProductos.html')
+    return render(request, 'app/administrador/productos/indexProductos.html', data)
 
+def registroProductos(request):
+    data = {
+        'form': CustomProductoCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomProductoCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡El producto ha sido registrado exitosamente!")
+            return redirect(to="indexProductos")
+        data["form"] = formulario
+
+    return render(request, 'app/administrador/productos/registroProductos.html', data)
+
+def modificarProductos(request, id):
+    producto = get_object_or_404(Producto, id_producto=id)
+
+    data = {
+        'form': CustomProductoCreationForm(instance=producto)
+    }
+
+    if request.method == 'POST':
+        formulario = CustomProductoCreationForm(data=request.POST, instance=producto)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡El producto ha sido modificado exitosamente!")
+            return redirect(to='indexProductos')
+        data['form'] = formulario
+    return render(request, 'app/administrador/productos/editarProductos.html', data)
 
 def indexRecetas(request):
+    recetas = Receta.objects.all()
+    data = {
+        'Recetas': recetas
+    }
      
+    return render(request, 'app/administrador/recetas/indexRecetas.html', data)
+
+def registroRecetas(request):
+    data = {
+        'form': CustomRecetaCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomRecetaCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡La receta ha sido registrado exitosamente!")
+            return redirect(to="indexRecetas")
+        data["form"] = formulario
+
+    return render(request, 'app/administrador/recetas/registroRecetas.html', data)
+
+def modificarRecetas(request, id):
+    receta = get_object_or_404(Receta, id_receta=id)
+
+    data = {
+        'form': CustomRecetaCreationForm(instance=receta)
+    }
+
+    if request.method == 'POST':
+        formulario = CustomRecetaCreationForm(data=request.POST, instance=receta)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡La receta ha sido modificado exitosamente!")
+            return redirect(to='indexRecetas')
+        data['form'] = formulario
+    return render(request, 'app/administrador/recetas/editarRecetas.html', data)
+
+
+def indexPedidosProveedor(request):
      
-    return render(request, 'app/indexRecetas.html')
+    return render(request, 'app/administrador/pedidos-proveedor/indexPedidosProveedor.html')
 
 
 def indexMesas(request):
@@ -183,6 +253,11 @@ def registroMesas(request):
 
     return render(request, 'app/administrador/mesas/registroMesas.html', data)
 
+def indexMenus(request):
+     
+     
+    return render(request, 'app/indexMenus.html')
+
 def modificarMesas(request, id):
     mesas = get_object_or_404(Mesa, id_mesa=id)
 
@@ -199,10 +274,11 @@ def modificarMesas(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/mesas/editarMesas.html', data)
 
-def indexPedidosProveedor(request):
+def indexMesas(request):
      
      
-    return render(request, 'app/indexPedidosProveedor.html')
+    return render(request, 'app/indexMesas.html')
+
 
 
 def indexGestionCajas(request):
