@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario, Proveedor, Menu, Caja
+from .models import Usuario, Proveedor, Menu, Caja, Mesa
 from .forms import CustomUserCreationForm 
 from .forms import CustomProveedorCreationForm 
 from .forms import CustomMenusCreationForm 
 from .forms import CustomCajasCreationForm 
+from .forms import CustomMesasCreationForm 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
@@ -160,10 +161,43 @@ def indexRecetas(request):
 
 
 def indexMesas(request):
+    mesas = Mesa.objects.all()
+    data = {
+        'Mesas': mesas
+    }
      
-     
-    return render(request, 'app/indexMesas.html')
+    return render(request, 'app/administrador/mesas/indexMesas.html', data)
 
+def registroMesas(request):
+    data = {
+        'form': CustomMesasCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomMesasCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡La Mesa ha sido registrada exitosamente!")
+            return redirect(to="indexMesas")
+        data["form"] = formulario
+
+    return render(request, 'app/administrador/mesas/registroMesas.html', data)
+
+def modificarMesas(request, id):
+    mesas = get_object_or_404(Mesa, id_mesa=id)
+
+    data = {
+        'form': CustomMesasCreationForm(instance=mesas)
+    }
+
+    if request.method == 'POST':
+        formulario = CustomMesasCreationForm(data=request.POST, instance=mesas)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡La mesa ha sido modificada exitosamente!")
+            return redirect(to='indexMesas')
+        data['form'] = formulario
+    return render(request, 'app/administrador/mesas/editarMesas.html', data)
 
 def indexPedidosProveedor(request):
      
@@ -195,7 +229,7 @@ def registroGestionCajas(request):
     return render(request, 'app/administrador/gestion-cajas/registroCajas.html', data)
 
 def modificarGestionCajas(request, id):
-    caja = get_object_or_404(Menu, id_caja=id)
+    caja = get_object_or_404(Caja, id_caja=id)
 
     data = {
         'form': CustomCajasCreationForm(instance=caja)
