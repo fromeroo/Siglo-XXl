@@ -253,11 +253,6 @@ def registroMesas(request):
 
     return render(request, 'app/administrador/mesas/registroMesas.html', data)
 
-def indexMenus(request):
-     
-     
-    return render(request, 'app/indexMenus.html')
-
 def modificarMesas(request, id):
     mesas = get_object_or_404(Mesa, id_mesa=id)
 
@@ -273,13 +268,6 @@ def modificarMesas(request, id):
             return redirect(to='indexMesas')
         data['form'] = formulario
     return render(request, 'app/administrador/mesas/editarMesas.html', data)
-
-def indexMesas(request):
-     
-     
-    return render(request, 'app/indexMesas.html')
-
-
 
 def indexGestionCajas(request):
     cajas = Caja.objects.all()

@@ -24,6 +24,7 @@ class CustomCajasCreationForm(ModelForm):
 class CustomMesasCreationForm(ModelForm):
     class Meta:
         model = Mesa
+        fields = "__all__"
 
 class CustomProductoCreationForm(ModelForm):
     class Meta:
