@@ -306,7 +306,7 @@ def modificarGestionCajas(request, id):
             messages.success(request, "La Caja ha sido modificada exitosamente!")
             return redirect(to='indexGestionCajas')
         data['form'] = formulario
-    return render(request, 'app/administrador/gestion-cajas/editarMenus.html', data)
+    return render(request, 'app/administrador/gestion-cajas/editarCajas.html', data)
 
 # BODEGA
 
