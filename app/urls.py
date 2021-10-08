@@ -3,7 +3,8 @@ from .views import indexUser, index, indexProveedores, registroProveedores, modi
     indexProductos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
     indexGestionFacturas,indexDetalleUtilidades, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, \
     administrador, dashboard, registro, eliminar_usuario, registroProductos, modificarProductos, registroRecetas, \
-    modificarRecetas, registroMenus, modificarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas
+    modificarRecetas, registroMenus, modificarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
+    registroStockProductos, modificarStockProductos
 
 urlpatterns = [
     path('', index, name="index"),
@@ -51,6 +52,9 @@ urlpatterns = [
     path('administracion/gestion-cajas/modificar/<id>/', modificarGestionCajas, name="modificarGestionCajas"),
 
     path('bodega/stock-productos/', indexStockProductos, name="indexStockProductos"),
+    path('bodega/stock-productos/registro/', registroStockProductos, name="registroStockProductos"),
+    path('bodega/stock-productos/modificar/<id>/', modificarStockProductos, name="modificarStockProductos"),
+
 
     path('finanzas/gestion-caja/', indexGestionCajaFinanzas, name="indexGestionCajaFinanzas"),
 
