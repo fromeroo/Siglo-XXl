@@ -8,6 +8,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 
+from django.shortcuts import render
+from django.db import connection
+
 # Create your views here.
 
 @login_required
@@ -70,10 +73,25 @@ def eliminar_usuario(request, id):
 
 
 def indexProveedores(request):
-    proveedores = Proveedor.objects.all()
+    # proveedores = Proveedor.objects.all()
+    # data = {
+    #     'Proveedores': proveedores
+    # }
+
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_PROVEEDOR.listarProveedor", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
     data = {
-        'Proveedores': proveedores
+        'Proveedores': lista
     }
+    print(data)
      
     return render(request, 'app/administrador/proveedores/indexProveedores.html', data)
 
