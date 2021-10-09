@@ -24,6 +24,7 @@
         <th scope="col">Nombre</th>
         <th scope="col">Telefono</th>
         <th scope="col">Correo</th>
+        <th scope="col">Giro</th>
         <th scope="col">Acciónes</th>
       </tr>
     </thead>
@@ -31,13 +32,19 @@
       {% for p in Proveedores %}
       <tr>
         <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>{{p.rut_prv}} - {{p.dv_prv}}</td>
-        <td>{{p.razon_social}}</td>
-        <td>{{p.nom_corto_prv}}</td>
-        <td>{{p.tlfn_prv}}</td>
-        <td>{{p.correo_prv}}</td>
+        <!-- <td>{{p.rut_prv}} - {{p.dv_prv}}</td> -->
+        <!-- <td>{{p.razon_social}}</td> -->
+        <!-- <td>{{p.nom_corto_prv}}</td> -->
+        <!-- <td>{{p.tlfn_prv}}</td> -->
+        <!-- <td>{{p.correo_prv}}</td> -->
+        <td>{{p.1}}</td>
+        <td>{{p.2}}</td>
+        <td>{{p.0}}</td>
+        <td>{{p.3}}</td>
+        <td>{{p.4}}</td>
+        <td>{{p.5}}</td>
         <td class="p-1">
-          <a href="{% url 'modificarProveedores' p.id_proveedor %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+          
           <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
         </td>
       </tr>
