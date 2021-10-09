@@ -411,9 +411,12 @@ def indexDetalleUtilidades(request):
 # CAJA
 
 def indexPagoEfectivo(request):
-     
-     
-    return render(request, 'app/indexPagoEfectivo.html')
+    mesa = Mesa.objects.all()
+    data = {
+        'Mesas': mesa
+    }
+
+    return render(request, 'app/caja/pago-efectivo/indexPagoEfectivo.html', data)
 
 # COCINA
 
