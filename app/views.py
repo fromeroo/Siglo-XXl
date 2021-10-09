@@ -309,6 +309,14 @@ def modificarGestionCajas(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/gestion-cajas/editarCajas.html', data)
 
+def indexGestionCajaFinanzas(request):
+    cajas = Caja.objects.all()
+    data = {
+        'Cajas': cajas
+    }
+     
+    return render(request, 'app/finanzas/cajas/indexGestionCajaFinanzas.html', data)
+
 # BODEGA
 
 def indexStockProductos(request):
@@ -352,10 +360,6 @@ def modificarStockProductos(request, id):
 
 
 # FINANZAS
-
-def indexGestionCajaFinanzas(request):
-    
-    return render(request, 'app/indexGestionCajaFinanzas.html', data)
 
 def indexGestionFacturas(request):
     factura = Factura.objects.all()
