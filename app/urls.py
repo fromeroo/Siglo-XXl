@@ -4,7 +4,7 @@ from .views import indexUser, index, indexProveedores, registroProveedores, modi
     indexGestionFacturas,indexDetalleUtilidades, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, \
     administrador, dashboard, registro, eliminar_usuario, registroProductos, modificarProductos, registroRecetas, \
     modificarRecetas, registroMenus, modificarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
-    registroStockProductos, modificarStockProductos
+    registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas
 
 urlpatterns = [
     path('', index, name="index"),
@@ -59,6 +59,8 @@ urlpatterns = [
     path('finanzas/gestion-caja/', indexGestionCajaFinanzas, name="indexGestionCajaFinanzas"),
 
     path('finanzas/gestion-facturas/', indexGestionFacturas, name="indexGestionFacturas"),
+    path('finanzas/gestion-facturas/registro/', registroGestionFacturas, name="registroGestionFacturas"),
+    path('finanzas/gestion-facturas/modificar/<id>/', modificarGestionFacturas, name="modificarGestionFacturas"),
 
     path('finanzas/detalle-utilidades/', indexDetalleUtilidades, name="indexDetalleUtilidades"),
 

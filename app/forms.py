@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from .models import Proveedor, Menu, Caja, Mesa, Producto, Receta, InventarioInsumo
+from .models import Proveedor, Menu, Caja, Mesa, Producto, Receta, InventarioInsumo, Factura
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -39,4 +39,8 @@ class CustomRecetaCreationForm(ModelForm):
 class CustomInventarioInsumoCreationForm(ModelForm):
     class Meta:
         model = InventarioInsumo
+        fields = "__all__"
+class CustomFacturaCreationForm(ModelForm):
+    class Meta:
+        model = Factura
         fields = "__all__"

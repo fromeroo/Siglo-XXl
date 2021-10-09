@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario, Proveedor, Producto, Receta, Menu, Caja, Mesa, InventarioInsumo
+from .models import Usuario, Proveedor, Producto, Receta, Menu, Caja, Mesa, InventarioInsumo, Factura
 from .forms import CustomUserCreationForm, CustomProveedorCreationForm, CustomProductoCreationForm, CustomRecetaCreationForm, \
-    CustomMenusCreationForm, CustomCajasCreationForm, CustomMesasCreationForm, CustomInventarioInsumoCreationForm
+    CustomMenusCreationForm, CustomCajasCreationForm, CustomMesasCreationForm, CustomInventarioInsumoCreationForm, \
+    CustomFacturaCreationForm
     
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
@@ -353,14 +354,50 @@ def modificarStockProductos(request, id):
 # FINANZAS
 
 def indexGestionCajaFinanzas(request):
-     
-     
-    return render(request, 'app/indexGestionCajaFinanzas.html')
+    
+    return render(request, 'app/indexGestionCajaFinanzas.html', data)
 
 def indexGestionFacturas(request):
-     
-     
-    return render(request, 'app/indexGestionFacturas.html')
+    factura = Factura.objects.all()
+    data = {
+        'Facturas': factura
+    }
+
+    return render(request, 'app/finanzas/facturas/indexFacturas.html', data)
+
+
+def registroGestionFacturas(request):
+    data = {
+        'form': CustomFacturaCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomFacturaCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "¡La factura ha sido registrado exitosamente!")
+            return redirect(to="indexGestionFacturas")
+        data["form"] = formulario
+
+    return render(request, 'app/finanzas/facturas/registroFacturas.html', data)
+
+def modificarGestionFacturas(request, id):
+    factura = get_object_or_404(Factura, id_factura=id)
+
+    data = {
+        'form': CustomFacturaCreationForm(instance=factura)
+    }
+
+    if request.method == 'POST':
+        formulario = CustomFacturaCreationForm(data=request.POST, instance=factura)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "La factura ha sido modificado exitosamente!")
+            return redirect(to='indexGestionFacturas')
+        data['form'] = formulario
+    return render(request, 'app/finanzas/facturas/editarFacturas.html', data)
+
+
 
 def indexDetalleUtilidades(request):
      
