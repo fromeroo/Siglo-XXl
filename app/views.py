@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario, Proveedor, Producto, Receta, Menu, Caja, Mesa, InventarioInsumo, Factura
+from .models import Usuario, Proveedor, Producto, Receta, Menu, Caja, Mesa, InventarioInsumo, Factura, OrdenComida
 from .forms import CustomUserCreationForm, CustomProveedorCreationForm, CustomProductoCreationForm, CustomRecetaCreationForm, \
     CustomMenusCreationForm, CustomCajasCreationForm, CustomMesasCreationForm, CustomInventarioInsumoCreationForm, \
     CustomFacturaCreationForm
@@ -421,9 +421,12 @@ def indexPagoEfectivo(request):
 # COCINA
 
 def indexTablero(request):
+    ordenComida = OrdenComida.objects.all()
+    data = {
+        'OrdenComida': ordenComida
+    }
      
-     
-    return render(request, 'app/indexTablero.html')
+    return render(request, 'app/cocina/tablero/indexTablero.html', data)
 
 # DASHBOARD
 

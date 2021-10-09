@@ -1,0 +1,70 @@
+{% extends 'app/base.html' %}
+
+
+{% block contenido %}
+{% load static %}
+
+<!-- {{message}} -->
+<div id="proveedores-table" class="col-lg-10 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
+  <h2>Tablero ordenes</h2>
+
+  
+  <table id="table" class="table table-striped table-bordered" style="width: 100%;"
+  data-toggle="table"
+  data-toolbar="#toolbar"
+  data-search="true">
+  
+    <thead class="thead-dark">
+      <tr>
+        <!-- <th scope="col">#</th> -->
+        <th scope="col">Comanda</th>
+        <th scope="col">Mesa</th>
+        <th scope="col">Hora tope</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <!-- <th scope="row">{{ u.id }}</th> -->
+        <td>Rabioles</td>
+        <td>Mesa 1</td>
+        <td>14:35</td>
+        <td>
+            <select name="" id="">
+                <option selected value="En preparación">En preparación</option>
+                <option value="En preparación">Entregar</option>
+            </select>
+        </td>
+        <td class="p-1">
+          <a href="" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Detalle</i></a>
+        </td>
+      </tr>
+      <tr>
+        <!-- <th scope="row">{{ u.id }}</th> -->
+        <td>Sopa</td>
+        <td>Mesa 2</td>
+        <td>14:55</td>
+        <td>
+            <select name="" id="">
+                <option value="En preparación">En preparación</option>
+                <option selected value="En preparación">Entregar</option>
+            </select>
+        </td>
+        <td class="p-1">
+          <a href="" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Detalle</i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+<!-- /#wrapper -->
+
+<style>
+#proveedores-table{
+  font-size: 14px;
+}
+</style>
+
+{% endblock %}
