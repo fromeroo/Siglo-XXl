@@ -12,9 +12,9 @@
     <button class="btn btn-primary d-flex pr-auto mb-2"><a href="{% url 'registroProveedores' %}" style="color: white; text-decoration: none;">Crear Proveedor</a></button>
   </div>
   <table id="table" class="table table-striped table-bordered" style="width: 100%;"
-  data-toggle="table"
-  data-toolbar="#toolbar"
-  data-search="true">
+    data-toggle="table"
+    data-toolbar="#toolbar"
+    data-search="true">
   
     <thead class="thead-dark">
       <tr>
@@ -29,19 +29,19 @@
       </tr>
     </thead>
     <tbody>
-      
+      {% for p in Proveedores %}
       <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>{{p.1}}</td>
+        <td>{{p.2}}</td>
+        <td>{{p.0}}</td>
+        <td>{{p.3}}</td>
+        <td>{{p.4}}</td>
+        <td>{{p.5}}</td>
         <td class="p-1">
-          
           <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
         </td>
       </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>
@@ -66,12 +66,9 @@
           for (let i = 0; i < data.data.Proveedores.length; i++) {
             console.log(data.data.Proveedores[i]);
             let row = $('<tr><td>'+data.data.Proveedores[i][1]+'</td><td>'+data.data.Proveedores[i][2]+'</td><td>'+data.data.Proveedores[i][0]+'</td><td>'+data.data.Proveedores[i][3]+'</td><td>'+data.data.Proveedores[i][4]+'</td><td>'+data.data.Proveedores[i][5]+'</td><td class="p-1"><a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a></td></tr>');
-            $('#table').append(row);
-
-
+            // $('#table').append(row);
           }
         }
-
       });
     });
 

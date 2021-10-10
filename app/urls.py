@@ -72,5 +72,10 @@ urlpatterns = [
 
     path('dashboard/', dashboard, name="dashboard"),
 
-    path('api/listar-proveedores/', api_views.ListarProveedoresAPIView.as_view() , name="listarProlistarProveedores"),
+    # APIS URL
+    path('api/listar-proveedores/', api_views.ListarProveedoresAPIView.as_view() , name="listarProveedores"),
+    
+    path('api/listar-giros/', api_views.ListarGirosAPIView.as_view() , name="listarGiros"),
+
+    path('api/crear-proveedor/', api_views.CrearPoveedorAPIView.as_view() , name="crearProveedor"),
 ]

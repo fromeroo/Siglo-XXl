@@ -10,8 +10,6 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import render
 from django.db import connection
-from rest_framework import generics
-from rest_framework.response import Response
 
 # Create your views here.
 
@@ -75,11 +73,6 @@ def eliminar_usuario(request, id):
 
 
 def indexProveedores(request):
-    # proveedores = Proveedor.objects.all()
-    # data = {
-    #     'Proveedores': proveedores
-    # }
-
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()

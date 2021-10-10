@@ -1,6 +1,43 @@
 {% extends 'app/base.html' %}
 
-{% block js %}
+{% block contenido %}
+{% load static %}
+    <!-- /.content-wrapper -->
+    
+    {% load crispy_forms_tags %}
+    <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
+      <h2>Registro de Proveedores</h2>
+      <hr>
+      <form action="" method="post">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <!-- INPUT COMBOX CON LA API DE LISTAR -->
+        <select name="giro" id="select-giro">
+         
+
+        </select>
+        <div class="col">
+          <div class="row">
+            <button class="btn btn-primary d-flex mr-auto">
+              <a href="{% url 'indexProveedores' %}" 
+              style="color: white;"
+              >Ir al inicio</a>
+            </button>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  <!-- /#wrapper -->
+
+  <style>
+    #user-table{
+      font-size: 14px;
+    }
+  </style>
+  {% endblock %}
+
+  {% block js %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     $(document).ready(function() {
@@ -70,39 +107,21 @@
         }
       });
     });
+  </script>
 
-    
+  <script>
+    $(document).ready(function () {
+      $.ajax({
+        url:'http://127.0.0.1:8000/api/listar-giros/',
+        dataType:'JSON',
+        success:function(data){
+          for (let i = 0; i < data.data.Giros.length; i++) {
+            let option = $(`<option value="${data.data.Giros[i][0]}">${data.data.Giros[i][1]}</option>`);
+            $('#select-giro').append(option); 
+          }
+        }
+      });
+    });
+
   </script>
 {% endblock %}
-
-{% block contenido %}
-{% load static %}
-    <!-- /.content-wrapper -->
-    
-    {% load crispy_forms_tags %}
-    <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
-      <h2>Registro de Proveedores</h2>
-      <hr>
-      <form action="" method="post">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <div class="col">
-          <div class="row">
-            <button class="btn btn-primary d-flex mr-auto">
-              <a href="{% url 'indexProveedores' %}" 
-              style="color: white;"
-              >Ir al inicio</a>
-            </button>
-            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  <!-- /#wrapper -->
-
-  <style>
-    #user-table{
-      font-size: 14px;
-    }
-  </style>
-  {% endblock %}
