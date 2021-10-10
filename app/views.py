@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import render
 from django.db import connection
+from rest_framework import generics
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -91,7 +93,6 @@ def indexProveedores(request):
     data = {
         'Proveedores': lista
     }
-    print(data)
      
     return render(request, 'app/administrador/proveedores/indexProveedores.html', data)
 

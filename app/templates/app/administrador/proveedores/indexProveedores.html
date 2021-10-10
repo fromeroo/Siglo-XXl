@@ -29,26 +29,19 @@
       </tr>
     </thead>
     <tbody>
-      {% for p in Proveedores %}
+      
       <tr>
-        <!-- <th scope="row">{{ u.id }}</th> -->
-        <!-- <td>{{p.rut_prv}} - {{p.dv_prv}}</td> -->
-        <!-- <td>{{p.razon_social}}</td> -->
-        <!-- <td>{{p.nom_corto_prv}}</td> -->
-        <!-- <td>{{p.tlfn_prv}}</td> -->
-        <!-- <td>{{p.correo_prv}}</td> -->
-        <td>{{p.1}}</td>
-        <td>{{p.2}}</td>
-        <td>{{p.0}}</td>
-        <td>{{p.3}}</td>
-        <td>{{p.4}}</td>
-        <td>{{p.5}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
         <td class="p-1">
           
           <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
         </td>
       </tr>
-      {% endfor %}
     </tbody>
   </table>
 </div>
@@ -60,5 +53,29 @@
   font-size: 14px;
 }
 </style>
+{% endblock %}
+
+
+{% block js %}
+  <script>
+    $(document).ready(function () {
+      $.ajax({
+        url:'http://127.0.0.1:8000/api/listar-proveedores/',
+        dataType:'JSON',
+        success:function(data){
+          for (let i = 0; i < data.data.Proveedores.length; i++) {
+            console.log(data.data.Proveedores[i]);
+            let row = $('<tr><td>'+data.data.Proveedores[i][1]+'</td><td>'+data.data.Proveedores[i][2]+'</td><td>'+data.data.Proveedores[i][0]+'</td><td>'+data.data.Proveedores[i][3]+'</td><td>'+data.data.Proveedores[i][4]+'</td><td>'+data.data.Proveedores[i][5]+'</td><td class="p-1"><a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a></td></tr>');
+            $('#table').append(row);
+
+
+          }
+        }
+
+      });
+    });
+
+  </script>
+
 
 {% endblock %}
