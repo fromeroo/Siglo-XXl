@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario, Proveedor, Producto, Receta, Menu, Caja, Mesa, InventarioInsumo, Factura, OrdenComida
-from .forms import CustomUserCreationForm, CustomProveedorCreationForm, CustomProductoCreationForm, CustomRecetaCreationForm, \
+from .models import Usuario, Proveedor, Receta, Menu, Caja, Mesa, InventarioInsumo, Insumo, Factura, OrdenComida
+from .forms import CustomUserCreationForm, CustomProveedorCreationForm, CustomInsumoCreationForm, CustomRecetaCreationForm, \
     CustomMenusCreationForm, CustomCajasCreationForm, CustomMesasCreationForm, CustomInventarioInsumoCreationForm, \
     CustomFacturaCreationForm
     
@@ -165,44 +165,44 @@ def modificarMenus(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/menus/editarMenus.html', data)
     
-def indexProductos(request):
-    productos = Producto.objects.all()
+def indexInsumos(request):
+    insumos = Insumo.objects.all()
     data = {
-        'Productos': productos
+        'Insumos': insumos
     }
      
-    return render(request, 'app/administrador/productos/indexProductos.html', data)
+    return render(request, 'app/administrador/insumos/indexInsumos.html', data)
 
-def registroProductos(request):
+def registroInsumos(request):
     data = {
-        'form': CustomProductoCreationForm()
+        'form': CustomInsumoCreationForm()
     }
 
     if request.method == 'POST':
-        formulario = CustomProductoCreationForm(data=request.POST)
+        formulario = CustomInsumoCreationForm(data=request.POST)
         if formulario.is_valid():
             formulario.save()
-            messages.success(request, "¡El producto ha sido registrado exitosamente!")
-            return redirect(to="indexProductos")
+            messages.success(request, "¡El insumo ha sido registrado exitosamente!")
+            return redirect(to="indexInsumos")
         data["form"] = formulario
 
-    return render(request, 'app/administrador/productos/registroProductos.html', data)
+    return render(request, 'app/administrador/insumos/registroInsumos.html', data)
 
-def modificarProductos(request, id):
-    producto = get_object_or_404(Producto, id_producto=id)
+def modificarInsumos(request, id):
+    insumo = get_object_or_404(Insumo, id_ins=id)
 
     data = {
-        'form': CustomProductoCreationForm(instance=producto)
+        'form': CustomInsumoCreationForm(instance=insumo)
     }
 
     if request.method == 'POST':
-        formulario = CustomProductoCreationForm(data=request.POST, instance=producto)
+        formulario = CustomInsumoCreationForm(data=request.POST, instance=insumo)
         if formulario.is_valid():
             formulario.save()
-            messages.success(request, "¡El producto ha sido modificado exitosamente!")
-            return redirect(to='indexProductos')
+            messages.success(request, "¡El insumo ha sido modificado exitosamente!")
+            return redirect(to='indexInsumos')
         data['form'] = formulario
-    return render(request, 'app/administrador/productos/editarProductos.html', data)
+    return render(request, 'app/administrador/insumos/editarInsumos.html', data)
 
 def indexRecetas(request):
     recetas = Receta.objects.all()

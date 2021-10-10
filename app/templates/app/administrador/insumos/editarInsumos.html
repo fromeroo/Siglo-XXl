@@ -72,16 +72,16 @@
     {% load crispy_forms_tags %}
     <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
       <form action="" method="post">
-        <h2>Editar producto</h2>
+        <h2>Editar Insumo</h2>
         <hr>
         {% csrf_token %}
         {{ form | crispy }}
         <div class="col">
           <div class="row">
             <button class="btn btn-primary d-flex mr-auto">
-              <a href="{% url 'indexProductos' %}" style="color: white;">Cancelar</a>
+              <a href="{% url 'indexInsumos' %}" style="color: white;">Volver</a>
             </button>
-            <button class="btn btn-primary d-flex ml-auto" type="submit">Editar</button>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
           </div>
         </div>
       </form>
