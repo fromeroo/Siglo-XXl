@@ -415,10 +415,10 @@ def modificarGestionFacturas(request, id):
 
 
 
-def indexDetalleUtilidades(request):
+def indexInformes(request):
      
      
-    return render(request, 'app/indexDetalleUtilidades.html')
+    return render(request, 'app/finanzas/informes/indexInformes.html')
 
 # CAJA
 

@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import indexUser, index, indexProveedores, registroProveedores, modificarProveedores, indexMenus, \
     indexInsumos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
-    indexGestionFacturas,indexDetalleUtilidades, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, \
+    indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, \
     administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, registroRecetas, \
     modificarRecetas, registroMenus, modificarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
     registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas
@@ -64,7 +64,7 @@ urlpatterns = [
     path('finanzas/gestion-facturas/registro/', registroGestionFacturas, name="registroGestionFacturas"),
     path('finanzas/gestion-facturas/modificar/<id>/', modificarGestionFacturas, name="modificarGestionFacturas"),
 
-    path('finanzas/detalle-utilidades/', indexDetalleUtilidades, name="indexDetalleUtilidades"),
+    path('finanzas/informes/', indexInformes, name="indexInformes"),
 
     path('caja/pago-efectivo/', indexPagoEfectivo, name="indexPagoEfectivo"),
 
