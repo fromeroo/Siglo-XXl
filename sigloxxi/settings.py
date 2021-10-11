@@ -84,28 +84,28 @@ WSGI_APPLICATION = 'sigloxxi.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': '127.0.0.1:1521/orcl',
-        'USER': 'portafolio',
-        'PASSWORD': 'admin123',
-        'TEST': {
-            'USER': 'default_test',
-            'TBLSPACE': 'default_test_tbls',
-            'TBLSPACE_TMP': 'default_test_tbls_tmp',
-        },
-    },
     # 'default': {
     #     'ENGINE': 'django.db.backends.oracle',
-    #     'NAME': '127.0.0.1:1521/siglo_xxl',
-    #     'USER': 'c##franco',
-    #     'PASSWORD': 'password',
+    #     'NAME': '127.0.0.1:1521/orcl',
+    #     'USER': 'portafolio',
+    #     'PASSWORD': 'admin123',
     #     'TEST': {
     #         'USER': 'default_test',
     #         'TBLSPACE': 'default_test_tbls',
     #         'TBLSPACE_TMP': 'default_test_tbls_tmp',
     #     },
     # },
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': '127.0.0.1:1521/siglo_xxl',
+        'USER': 'c##franco',
+        'PASSWORD': 'password',
+        'TEST': {
+            'USER': 'default_test',
+            'TBLSPACE': 'default_test_tbls',
+            'TBLSPACE_TMP': 'default_test_tbls_tmp',
+        },
+    },
 }
 
 

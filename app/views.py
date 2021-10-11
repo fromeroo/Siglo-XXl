@@ -215,7 +215,7 @@ def registroRecetas(request):
         formulario = CustomRecetaCreationForm(data=request.POST)
         if formulario.is_valid():
             formulario.save()
-            messages.success(request, "¡La receta ha sido registrado exitosamente!")
+            messages.success(request, "¡Receta creada exitosamente!")
             return redirect(to="indexRecetas")
         data["form"] = formulario
 
@@ -232,7 +232,7 @@ def modificarRecetas(request, id):
         formulario = CustomRecetaCreationForm(data=request.POST, instance=receta)
         if formulario.is_valid():
             formulario.save()
-            messages.success(request, "¡La receta ha sido modificado exitosamente!")
+            messages.success(request, "¡Receta modificada exitosamente!")
             return redirect(to='indexRecetas')
         data['form'] = formulario
     return render(request, 'app/administrador/recetas/editarRecetas.html', data)
