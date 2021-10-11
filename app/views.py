@@ -286,7 +286,7 @@ def indexGestionCajas(request):
     cajas = Caja.objects.all()
     data = {
         'Cajas': cajas
-    }  
+    } 
      
     return render(request, 'app/administrador/gestion-cajas/indexCajas.html', data)
 
