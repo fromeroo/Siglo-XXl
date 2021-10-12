@@ -21,12 +21,18 @@ def indexUser(request):
     }
     return render(request, 'app/administrador/usuarios/indexUser.html', data)
 
+
+@login_required
 def register(request):
     return render(request, 'registration/register.html')
 
+
+@login_required
 def index(request):
     return render(request, 'app/index.html')
 
+
+@login_required
 def administrador(request):
     usuario = Usuario.objects.all()
     data = {
@@ -34,6 +40,8 @@ def administrador(request):
     }
     return render(request, 'app/administrador.html', data)
 
+
+@login_required
 def registro(request):
     data = {
         'form': CustomUserCreationForm()
@@ -49,6 +57,8 @@ def registro(request):
 
     return render(request, 'app/administrador/usuarios/registroUser.html', data)
 
+
+@login_required
 def modificar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
 
@@ -65,13 +75,15 @@ def modificar_usuario(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/usuarios/editarUser.html', data)
 
+
+@login_required
 def eliminar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
     usuario.delete()
     messages.success(request, "¡El usuario ha sido desactivado exitosamente!")
     return redirect(to="indexUser")
 
-
+@login_required
 def indexProveedores(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -89,6 +101,8 @@ def indexProveedores(request):
      
     return render(request, 'app/administrador/proveedores/indexProveedores.html', data)
 
+
+@login_required
 def registroProveedores(request):
     data = {
         'form': CustomProveedorCreationForm()
@@ -104,6 +118,8 @@ def registroProveedores(request):
 
     return render(request, 'app/administrador/proveedores/registroProveedores.html', data)
 
+
+@login_required
 def modificarProveedores(request, id):
     proveedor = get_object_or_404(Proveedor, id_proveedor=id)
 
@@ -120,6 +136,8 @@ def modificarProveedores(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/proveedores/editarProveedores.html', data)
 
+
+@login_required
 def indexMenus(request):
     menus = Menu.objects.all()
     data = {
@@ -128,6 +146,8 @@ def indexMenus(request):
      
     return render(request, 'app/administrador/menus/indexMenus.html', data)
 
+
+@login_required
 def registroMenus(request):
     data = {
         'form': CustomMenusCreationForm()
@@ -143,6 +163,8 @@ def registroMenus(request):
 
     return render(request, 'app/administrador/menus/registroMenus.html', data)
 
+
+@login_required
 def modificarMenus(request, id):
     menu = get_object_or_404(Menu, id_menu=id)
 
@@ -158,7 +180,9 @@ def modificarMenus(request, id):
             return redirect(to='indexMenus')
         data['form'] = formulario
     return render(request, 'app/administrador/menus/editarMenus.html', data)
-    
+
+
+@login_required    
 def indexInsumos(request):
     insumos = Insumo.objects.all()
     data = {
@@ -167,6 +191,8 @@ def indexInsumos(request):
      
     return render(request, 'app/administrador/insumos/indexInsumos.html', data)
 
+
+@login_required
 def registroInsumos(request):
     data = {
         'form': CustomInsumoCreationForm()
@@ -182,6 +208,8 @@ def registroInsumos(request):
 
     return render(request, 'app/administrador/insumos/registroInsumos.html', data)
 
+
+@login_required
 def modificarInsumos(request, id):
     insumo = get_object_or_404(Insumo, id_ins=id)
 
@@ -198,6 +226,8 @@ def modificarInsumos(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/insumos/editarInsumos.html', data)
 
+
+@login_required
 def indexRecetas(request):
     recetas = Receta.objects.all()
     data = {
@@ -206,6 +236,8 @@ def indexRecetas(request):
      
     return render(request, 'app/administrador/recetas/indexRecetas.html', data)
 
+
+@login_required
 def registroRecetas(request):
     data = {
         'form': CustomRecetaCreationForm()
@@ -221,6 +253,8 @@ def registroRecetas(request):
 
     return render(request, 'app/administrador/recetas/registroRecetas.html', data)
 
+
+@login_required
 def modificarRecetas(request, id):
     receta = get_object_or_404(Receta, id_receta=id)
 
@@ -238,11 +272,15 @@ def modificarRecetas(request, id):
     return render(request, 'app/administrador/recetas/editarRecetas.html', data)
 
 
+
+@login_required
 def indexPedidosProveedor(request):
      
     return render(request, 'app/administrador/pedidos-proveedor/indexPedidosProveedor.html')
 
 
+
+@login_required
 def indexMesas(request):
     mesas = Mesa.objects.all()
     data = {
@@ -251,6 +289,8 @@ def indexMesas(request):
      
     return render(request, 'app/administrador/mesas/indexMesas.html', data)
 
+
+@login_required
 def registroMesas(request):
     data = {
         'form': CustomMesasCreationForm()
@@ -266,6 +306,8 @@ def registroMesas(request):
 
     return render(request, 'app/administrador/mesas/registroMesas.html', data)
 
+
+@login_required
 def modificarMesas(request, id):
     mesas = get_object_or_404(Mesa, id_mesa=id)
 
@@ -282,6 +324,8 @@ def modificarMesas(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/mesas/editarMesas.html', data)
 
+
+@login_required
 def indexGestionCajas(request):
     cajas = Caja.objects.all()
     data = {
@@ -290,6 +334,8 @@ def indexGestionCajas(request):
      
     return render(request, 'app/administrador/gestion-cajas/indexCajas.html', data)
 
+
+@login_required
 def registroGestionCajas(request):
     data = {
         'form': CustomCajasCreationForm()
@@ -305,6 +351,8 @@ def registroGestionCajas(request):
 
     return render(request, 'app/administrador/gestion-cajas/registroCajas.html', data)
 
+
+@login_required
 def modificarGestionCajas(request, id):
     caja = get_object_or_404(Caja, id_caja=id)
 
@@ -321,6 +369,8 @@ def modificarGestionCajas(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/gestion-cajas/editarCajas.html', data)
 
+
+@login_required
 def indexGestionCajaFinanzas(request):
     cajas = Caja.objects.all()
     data = {
@@ -331,6 +381,8 @@ def indexGestionCajaFinanzas(request):
 
 # BODEGA
 
+
+@login_required
 def indexStockProductos(request):
     insumo = InventarioInsumo.objects.all()
     data = {
@@ -339,6 +391,8 @@ def indexStockProductos(request):
      
     return render(request, 'app/bodega/stock-productos/indexStockProductos.html', data)
 
+
+@login_required
 def registroStockProductos(request):
     data = {
         'form': CustomInventarioInsumoCreationForm()
@@ -354,6 +408,8 @@ def registroStockProductos(request):
 
     return render(request, 'app/bodega/stock-productos/registroStockProductos.html', data)
 
+
+@login_required
 def modificarStockProductos(request, id):
     insumo = get_object_or_404(InventarioInsumo, id_inv_ins=id)
 
@@ -373,6 +429,8 @@ def modificarStockProductos(request, id):
 
 # FINANZAS
 
+
+@login_required
 def indexGestionFacturas(request):
     factura = Factura.objects.all()
     data = {
@@ -382,6 +440,8 @@ def indexGestionFacturas(request):
     return render(request, 'app/finanzas/facturas/indexFacturas.html', data)
 
 
+
+@login_required
 def registroGestionFacturas(request):
     data = {
         'form': CustomFacturaCreationForm()
@@ -397,6 +457,8 @@ def registroGestionFacturas(request):
 
     return render(request, 'app/finanzas/facturas/registroFacturas.html', data)
 
+
+@login_required
 def modificarGestionFacturas(request, id):
     factura = get_object_or_404(Factura, id_factura=id)
 
@@ -415,13 +477,15 @@ def modificarGestionFacturas(request, id):
 
 
 
+@login_required
 def indexInformes(request):
-     
      
     return render(request, 'app/finanzas/informes/indexInformes.html')
 
 # CAJA
 
+
+@login_required
 def indexPagoEfectivo(request):
     mesa = Mesa.objects.all()
     data = {
@@ -432,6 +496,8 @@ def indexPagoEfectivo(request):
 
 # COCINA
 
+
+@login_required
 def indexTablero(request):
     ordenComida = OrdenComida.objects.all()
     data = {
@@ -442,6 +508,8 @@ def indexTablero(request):
 
 # DASHBOARD
 
+
+@login_required
 def dashboard(request):
      
      
