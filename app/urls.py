@@ -4,7 +4,7 @@ from .views import indexUser, index, indexProveedores, registroProveedores, modi
     indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, \
     administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, registroRecetas, \
     modificarRecetas, registroMenus, modificarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
-    registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, crearProveedor
+    registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor
 # APIS
 from api import views as api_views
 
@@ -72,6 +72,11 @@ urlpatterns = [
     path('cocina/tablero/', indexTablero, name="indexTablero"),
 
     path('dashboard/', dashboard, name="dashboard"),
+
+    #TABLET CLIENTE
+    path('cliente/clienteMenu/', clienteMenu, name="clienteMenu"),
+    path('cliente/detalleCliente/', detalleCliente, name="detalleCliente"),
+    path('cliente/pagoCliente/', pagoCliente, name="pagoCliente"),
 
     # APIS URL
     path('api/listar-proveedores/', api_views.ListarProveedoresAPIView.as_view() , name="listarProveedores"),

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Siglo XXI - Menu</title>
+
+
+    <link href="{% static 'css/menu.css' %}" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Page level plugin CSS-->
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/bootstrap-table.min.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/nifty.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/themify-icons.min.css' %}" rel="stylesheet">
+
+
+    <style>
+        .dropdown-container {
+            display: none;
+            background-color: #262626;
+            padding-left: 8px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <header>
+
+        <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo">
+
+    </header>
+
+    <div id="principal">
+        <br>
+        <div class="contenedor_menu">
+            {% block contenido %}
+            {% endblock %}
+        </div>
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-primary btn-lg">Agregar Producto</button>
+            &nbsp; &nbsp; &nbsp;
+            <button type="button" class="btn btn-primary btn-lg">Finalizar Pedido</button>
+        </div>
+        <br>
+    </div>
+    <footer class="hide_on_mobile">
+        <div>
+            <img src="{% static 'img/logo.png' %}" alt="logo" class="logo_footer">
+        </div>
+    </footer>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+    {% for m in messages %}
+    <script>
+        swal.fire({
+            "title": "",
+            "text": "{{m}}",
+            "icon": "success",
+         })
+    </script>
+    {% endfor %}
+    {% endif %}
+
+</body>
+
+
+
+</html>

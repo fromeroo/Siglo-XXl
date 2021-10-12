@@ -540,6 +540,19 @@ def dashboard(request):
      
     return render(request, 'app/dashboard.html')
 
+# TABLET CLIENTE
+def clienteMenu(request):
+
+    return render(request, 'app/cliente/clienteMenu.html')
+
+def detalleCliente(request):
+
+    return render(request, 'app/cliente/detalleCliente.html')
+
+def pagoCliente(request):
+
+    return render(request, 'app/cliente/pagoCliente.html')
+
 
 
 
