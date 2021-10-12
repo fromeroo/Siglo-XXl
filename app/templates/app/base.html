@@ -105,6 +105,7 @@
       
 
       <li class="nav-item dropdown">
+        {% if perms.app.add_estadousuario %}
         <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-user"></i>
           <span>Administración</span>
@@ -143,9 +144,11 @@
             <span>Cajas</span>
           </a> 
         </div>
+        {% endif %}
       </li>
 
       <li class="nav-item dropdown">
+        {% if perms.app.add_insumo %}
         <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-user"></i>
           <span>Bodega</span>
@@ -156,10 +159,11 @@
             <span>Stock de Insumos</span>
           </a> 
         </div>
-
+        {% endif %}
       </li>
 
       <li class="nav-item dropdown">
+        {% if perms.app.add_caja %}
         <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-user"></i>
           <span>Finanzas</span>
@@ -178,9 +182,11 @@
             <span>Informes</span>
           </a> 
         </div>
+        {% endif %}
       </li>
 
       <li class="nav-item dropdown">
+        {% if perms.app.add_mesa %}
         <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-user"></i>
           <span>Caja</span>
@@ -191,9 +197,11 @@
             <span>Pago Efectivo</span>
           </a>  
         </div>
+        {% endif %}
       </li>
 
       <li class="nav-item dropdown">
+        {% if perms.app.add_detalleorden %}
         <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-user"></i>
           <span>Cocina</span>
@@ -204,6 +212,7 @@
             <span>Tablero</span>
           </a>  
         </div>
+        {% endif %}
       </li>
       
 
