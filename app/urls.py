@@ -4,7 +4,7 @@ from .views import indexUser, index, indexProveedores, registroProveedores, modi
     indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, \
     administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, registroRecetas, \
     modificarRecetas, registroMenus, modificarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
-    registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas
+    registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, crearProveedor
 # APIS
 from api import views as api_views
 
@@ -18,6 +18,7 @@ urlpatterns = [
     path('administracion/usuario/modificar/<id>/', modificar_usuario, name='modificar_usuario'),
 
     path('administracion/proveedores/', indexProveedores, name="indexProveedores"),
+    path('crear-proveedor/', crearProveedor, name="crearProveedor"),
     path('administracion/proveedores/registro/', registroProveedores, name="registroProveedores"),
     path('administracion/proveedores/modificar/<id>/', modificarProveedores, name="modificarProveedores"),
 

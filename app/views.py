@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Usuario, Proveedor, Receta, Menu, Caja, Mesa, InventarioInsumo, Insumo, Factura, OrdenComida
 from .forms import CustomUserCreationForm, CustomProveedorCreationForm, CustomInsumoCreationForm, CustomRecetaCreationForm, \
@@ -8,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.db import connection
 
@@ -103,6 +105,29 @@ def registroProveedores(request):
         data["form"] = formulario
 
     return render(request, 'app/administrador/proveedores/registroProveedores.html', data)
+
+def crearProveedor(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    
+    rut = int(request.GET["p_rut"])
+    dv = request.GET["p_dv"]
+    razon_social = request.GET["p_razon_social"]
+    nombre_corto = request.GET["p_nom_corto"]
+    telefono = request.GET["p_telefono"]
+    correo = request.GET["p_correo"]
+    id_giro = int(request.GET["p_id_giro"])
+    direccion = request.GET["p_direccion"]
+    numero_dirrecion = int(request.GET["p_num_dir"])
+    numero_casa = int(request.GET["p_nro_casa"])
+    tipo_direccion = int(request.GET["p_tipo_dir"])
+    id_comuna= int(request.GET["p_id_com"])
+    
+
+    cursor.callproc("PKG_PROVEEDOR.crearProveedores", [rut, dv, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_dirrecion, numero_casa, tipo_direccion, id_comuna])
+    
+    return HttpResponse('CREADO XD')
 
 def modificarProveedores(request, id):
     proveedor = get_object_or_404(Proveedor, id_proveedor=id)
