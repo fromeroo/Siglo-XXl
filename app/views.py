@@ -156,7 +156,7 @@ def crearProveedor(request):
     cursor.callproc("PKG_PROVEEDOR.crearProveedores", [rut, dv, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_dirrecion, numero_casa, tipo_direccion, id_comuna, salida])
     
     if salida == 1:
-        # ACA ES EL ERROR
+        # ACA ES EL MENSAJE DE ERROR
         return redirect('indexProveedores')
     else:
         messages.success(request, "¡El Proveedor ha sido registrado exitosamente!")
@@ -184,10 +184,11 @@ def eliminarProveedores(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
 
     id_proveedor = int(id)
 
-    cursor.callproc("PKG_PROVEEDOR.eliminarProveedor", [id_proveedor])
+    cursor.callproc("PKG_PROVEEDOR.eliminarProveedor", [id_proveedor, salida])
     
     messages.success(request, "¡El proveedor ha sido eliminado exitosamente!")
     return redirect(to="indexProveedores")
