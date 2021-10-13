@@ -14,57 +14,57 @@
         <div class="col">
           <div class="row">
             <div class="form-group col-md-6">
-              <label for="">Rut:</label>
-              <input type="text" name="p_rut" class="form-control">
+              <label for="p_rut">Rut:</label>
+              <input type="text" name="p_rut" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="" >DV:</label>
-              <input type="text" name="p_dv" id="" class="form-control">
+              <label for="p_dv" >DV:</label>
+              <input type="text" name="p_dv" id="" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="" >Razon Social:</label>
-              <input type="text" name="p_razon_social" id="" class="form-control">
+              <label for="p_razon_social" >Razon Social:</label>
+              <input type="text" name="p_razon_social" id="" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="" >Nombre:</label>
-              <input type="text" name="p_nom_corto" id="" class="form-control">
+              <label for="p_nom_corto" >Nombre:</label>
+              <input type="text" name="p_nom_corto" id="" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="" >Telefono:</label>
-              <input type="text" name="p_telefono" id="" class="form-control">
+              <label for="p_telefono" >Telefono:</label>
+              <input type="text" name="p_telefono" id="" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="" >Correo:</label>
-              <input type="email" name="p_correo" id="" class="form-control">
+              <label for="p_correo" >Correo:</label>
+              <input type="email" name="p_correo" id="" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="">Giro</label>
-              <select class="form-control" name="p_id_giro" id="select-giro">
+              <label for="p_id_giro">Giro</label>
+              <select class="form-control" name="p_id_giro" id="select-giro" required>
               </select>
             </div>
             <div class="form-group col-md-6">
-              <label for="">Dirección</label>
-              <input type="text" name="p_direccion" id="" class="form-control">
+              <label for="p_direccion">Dirección</label>
+              <input type="text" name="p_direccion" id="" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="">N° Dirección</label>
-              <input type="text" name="p_num_dir" id="" class="form-control">
+              <label for="p_num_dir">N° Dirección</label>
+              <input type="text" name="p_num_dir" id="" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="">N° Casa</label>
-              <input type="text" name="p_nro_casa" id="" class="form-control">
+              <label for="p_nro_casa">N° Casa</label>
+              <input type="text" name="p_nro_casa" id="" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="">Tipo Dirección</label>
-              <select class="form-control" name="p_tipo_dir" id="">
+              <label for="p_tipo_dir">Tipo Dirección</label>
+              <select class="form-control" name="p_tipo_dir" id="" required>
                 {% for t in TipoDirecciones %}
                   <option value="{{t.0}}">{{t.1}}</option>
                 {% endfor %}
               </select>
             </div>
             <div class="form-group col-md-6">
-              <label for="">Comuna</label>
-              <select class="form-control" name="p_id_com" id="">
+              <label for="p_id_com">Comuna</label>
+              <select class="form-control" name="p_id_com" id="" required>
                 {% for c in Comunas %}
                   <option value="{{c.0}}">{{c.1}}</option>
                 {% endfor %}
