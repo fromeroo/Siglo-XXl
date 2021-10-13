@@ -574,15 +574,15 @@ def dashboard(request):
 
 # TABLET CLIENTE
 def clienteMenu(request):
-
+    messages.success(request, "¡!")
     return render(request, 'app/cliente/clienteMenu.html')
 
 def detalleCliente(request):
-
+    messages.success(request, "¡!")
     return render(request, 'app/cliente/detalleCliente.html')
 
 def pagoCliente(request):
-
+    messages.success(request, "¡!")
     return render(request, 'app/cliente/pagoCliente.html')
 
 

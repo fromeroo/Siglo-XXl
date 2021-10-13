@@ -19,7 +19,7 @@ header {
 
 #principal {
     width: 100%;
-    min-height: 500px;
+    min-height:600px;
     height: auto;
     background-color:white;
 }
@@ -62,9 +62,10 @@ nav > ul > li > a {
 .contenedor_menu {
     width: 90%;
     background-color: #ccc;
-    min-height: 400px;
+    min-height: 500px;
     height: auto;
     margin:auto;
+    border-radius: 15px 15px 15px 15px;
 }
 
 .cartaMenu {
@@ -137,4 +138,15 @@ body {
     color:#3a444e;
     margin-left:30px;
     text-align: left;
+}
+.radioButton{
+    color:black;
+    margin-left:30px;
+    text-align: left;
+}
+.btnPago{
+    width:300px;
+    height: 100px;
+    margin:auto;
+
 }

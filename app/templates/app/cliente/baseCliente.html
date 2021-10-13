@@ -52,15 +52,13 @@
 
     <div id="principal">
         <br>
-        <div class="contenedor_menu">
-            {% block contenido %}
-            {% endblock %}
+        <div>
+            <div class="contenedor_menu">
+                {% block contenido %}
+                {% endblock %}
+ 
         </div>
-        <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-primary btn-lg">Agregar Producto</button>
-            &nbsp; &nbsp; &nbsp;
-            <button type="button" class="btn btn-primary btn-lg">Finalizar Pedido</button>
-        </div>
+
         <br>
     </div>
     <footer class="hide_on_mobile">
@@ -76,7 +74,7 @@
             "title": "",
             "text": "{{m}}",
             "icon": "success",
-         })
+        })
     </script>
     {% endfor %}
     {% endif %}
