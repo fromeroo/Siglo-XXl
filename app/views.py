@@ -13,6 +13,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.db import connection
 
+import cx_Oracle
+
 # Create your views here.
 
 @login_required
@@ -106,17 +108,28 @@ def indexProveedores(request):
 
 @login_required
 def registroProveedores(request):
-    data = {
-        'form': CustomProveedorCreationForm()
-    }
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
 
-    if request.method == 'POST':
-        formulario = CustomProveedorCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡El proveedor ha sido registrado exitosamente!")
-            return redirect(to="indexProveedores")
-        data["form"] = formulario
+    out_cur_two = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_DIRECCION.listarComunas", [out_cur])
+    cursor.callproc("PKG_DIRECCION.listarTipoDireccion", [out_cur_two])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_tipo_direccion = []
+    for fila in out_cur_two:
+        lista_tipo_direccion.append(fila)
+
+    data = {
+        'Comunas': lista,
+        'TipoDirecciones': lista_tipo_direccion
+    }
+     
 
     return render(request, 'app/administrador/proveedores/registroProveedores.html', data)
 
@@ -124,7 +137,8 @@ def crearProveedor(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     # out_cur = django_cursor.connection.cursor()
-    
+    salida = cursor.var(cx_Oracle.NUMBER)
+
     rut = int(request.GET["p_rut"])
     dv = request.GET["p_dv"]
     razon_social = request.GET["p_razon_social"]
@@ -139,9 +153,14 @@ def crearProveedor(request):
     id_comuna= int(request.GET["p_id_com"])
     
 
-    cursor.callproc("PKG_PROVEEDOR.crearProveedores", [rut, dv, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_dirrecion, numero_casa, tipo_direccion, id_comuna])
+    cursor.callproc("PKG_PROVEEDOR.crearProveedores", [rut, dv, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_dirrecion, numero_casa, tipo_direccion, id_comuna, salida])
     
-    return HttpResponse('CREADO XD')
+    if salida == 1:
+        # ACA ES EL ERROR
+        return redirect('indexProveedores')
+    else:
+        messages.success(request, "¡El Proveedor ha sido registrado exitosamente!")
+        return redirect('indexProveedores')
 
 
 @login_required

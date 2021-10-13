@@ -57,13 +57,17 @@
             <div class="form-group col-md-6">
               <label for="">Tipo Dirección</label>
               <select class="form-control" name="p_tipo_dir" id="">
-                <option value="1">aca falta plsql</option>
+                {% for t in TipoDirecciones %}
+                  <option value="{{t.0}}">{{t.1}}</option>
+                {% endfor %}
               </select>
             </div>
             <div class="form-group col-md-6">
               <label for="">Comuna</label>
               <select class="form-control" name="p_id_com" id="">
-                <option value="1">aca falta plsql</option>
+                {% for c in Comunas %}
+                  <option value="{{c.0}}">{{c.1}}</option>
+                {% endfor %}
               </select>
             </div>
           </div>
