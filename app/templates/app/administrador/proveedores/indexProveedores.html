@@ -31,15 +31,15 @@
     <tbody>
       {% for p in Proveedores %}
       <tr>
-        <td>{{p.1}}</td>
         <td>{{p.2}}</td>
-        <td>{{p.0}}</td>
         <td>{{p.3}}</td>
+        <td>{{p.1}}</td>
         <td>{{p.4}}</td>
         <td>{{p.5}}</td>
+        <td>{{p.6}}</td>
         <td class="p-1">
           <a href="" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
-          <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
+          <a onclick="eliminarProveedor({{ p.0 }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
         </td>
       </tr>
       {% endfor %}
@@ -58,6 +58,29 @@
 
 
 {% block js %}
+
+<script>
+    function eliminarProveedor(id)
+    {
+      swal.fire({
+        "title": "¿Estás seguro?",
+        "text": "¡Estás apunto de eliminar al proveedor!",
+        "icon": "question",
+        "showCancelButton": true,
+        "cancelButtonText": "No, cancelar",
+        "confirmButtonText": "Si, Eliminar",
+        "reverseButtons": true,
+        "confirmButtonColor": "#dc3545",
+        "cancelButtonColor": "#0069D9"
+      })
+      .then(function(result) {
+        if(result.isConfirmed) {
+          window.location.href = "eliminar/"+id+"/"
+        }
+      })
+    }
+  </script>
+
   <script>
     $(document).ready(function () {
       $.ajax({

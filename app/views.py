@@ -180,6 +180,18 @@ def modificarProveedores(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/proveedores/editarProveedores.html', data)
 
+def eliminarProveedores(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+
+    id_proveedor = int(id)
+
+    cursor.callproc("PKG_PROVEEDOR.eliminarProveedor", [id_proveedor])
+    
+    messages.success(request, "¡El proveedor ha sido eliminado exitosamente!")
+    return redirect(to="indexProveedores")
+
 
 @login_required
 def indexMenus(request):
