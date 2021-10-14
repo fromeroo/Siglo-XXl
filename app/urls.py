@@ -3,7 +3,7 @@ from .views import indexUser, index, indexProveedores, registroProveedores, modi
     indexInsumos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
     indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, \
     administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, registroRecetas, \
-    modificarRecetas, registroMenus, modificarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
+    modificarRecetas, registroMenus, modificarMenus, crearMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
     registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor
 # APIS
 from api import views as api_views
@@ -24,9 +24,8 @@ urlpatterns = [
     path('administracion/proveedores/eliminar/<id>/', eliminarProveedores, name="eliminarProveedores"),
 
     path('administracion/menus/', indexMenus, name="indexMenus"),
-    
+    path('crear-menus/', crearMenus, name="crearMenus"),
     path('administracion/menus/registro/', registroMenus, name="registroMenus"),
-
     path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
 
     path('administracion/insumos/', indexInsumos, name="indexInsumos"),

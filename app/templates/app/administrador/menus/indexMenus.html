@@ -28,10 +28,10 @@
       {% for m in Menus %}
       <tr>
         <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>{{m.nro_menu}}</td>
-        <td>{{m.nombre_menu}}</td>
+        <td>{{m.1}}</td>
+        <td>{{m.2}}</td>
         <td class="p-1">
-          <a href="{% url 'modificarMenus' m.id_menu %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+          <a href="{% url 'modificarMenus' m.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
           <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
         </td>
       </tr>

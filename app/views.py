@@ -180,6 +180,7 @@ def modificarProveedores(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/proveedores/editarProveedores.html', data)
 
+
 def eliminarProveedores(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -196,29 +197,44 @@ def eliminarProveedores(request, id):
 
 @login_required
 def indexMenus(request):
-    menus = Menu.objects.all()
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_MENU.listarMenu", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
     data = {
-        'Menus': menus
+        'Menus': lista
     }
      
     return render(request, 'app/administrador/menus/indexMenus.html', data)
 
+def crearMenus(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    nro_menu = int(request.GET["p_nro_menu"])
+    nombre_menu = request.GET["p_nom_menu"]
+
+    cursor.callproc("PKG_MENU.crearMenu", [nro_menu, nombre_menu, salida])
+
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexMenus')
+    else:
+        messages.success(request, "¡El Menu ha sido registrado exitosamente!")
+        return redirect('indexMenus')
 
 @login_required
 def registroMenus(request):
-    data = {
-        'form': CustomMenusCreationForm()
-    }
-
-    if request.method == 'POST':
-        formulario = CustomMenusCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡El menu ha sido registrado exitosamente!")
-            return redirect(to="indexMenus")
-        data["form"] = formulario
-
-    return render(request, 'app/administrador/menus/registroMenus.html', data)
+   
+    return render(request, 'app/administrador/menus/registroMenus.html')
 
 
 @login_required
