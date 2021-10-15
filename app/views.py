@@ -254,6 +254,30 @@ def modificarMenus(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/menus/editarMenus.html', data)
 
+def registroMenusProductos(request, id):
+    menu = get_object_or_404(Menu, id_menu=id)
+    
+    id_menu = {
+        'id': menu.id_menu,
+    }
+    
+    print(id_menu)
+
+    return render(request, 'app/administrador/menus/registroMenusProductos.html', id_menu)
+
+def eliminarMenus(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_menu = int(id)
+
+    cursor.callproc("PKG_MENU.eliminarMenu", [id_menu, salida])
+    
+    messages.success(request, "¡El menu ha sido eliminado exitosamente!")
+    return redirect(to="indexMenus")
+
 
 @login_required    
 def indexInsumos(request):
