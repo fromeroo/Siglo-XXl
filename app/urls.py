@@ -2,7 +2,7 @@ from django.urls import path
 from .views import indexUser, index, indexProveedores, registroProveedores, modificarProveedores, eliminarProveedores, indexMenus, \
     indexInsumos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
     indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, indexTablero, modificar_usuario, \
-    administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, registroRecetas, \
+    administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, indexProductos, registroProductos, registroRecetas, \
     modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
     registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor
 # APIS
@@ -35,13 +35,14 @@ urlpatterns = [
     path('administracion/insumos/registro/', registroInsumos, name="registroInsumos"),
     path('administracion/insumos/modificar/<id>/', modificarInsumos, name="modificarInsumos"),
 
-    path('administracion/recetas/', indexRecetas, name="indexRecetas"),
+    path('administracion/productos/', indexProductos, name="indexProductos"),
+    path('administracion/productos/registro/', registroProductos, name="registroProductos"),
 
+    path('administracion/recetas/', indexRecetas, name="indexRecetas"),
     path('administracion/mesas/', indexMesas, name="indexMesas"),
-    
     path('administracion/mesas/registro/', registroMesas, name="registroMesas"),
-    
     path('administracion/mesas/modificar/<id>/', modificarMesas, name="modificarMesas"),
+    
     path('administracion/recetas/registro/', registroRecetas, name="registroRecetas"),
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
 

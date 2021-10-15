@@ -325,6 +325,19 @@ def modificarInsumos(request, id):
 
 
 @login_required
+def indexProductos(request):
+    
+     
+    return render(request, 'app/administrador/productos/indexProductos.html')
+
+
+@login_required
+def registroProductos(request):
+   
+    return render(request, 'app/administrador/productos/registroProductos.html')
+
+
+@login_required
 def indexRecetas(request):
     recetas = Receta.objects.all()
     data = {

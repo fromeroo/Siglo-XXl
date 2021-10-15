@@ -1,0 +1,67 @@
+{% extends 'app/base.html' %}
+
+{% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  
+{% endblock %}
+
+{% block contenido %}
+{% load static %}
+    <!-- /.content-wrapper -->
+    
+    {% load crispy_forms_tags %}
+    <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
+      <h2>Registro de Menu</h2>
+      <hr>
+      <form action="/crear-menus/" method="GET">
+        <div class="col mt-4">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="p_nro_menu">Nombre:</label>
+              <input type="text" name="p_nro_menu" class="form-control" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_nom_menu" >Precio:</label>
+              <input type="text" name="p_nom_menu" id="" class="form-control" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_nom_menu" >Categoria:</label>
+              <select name="" id="" class="form-control">
+                <option value="">PLSQL</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_nom_menu" >Tipo:</label>
+              <select name="" id="" class="form-control">
+                <option value="">PLSQL</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_nom_menu" >Receta:</label>
+              <select name="" id="" class="form-control">
+                <option value="">PLSQL</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col mt-4">
+          <div class="row">
+            <button class="btn btn-primary d-flex mr-auto">
+              <a href="{% url 'indexProductos' %}" 
+              style="color: white;"
+              >Volver</a>
+            </button>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  <!-- /#wrapper -->
+
+  <style>
+    #user-table{
+      font-size: 14px;
+    }
+  </style>
+  {% endblock %}
