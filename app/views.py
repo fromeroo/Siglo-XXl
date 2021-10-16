@@ -239,20 +239,44 @@ def registroMenus(request):
 
 @login_required
 def modificarMenus(request, id):
-    menu = get_object_or_404(Menu, id_menu=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_menu = id
+
+    cursor.callproc("PKG_MENU.buscarMenu", [id_menu, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
 
     data = {
-        'form': CustomMenusCreationForm(instance=menu)
+        'Menus': lista
     }
 
-    if request.method == 'POST':
-        formulario = CustomMenusCreationForm(data=request.POST, instance=menu)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡El menu ha sido modificado exitosamente!")
-            return redirect(to='indexMenus')
-        data['form'] = formulario
     return render(request, 'app/administrador/menus/editarMenus.html', data)
+
+
+def editarMenus(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_menu = int(request.GET["id"])
+    nro_menu = int(request.GET["p_nro_menu"])
+    nom_menu = request.GET["p_nom_menu"]
+
+    cursor.callproc("PKG_MENU.modificarMenu", [id_menu, nro_menu, nom_menu, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexMenus')
+    else:
+        messages.success(request, "¡El Menu ha sido editado exitosamente!")
+        return redirect('indexMenus')
+
+
 
 def registroMenusProductos(request, id):
     menu = get_object_or_404(Menu, id_menu=id)

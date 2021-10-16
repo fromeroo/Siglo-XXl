@@ -32,7 +32,6 @@
         <td>{{m.2}}</td>
         <td class="p-1">
           <a href="{% url 'modificarMenus' m.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-eye"> Detalle</i></a>
-          <a href="{% url 'registroMenusProductos' m.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-plus"> Producto</i></a>
           <a href="{% url 'modificarMenus' m.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
           <a onclick="eliminarMenu({{ m.0 }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
         </td>
