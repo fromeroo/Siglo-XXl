@@ -1,6 +1,7 @@
 from django.db import connection
 from rest_framework import generics
 from rest_framework.response import Response
+import cx_Oracle
 # Create your views here.
 
 class ListarProveedoresAPIView(generics.GenericAPIView):
