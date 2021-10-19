@@ -84,10 +84,24 @@ urlpatterns = [
     path('cliente/detalleCliente/', detalleCliente, name="detalleCliente"),
     path('cliente/pagoCliente/', pagoCliente, name="pagoCliente"),
 
-    # APIS URL
-    path('api/listar-proveedores/', api_views.ListarProveedoresAPIView.as_view() , name="listarProveedores"),
+    # APIS URL MESAS
     
-    path('api/listar-giros/', api_views.ListarGirosAPIView.as_view() , name="listarGiros"),
+    path('api/listar-todo-mesas/', api_views.ListarTodoMesasAPIView.as_view() , name="todoMesas"),
+    
+    path('api/listar-mesas-disponibles/', api_views.ListarMesasDisponiblesAPIView.as_view() , name="mesasDisponibles"),
+    
+    path('api/listar-mesas-reservadas/', api_views.ListarMesasReservadasAPIView.as_view() , name="mesasReservadas"),
+    
+    path('api/listar-mesas-ocupadas/', api_views.ListarMesasOcupadasAPIView.as_view() , name="mesasOcupadas"),
+    
+    path('api/listar-ubicaciones/', api_views.ListarUbicacionesAPIView.as_view() , name="listarUbicaciones"),
+    
+    path('api/buscar-mesa/', api_views.BuscarMesaAPIView.as_view() , name="buscarMesa"),
 
-    path('api/crear-proveedor/', api_views.CrearPoveedorAPIView.as_view() , name="crearProveedor"),
+    path('api/buscar-mesa-reserva/', api_views.BuscarMesaReservaAPIView.as_view() , name="buscarMesaReserva"),
+    
+    path('api/modificar-mesa/', api_views.ModificarMesaAPIView.as_view() , name="modificarMesa"),
+    
+    path('api/eliminar-mesa/', api_views.EliminarMesaAPIView.as_view() , name="eliminarMesa"),
+
 ]
