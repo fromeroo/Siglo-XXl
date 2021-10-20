@@ -156,28 +156,81 @@ def crearProveedor(request):
     
     if salida == 1:
         # ACA ES EL MENSAJE DE ERROR
+        messages.success(request, "¡El Proveedor ha sido registrado exitosamente!")
         return redirect('indexProveedores')
     else:
-        messages.success(request, "¡El Proveedor ha sido registrado exitosamente!")
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexProveedores')
+
+def actualizarProveedores(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+
+    id_proveedor = int(request.GET["p_id"])
+    razon_social = request.GET["p_razon_social"]
+    nombre_corto = request.GET["p_nom_corto"]
+    telefono = request.GET["p_telefono"]
+    correo = request.GET["p_correo"]
+    id_giro = int(request.GET["p_id_giro"])
+    direccion = request.GET["p_direccion"]
+    numero_direcion = request.GET["p_num_dir"]
+    numero_casa = int(request.GET["p_nro_casa"])
+    tipo_direccion = int(request.GET["p_tipo_dir"])
+    id_comuna= int(request.GET["p_id_com"])
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc("PKG_PROVEEDOR.modificarProveedor", [id_proveedor, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_direcion, numero_casa, tipo_direccion, id_comuna, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        messages.success(request, "¡El Proveedor ha sido modificado exitosamente!")
+        return redirect('indexProveedores')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexProveedores')
 
 
 @login_required
 def modificarProveedores(request, id):
-    proveedor = get_object_or_404(Proveedor, id_proveedor=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
+    out_cur_four = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_PROVEEDOR.buscarProveedor", [id, out_cur])
+    cursor.callproc("PKG_PROVEEDOR.listarGiros", [out_cur_two])
+    cursor.callproc("PKG_DIRECCION.listarComunas", [out_cur_three])
+    cursor.callproc("PKG_DIRECCION.listarTipoDireccion", [out_cur_four])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_giro = []
+    for fila in out_cur_two:
+        lista_giro.append(fila)
+
+    lista_comuna = []
+    for fila in out_cur_three:
+        lista_comuna.append(fila)
+
+    lista_tipo_direccion = []
+    for fila in out_cur_four:
+        lista_tipo_direccion.append(fila)
 
     data = {
-        'form': CustomProveedorCreationForm(instance=proveedor)
+        'Proveedor': lista,
+        'ListaGiro': lista_giro,
+        'ListaComuna': lista_comuna,
+        'ListaTipoDireccion': lista_tipo_direccion,
     }
-
-    if request.method == 'POST':
-        formulario = CustomProveedorCreationForm(data=request.POST, instance=proveedor)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡El proveedor ha sido modificado exitosamente!")
-            return redirect(to='indexProveedores')
-        data['form'] = formulario
+    
     return render(request, 'app/administrador/proveedores/editarProveedores.html', data)
+    
+    
 
 
 def eliminarProveedores(request, id):
