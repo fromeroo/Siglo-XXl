@@ -30,13 +30,13 @@
       {% for m in Mesas %}
       <tr>
         <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>{{m.nro_mesa}}</td>
-        <td>{{m.cant_sillas}}</td>
-        <td>{{m.id_ubicacion}}</td>
-        <td>{{m.id_est_mesa}}</td>
+        <td>{{m.1}}</td>
+        <td>{{m.2}}</td>
+        <td>{{m.4}}</td>
+        <td>{{m.6}}</td>
         <td class="p-1">
-          <a href="{% url 'modificarMesas' m.id_mesa %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
-          <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
+          <a href="{% url 'modificarMesas' m.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+          <a onclick="eliminarMesas({{ m.0 }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
         </td>
       </tr>
       {% endfor %}
@@ -51,5 +51,32 @@
   font-size: 14px;
 }
 </style>
+
+{% endblock %}
+
+
+{% block js %}
+
+  <script>
+    function eliminarMesas(id)
+    {
+      swal.fire({
+        "title": "¿Estás seguro?",
+        "text": "¡Estás apunto de eliminar la Mesa!",
+        "icon": "question",
+        "showCancelButton": true,
+        "cancelButtonText": "No, cancelar",
+        "confirmButtonText": "Si, Eliminar",
+        "reverseButtons": true,
+        "confirmButtonColor": "#dc3545",
+        "cancelButtonColor": "#0069D9"
+      })
+      .then(function(result) {
+        if(result.isConfirmed) {
+          window.location.href = "eliminar/"+id+"/"
+        }
+      })
+    }
+  </script>
 
 {% endblock %}

@@ -1,22 +1,24 @@
 from django.db import connection
 from rest_framework import generics
 from rest_framework.response import Response
-# Create your views here.
+import cx_Oracle
 
-class ListarProveedoresAPIView(generics.GenericAPIView):
+
+# APIS MESAS
+class ListarTodoMesasAPIView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         django_cursor = connection.cursor()
         cursor = django_cursor.connection.cursor()
         out_cur = django_cursor.connection.cursor()
 
-        cursor.callproc("PKG_PROVEEDOR.listarProveedor", [out_cur])
+        cursor.callproc("PKG_MESA.listarTodoMesa", [out_cur])
 
         lista= []
         for fila in out_cur:
             lista.append(fila)
 
         data = {
-            'Proveedores': lista
+            'MesasTodas': lista
         }
         
         return Response({
@@ -25,20 +27,20 @@ class ListarProveedoresAPIView(generics.GenericAPIView):
             'data': data
         })
 
-class ListarGirosAPIView(generics.GenericAPIView):
+class ListarMesasDisponiblesAPIView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         django_cursor = connection.cursor()
         cursor = django_cursor.connection.cursor()
         out_cur = django_cursor.connection.cursor()
 
-        cursor.callproc("PKG_PROVEEDOR.listarGiros", [out_cur])
+        cursor.callproc("PKG_MESA.listarMesasDisponibles ", [out_cur])
 
         lista= []
         for fila in out_cur:
             lista.append(fila)
 
         data = {
-            'Giros': lista
+            'MesasDisponibles': lista
         }
         
         return Response({
@@ -47,34 +49,174 @@ class ListarGirosAPIView(generics.GenericAPIView):
             'data': data
         })
 
-class CrearPoveedorAPIView(generics.GenericAPIView):
+class ListarMesasReservadasAPIView(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()
+
+        cursor.callproc("PKG_MESA.listarMesasReservadas", [out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        data = {
+            'MesasReservadas': lista
+        }
+        
+        return Response({
+            'status': 200,
+            'message': 'Dato recuperado exitosamente',
+            'data': data
+        })
+class ListarMesasOcupadasAPIView(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()
+
+        cursor.callproc("PKG_MESA.listarMesaOcupada", [out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        data = {
+            'MesasOcupadas': lista
+        }
+        
+        return Response({
+            'status': 200,
+            'message': 'Datos recuperado exitosamente',
+            'data': data
+        })
+
+class ListarUbicacionesAPIView(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()
+
+        cursor.callproc("PKG_MESA.listarUbicaciones", [out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        data = {
+            'Ubicaciones': lista
+        }
+        
+        return Response({
+            'status': 200,
+            'message': 'Datos recuperado exitosamente',
+            'data': data
+        })
+
+class BuscarMesaAPIView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         django_cursor = connection.cursor()
         cursor = django_cursor.connection.cursor()
-        # out_cur = django_cursor.connection.cursor()
         
-        rut = int(request.data["p_rut"])
-        dv = request.data["p_dv"]
-        razon_social = request.data["p_razon_social"]
-        nombre_corto = request.data["p_nom_corto"]
-        telefono = request.data["p_telefono"]
-        correo = request.data["p_correo"]
-        id_giro = int(request.data["p_id_giro"])
-        direccion = request.data["p_direccion"]
-        numero_dirrecion = int(request.data["p_num_dir"])
-        numero_casa = int(request.data["p_nro_casa"])
-        tipo_direccion = int(request.data["p_tipo_dir"])
-        id_comuna= int(request.data["p_id_com"])
+        p_id_mesa= int(request.data["p_id_mesa"])
+        out_cur = django_cursor.connection.cursor()
+        
+        cursor.callproc("PKG_MESA.buscarMesa", [p_id_mesa, out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+        
+        if not lista:
+            return Response({
+                'status': 400,
+                'message': 'Mesa No Encontrada'
+            })
+
+        return Response({
+            'status': 200,
+            'message': 'Mesa Encontrada',
+            'data': lista
+        })
+class BuscarMesaReservaAPIView(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        
+        p_reserva= int(request.data["p_reserva"])
+        out_cur = django_cursor.connection.cursor()
+        
+        cursor.callproc("PKG_MESA.buscarMesaReserva", [p_reserva, out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+        
+        if not lista:
+            return Response({
+                'status': 400,
+                'message': 'Mesa Reservada No Encontrada'
+            })
+
+        return Response({
+            'status': 200,
+            'message': 'Mesa Reservada Encontrada',
+            'data': lista
+        })
+
+class ModificarMesaAPIView(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        
+        p_id_mesa = int(request.data["p_id_mesa"])
+        p_nro_mesa = int(request.data["p_nro_mesa"])
+        p_cant_sillas = int(request.data["p_cant_sillas"])
+        p_id_ubi = int(request.data["p_id_ubi"])
+        v_salida = cursor.var(cx_Oracle.NUMBER)
         
 
-        cursor.callproc("PKG_PROVEEDOR.crearProveedores", [rut, dv, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_dirrecion, numero_casa, tipo_direccion, id_comuna])
-
+        cursor.callproc("PKG_MESA.modificarMesa", [p_id_mesa, p_nro_mesa, p_cant_sillas, p_id_ubi, v_salida])
+    
         # lista= []
         # for fila in out_cur:
         #     lista.append(fila)
 
+        if v_salida == 1:
+            return Response({
+                'status': 400,
+                'message': 'Error al modificar Mesa'
+            })
+        else:
+            return Response({
+                'status': 200,
+                'message': 'Mesa Modificada'
+            })
+
+class EliminarMesaAPIView(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
         
-        return Response({
-            'status': 200,
-            'message': 'Proveedor Creado'
-        })
+        p_id_mesa = int(request.data["p_id_mesa"])
+        v_salida = cursor.var(cx_Oracle.NUMBER)
+        
+
+        cursor.callproc("PKG_MESA.eliminarMesa", [p_id_mesa, v_salida])
+    
+        # lista= []
+        # for fila in out_cur:
+        #     lista.append(fila)
+
+        if v_salida == 1:
+            return Response({
+                'status': 400,
+                'message': 'Error al modificar Mesa'
+            })
+        else:
+            return Response({
+                'status': 200,
+                'message': 'Mesa Modificada'
+            })
+

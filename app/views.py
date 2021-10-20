@@ -130,7 +130,6 @@ def registroProveedores(request):
         'TipoDirecciones': lista_tipo_direccion
     }
      
-
     return render(request, 'app/administrador/proveedores/registroProveedores.html', data)
 
 def crearProveedor(request):
@@ -292,20 +291,44 @@ def registroMenus(request):
 
 @login_required
 def modificarMenus(request, id):
-    menu = get_object_or_404(Menu, id_menu=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_menu = id
+
+    cursor.callproc("PKG_MENU.buscarMenu", [id_menu, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
 
     data = {
-        'form': CustomMenusCreationForm(instance=menu)
+        'Menus': lista
     }
 
-    if request.method == 'POST':
-        formulario = CustomMenusCreationForm(data=request.POST, instance=menu)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡El menu ha sido modificado exitosamente!")
-            return redirect(to='indexMenus')
-        data['form'] = formulario
     return render(request, 'app/administrador/menus/editarMenus.html', data)
+
+
+def editarMenus(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_menu = int(request.GET["id"])
+    nro_menu = int(request.GET["p_nro_menu"])
+    nom_menu = request.GET["p_nom_menu"]
+
+    cursor.callproc("PKG_MENU.modificarMenu", [id_menu, nro_menu, nom_menu, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexMenus')
+    else:
+        messages.success(request, "¡El Menu ha sido editado exitosamente!")
+        return redirect('indexMenus')
+
+
 
 def registroMenusProductos(request, id):
     menu = get_object_or_404(Menu, id_menu=id)
@@ -445,48 +468,123 @@ def indexPedidosProveedor(request):
 
 @login_required
 def indexMesas(request):
-    mesas = Mesa.objects.all()
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_MESA.listarMesasDisponibles", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
     data = {
-        'Mesas': mesas
+        'Mesas': lista
     }
-     
+    
     return render(request, 'app/administrador/mesas/indexMesas.html', data)
 
 
 @login_required
 def registroMesas(request):
-    data = {
-        'form': CustomMesasCreationForm()
-    }
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
 
-    if request.method == 'POST':
-        formulario = CustomMesasCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡La Mesa ha sido registrada exitosamente!")
-            return redirect(to="indexMesas")
-        data["form"] = formulario
+    cursor.callproc("PKG_MESA.listarUbicaciones", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+    
+    data = {
+        'Ubicaciones': lista,
+    }
 
     return render(request, 'app/administrador/mesas/registroMesas.html', data)
 
 
+def crearMesas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    nro_mesa = int(request.GET["p_nro_mesa"])
+    nro_silla = int(request.GET["p_cant_sillas"])
+    id_ubicacion = int(request.GET["p_id_ubi"])
+    
+    cursor.callproc("PKG_MESA.crearMesa", [nro_mesa, nro_silla, id_ubicacion, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexMesas')
+    else:
+        messages.success(request, "¡La Mesa ha sido registrado exitosamente!")
+        return redirect('indexMesas')
+
 @login_required
 def modificarMesas(request, id):
-    mesas = get_object_or_404(Mesa, id_mesa=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+
+    id_mesa = id
+
+    cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
+    
+    cursor.callproc("PKG_MESA.listarUbicaciones", [out_cur_two])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_ubicacion = []
+    for fila in out_cur_two:
+        lista_ubicacion.append(fila)
+
 
     data = {
-        'form': CustomMesasCreationForm(instance=mesas)
+        'Mesas': lista,
+        'Ubicaciones': lista_ubicacion
     }
+    print(data)
 
-    if request.method == 'POST':
-        formulario = CustomMesasCreationForm(data=request.POST, instance=mesas)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡La mesa ha sido modificada exitosamente!")
-            return redirect(to='indexMesas')
-        data['form'] = formulario
     return render(request, 'app/administrador/mesas/editarMesas.html', data)
 
+def editarMesas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_mesa = int(request.GET["id"])
+    nro_mesa = int(request.GET["p_nro_mesa"])
+    cant_sillas = int(request.GET["p_cant_sillas"])
+    id_ubic = int(request.GET["p_id_ubi"])
+
+    cursor.callproc("PKG_MESA.modificarMesa", [id_mesa, nro_mesa, cant_sillas, id_ubic, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexMesas')
+    else:
+        messages.success(request, "¡La Mesa ha sido editada exitosamente!")
+        return redirect('indexMesas')
+
+def eliminarMesas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_mesa = int(id)
+
+    cursor.callproc("PKG_MESA.eliminarMesa", [id_mesa, salida])
+    
+    messages.success(request, "¡La Mesa ha sido eliminada exitosamente!")
+    return redirect(to="indexMesas")
 
 @login_required
 def indexGestionCajas(request):
