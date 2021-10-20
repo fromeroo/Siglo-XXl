@@ -3,7 +3,7 @@ from .views import indexUser, index, indexProveedores, registroProveedores, modi
     indexInsumos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
     indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, crearMesas, eliminarMesas, editarMesas, indexTablero, modificar_usuario, \
     administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, indexProductos, registroProductos, registroRecetas, \
-    modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, editarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
+    modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, crearMenusProductos, modificarMenusProductos, editarMenusProductos, indexMenusProductos, editarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
     registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor
 # APIS
 from api import views as api_views
@@ -29,7 +29,11 @@ urlpatterns = [
     path('administracion/menus/registro/', registroMenus, name="registroMenus"),
     path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
     path('administracion/menus/eliminar/<id>/', eliminarMenus, name="eliminarMenus"),
+    path('administracion/menus/index-producto/<id>/', indexMenusProductos, name="indexMenusProductos"),
     path('administracion/menus/registro-producto/<id>/', registroMenusProductos, name="registroMenusProductos"),
+    path('administracion/menus/modificar-producto/<id>/', modificarMenusProductos, name="modificarMenusProductos"),
+    path('crear-menus-productos/', crearMenusProductos, name="crearMenusProductos"),
+    path('editar-menus-productos/', editarMenusProductos, name="editarMenusProductos"),
 
 
     path('administracion/insumos/', indexInsumos, name="indexInsumos"),
