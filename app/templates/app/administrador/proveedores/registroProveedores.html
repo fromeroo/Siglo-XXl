@@ -40,6 +40,9 @@
             <div class="form-group col-md-6">
               <label for="p_id_giro">Giro</label>
               <select class="form-control" name="p_id_giro" id="select-giro" required>
+                {% for g in Giros %}
+                  <option value="{{g.0}}">{{g.1}}</option>
+                {% endfor %}
               </select>
             </div>
             <div class="form-group col-md-6">
@@ -166,19 +169,5 @@
     });
   </script>
 
-  <script>
-    $(document).ready(function () {
-      $.ajax({
-        url:'http://127.0.0.1:8000/api/listar-giros/',
-        dataType:'JSON',
-        success:function(data){
-          for (let i = 0; i < data.data.Giros.length; i++) {
-            let option = $(`<option value="${data.data.Giros[i][0]}">${data.data.Giros[i][1]}</option>`);
-            $('#select-giro').append(option); 
-          }
-        }
-      });
-    });
-
-  </script>
+  
 {% endblock %}

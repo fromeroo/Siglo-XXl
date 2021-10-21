@@ -83,11 +83,11 @@
             </div>
             <div class="form-group col-md-6">
               <label for="p_rut">Rut:</label>
-              <input type="text" name="p_rut" class="form-control" value="{{Proveedor.0.1}}" required>
+              <input type="text" name="p_rut" class="form-control" value="{{Proveedor.0.1}}" required readonly>
             </div>
             <div class="form-group col-md-6">
               <label for="p_dv" >DV:</label>
-              <input type="text" name="p_dv" id="" class="form-control" value="{{Proveedor.0.2}}" required>
+              <input type="text" name="p_dv" id="" class="form-control" value="{{Proveedor.0.2}}" required readonly>
             </div>
             <div class="form-group col-md-6">
               <label for="p_razon_social" >Razon Social:</label>
@@ -157,11 +157,9 @@
         </div>
         <div class="col mt-4">
           <div class="row">
-            <button class="btn btn-primary d-flex mr-auto">
-              <a href="{% url 'indexProveedores' %}" 
-              style="color: white;"
-              >Volver</a>
-            </button>
+            <a href="{% url 'indexProveedores' %}" 
+            class="btn btn-primary d-flex mr-auto"
+            >Volver</a>
             <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
           </div>  
         </div>
