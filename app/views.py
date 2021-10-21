@@ -331,18 +331,6 @@ def editarMenus(request):
         return redirect('indexMenus')
 
 
-
-def registroMenusProductos(request, id):
-    menu = get_object_or_404(Menu, id_menu=id)
-    
-    id_menu = {
-        'id': menu.id_menu,
-    }
-    
-    print(id_menu)
-
-    return render(request, 'app/administrador/menus/registroMenusProductos.html', id_menu)
-
 def eliminarMenus(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -355,6 +343,116 @@ def eliminarMenus(request, id):
     
     messages.success(request, "¡El menu ha sido eliminado exitosamente!")
     return redirect(to="indexMenus")
+
+def indexMenusProductos(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    menu = get_object_or_404(Menu, id_menu=id)
+
+    p_id_menu = menu.id_menu
+
+    cursor.callproc("PKG_MENU.listarDetalleMenu", [p_id_menu, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Menus': lista
+    }
+     
+    return render(request, 'app/administrador/menus/indexMenusProductos.html', data)
+
+def registroMenusProductos(request, id):
+    menu = get_object_or_404(Menu, id_menu=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'id': menu.id_menu,
+        'Productos': lista
+    }
+
+    print(data)
+    return render(request, 'app/administrador/menus/registroMenusProductos.html', data)
+
+
+def crearMenusProductos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_menu = int(request.GET["p_id_menu"])
+    p_id_producto = int(request.GET["p_id_producto"])
+    p_descripcion = request.GET["p_descripcion"]
+
+    cursor.callproc("PKG_MENU.crearDetalleMenu", [p_id_menu, p_id_producto, p_descripcion, salida])
+
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexMenusProductos', id = str(p_id_menu))
+    else:
+        messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
+        return redirect('indexMenusProductos', id = str(p_id_menu))
+
+
+def modificarMenusProductos(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    
+    id_det_menu = id
+
+    cursor.callproc("PKG_MENU.buscarDetalleMenu", [id_det_menu, out_cur])
+    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur_two])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+    
+    lista_productos= []
+    for fila in out_cur_two:
+        lista_productos.append(fila)
+
+    data = {
+        'MenuProductos': lista,
+        'Productos' : lista_productos
+    }
+
+    return render(request, 'app/administrador/menus/editarMenusProductos.html', data)
+
+
+def editarMenusProductos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_det_menu = int(request.GET["p_id_det_menu"])
+    p_id_producto = int(request.GET["p_id_producto"])
+    p_descripcion = request.GET["p_descripcion"]
+
+    p_id_menu = request.GET["p_id_menu"]
+
+    cursor.callproc("PKG_MENU.modificarDetalleMenu", [p_id_det_menu, p_id_producto, p_descripcion, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexMenusProductos', id = p_id_menu)
+    else:
+        messages.success(request, "¡El Menu ha sido editado exitosamente!")
+        return redirect('indexMenusProductos', id = p_id_menu)
 
 
 @login_required    

@@ -6,10 +6,10 @@
 
 <!-- {{message}} -->
 <div id="menus-table" class="col-lg-10 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
-  <h2>Menus</h2>
+  <h2>Detalle Menu</h2>
 
   <div id="toolbar">
-    <button class="btn btn-primary d-flex pr-auto mb-2"><a href="{% url 'registroMenus' %}" style="color: white; text-decoration: none;">Crear Menu</a></button>
+    <button class="btn btn-primary d-flex pr-auto mb-2"><a href="{% url 'registroMenusProductos' Menus.0.1 %}" style="color: white; text-decoration: none;">Agregar Detalle</a></button>
   </div>
   <table id="table" class="table table-striped table-bordered" style="width: 100%;"
   data-toggle="table"
@@ -19,8 +19,8 @@
     <thead class="thead-dark">
       <tr>
         <!-- <th scope="col">#</th> -->
-        <th scope="col">N° Menu</th>
-        <th scope="col">Nombre</th>
+        <th scope="col">Producto</th>
+        <th scope="col">Descripción</th>
         <th scope="col">Acciónes</th>
       </tr>
     </thead>
@@ -28,12 +28,10 @@
       {% for m in Menus %}
       <tr>
         <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>{{m.1}}</td>
-        <td>{{m.2}}</td>
+        <td>{{m.4}}</td>
+        <td>{{m.7}}</td>
         <td class="p-1">
-          <a href="{% url 'indexMenusProductos' m.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-eye"> Detalle</i></a>
-          <a href="{% url 'modificarMenus' m.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
-          <a onclick="eliminarMenu({{ m.0 }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
+          <a href="{% url 'modificarMenusProductos' m.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
         </td>
       </tr>
       {% endfor %}
