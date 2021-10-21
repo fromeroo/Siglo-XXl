@@ -37,8 +37,8 @@
         <td>{{p.6}}</td>
         <td>{{p.8}}</td>
         <td class="p-1">
-          <a href="{% url 'modificarMesas' p.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
-          <a onclick="eliminarMesas({{ p.0 }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
+          <a href="{% url 'modificarProductos' p.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+          <a onclick="eliminarProductos({{ p.0 }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
         </td>
       </tr>
       {% endfor %}
@@ -59,11 +59,11 @@
 {% block js %}
 
   <script>
-    function eliminarMenu(id)
+    function eliminarProductos(id)
     {
       swal.fire({
         "title": "¿Estás seguro?",
-        "text": "¡Estás apunto de eliminar el menu!",
+        "text": "¡Estás apunto de eliminar el producto!",
         "icon": "question",
         "showCancelButton": true,
         "cancelButtonText": "No, cancelar",

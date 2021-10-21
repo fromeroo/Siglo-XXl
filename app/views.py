@@ -658,6 +658,79 @@ def crearProductos(request):
         return redirect('indexProductos')
 
 
+def modificarProductos(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
+    out_cur_four = django_cursor.connection.cursor()
+    id_producto = id
+
+    cursor.callproc("PKG_PRODUCTO.listarCatProducto", [out_cur])
+    cursor.callproc("PKG_PRODUCTO.listarTipoProducto", [out_cur_two])
+    cursor.callproc("PKG_RECETA.listarReceta", [out_cur_three])
+    cursor.callproc("PKG_PRODUCTO.buscarProducto", [id_producto, out_cur_four])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_tipo_producto = []
+    for fila in out_cur_two:
+        lista_tipo_producto.append(fila)
+
+    lista_receta = []
+    for fila in out_cur_three:
+        lista_receta.append(fila)
+    
+    lista_producto = []
+    for fila in out_cur_four:
+        lista_producto.append(fila)
+
+    data = {
+        'Categorias': lista,
+        'TipoProductos': lista_tipo_producto,
+        'Recetas': lista_receta,
+        'Productos': lista_producto
+    }
+
+    return render(request, 'app/administrador/productos/editarProductos.html', data)
+
+def editarProductos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_producto = int(request.GET["p_id_producto"])
+    p_nom_prod = request.GET["p_nom_prod"]
+    p_precio = int(request.GET["p_precio"])
+    p_id_cat = int(request.GET["p_id_cat"])
+    p_id_tipo = int(request.GET["p_id_tipo"])
+    p_id_receta = int(request.GET["p_id_receta"])
+
+    cursor.callproc("PKG_PRODUCTO.modificarProducto", [p_id_producto, p_nom_prod, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexProductos')
+    else:
+        messages.success(request, "¡El Producto ha sido editado exitosamente!")
+        return redirect('indexProductos')
+
+
+def eliminarProductos(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    id_producto = int(id)
+
+    cursor.callproc("PKG_PRODUCTO.eliminarProducto", [id_producto, salida])
+    
+    messages.success(request, "¡El producto ha sido eliminado exitosamente!")
+    return redirect(to="indexProductos")
+
 @login_required
 def indexRecetas(request):
     recetas = Receta.objects.all()
