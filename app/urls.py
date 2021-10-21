@@ -2,7 +2,7 @@ from django.urls import path
 from .views import indexUser, index, indexProveedores, registroProveedores, modificarProveedores, eliminarProveedores, indexMenus, \
     indexInsumos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
     indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, crearMesas, eliminarMesas, editarMesas, indexTablero, modificar_usuario, \
-    administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, indexProductos, registroProductos, registroRecetas, \
+    administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, indexProductos, crearProductos, registroProductos, registroRecetas, \
     modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, crearMenusProductos, modificarMenusProductos, editarMenusProductos, indexMenusProductos, editarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
     registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor, actualizarProveedores, editarMenus
 # APIS
@@ -42,6 +42,7 @@ urlpatterns = [
     path('administracion/insumos/modificar/<id>/', modificarInsumos, name="modificarInsumos"),
 
     path('administracion/productos/', indexProductos, name="indexProductos"),
+    path('crear-producto/', crearProductos, name="crearProductos"),
     path('administracion/productos/registro/', registroProductos, name="registroProductos"),
 
     path('administracion/mesas/', indexMesas, name="indexMesas"),

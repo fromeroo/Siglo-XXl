@@ -449,7 +449,7 @@ def editarMenusProductos(request):
         # ACA ES EL MENSAJE DE ERROR
         return redirect('indexMenusProductos', id = p_id_menu)
     else:
-        messages.success(request, "¡El Menu ha sido editado exitosamente!")
+        messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
         return redirect('indexMenusProductos', id = p_id_menu)
 
 
@@ -500,15 +500,77 @@ def modificarInsumos(request, id):
 
 @login_required
 def indexProductos(request):
-    
-     
-    return render(request, 'app/administrador/productos/indexProductos.html')
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Productos': lista
+    }
+
+    return render(request, 'app/administrador/productos/indexProductos.html', data)
 
 
 @login_required
 def registroProductos(request):
-   
-    return render(request, 'app/administrador/productos/registroProductos.html')
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
+
+
+    cursor.callproc("PKG_PRODUCTO.listarCatProducto", [out_cur])
+    cursor.callproc("PKG_PRODUCTO.listarTipoProducto", [out_cur_two])
+    cursor.callproc("PKG_RECETA.listarReceta", [out_cur_three])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_tipo_producto = []
+    for fila in out_cur_two:
+        lista_tipo_producto.append(fila)
+
+    lista_receta = []
+    for fila in out_cur_three:
+        lista_receta.append(fila)
+
+    data = {
+        'Categorias': lista,
+        'TipoProductos': lista_tipo_producto,
+        'Recetas': lista_receta
+    }
+
+    return render(request, 'app/administrador/productos/registroProductos.html', data)
+
+
+def crearProductos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_nom_producto = request.GET["p_nom_producto"]
+    p_precio = int(request.GET["p_precio"])
+    p_id_cat = int(request.GET["p_id_cat"])
+    p_id_tipo = int(request.GET["p_id_tipo"])
+    p_id_receta = int(request.GET["p_id_receta"])
+
+    cursor.callproc("PKG_PRODUCTO.crearProducto", [p_nom_producto, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
+
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexProductos')
+    else:
+        messages.success(request, "¡El producto ha sido registrado exitosamente!")
+        return redirect('indexProductos')
 
 
 @login_required

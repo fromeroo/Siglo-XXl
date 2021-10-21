@@ -28,7 +28,20 @@
       </tr>
     </thead>
     <tbody>
-      
+      {% for p in Productos %}
+      <tr>
+        <!-- <th scope="row">{{ u.id }}</th> -->
+        <td>{{p.1}}</td>
+        <td>${{p.2}}</td>
+        <td>{{p.4}}</td>
+        <td>{{p.6}}</td>
+        <td>{{p.8}}</td>
+        <td class="p-1">
+          <a href="{% url 'modificarMesas' p.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+          <a onclick="eliminarMesas({{ p.0 }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
   </table>
 </div>
