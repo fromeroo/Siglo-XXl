@@ -733,9 +733,18 @@ def eliminarProductos(request, id):
 
 @login_required
 def indexRecetas(request):
-    recetas = Receta.objects.all()
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_RECETA.listarReceta", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
     data = {
-        'Recetas': recetas
+        'Recetas': lista
     }
      
     return render(request, 'app/administrador/recetas/indexRecetas.html', data)
@@ -743,19 +752,8 @@ def indexRecetas(request):
 
 @login_required
 def registroRecetas(request):
-    data = {
-        'form': CustomRecetaCreationForm()
-    }
 
-    if request.method == 'POST':
-        formulario = CustomRecetaCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡Receta creada exitosamente!")
-            return redirect(to="indexRecetas")
-        data["form"] = formulario
-
-    return render(request, 'app/administrador/recetas/registroRecetas.html', data)
+    return render(request, 'app/administrador/recetas/registroRecetas.html')
 
 
 @login_required
@@ -779,9 +777,63 @@ def modificarRecetas(request, id):
 
 @login_required
 def indexPedidosProveedor(request):
-     
-    return render(request, 'app/administrador/pedidos-proveedor/indexPedidosProveedor.html')
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
 
+    cursor.callproc("PKG_PEDIDO_INSUMO.listarPedidosNuevos", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'PedidosNuevos': lista
+    }
+
+    print(data)
+
+    return render(request, 'app/administrador/pedidos-proveedor/indexPedidosProveedor.html', data)
+
+
+def detallePedidosProveedor(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_pedido = id
+
+    cursor.callproc("PKG_PEDIDO_INSUMO.buscarDetPedido", [id_pedido, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'DetallePedidos': lista
+    }
+
+    return render(request, 'app/administrador/pedidos-proveedor/detallePedidosProveedor.html', data)
+
+
+
+def autorizarPedidosProveedor(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_pedido = int(request.GET["p_id_pedido"])
+    p_opcion1 = int(request.GET["p_opcion1"])
+    p_opcion2 = int(request.GET["p_opcion2"])
+
+    cursor.callproc("PKG_PEDIDO_INSUMO.autorizarPedidos", [p_id_pedido, p_opcion1, p_opcion2, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexPedidosProveedor')
+    else:
+        messages.success(request, "¡Cambio realizado con exito!")
+        return redirect('indexPedidosProveedor')
 
 
 @login_required

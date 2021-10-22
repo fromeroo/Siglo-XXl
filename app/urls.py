@@ -1,11 +1,22 @@
 from django.urls import path
-from .views import indexUser, index, indexProveedores, registroProveedores, modificarProveedores, eliminarProveedores, indexMenus, \
-    indexInsumos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
-    indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, crearMesas, eliminarMesas, editarMesas, indexTablero, modificar_usuario, \
-    administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, indexProductos, registroProductos, registroRecetas, \
-    modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
-    registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor, actualizarProveedores, editarMenus, \
-    crearInsumo, actualizarInsumos, eliminarInsumos, crearMenusProductos, modificarMenusProductos, editarMenusProductos, indexMenusProductos, crearProductos, modificarProductos, editarProductos, eliminarProductos
+from .views import index, administrador, registro, indexUser, eliminar_usuario, modificar_usuario, \
+    indexProveedores, crearProveedor, actualizarProveedores, registroProveedores, modificarProveedores, eliminarProveedores, \
+    indexMenus, crearMenus, editarMenus, registroMenus, modificarMenus, eliminarMenus, \
+    indexMenusProductos, registroMenusProductos, modificarMenusProductos, crearMenusProductos, editarMenusProductos, \
+    indexInsumos, crearInsumo, actualizarInsumos, registroInsumos, modificarInsumos, eliminarInsumos, \
+    indexProductos, crearProductos, editarProductos, registroProductos, modificarProductos, eliminarProductos, \
+    indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
+    indexRecetas, registroRecetas, modificarRecetas, \
+    indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
+    indexGestionCajas, registroGestionCajas, modificarGestionCajas, \
+    indexStockProductos, registroStockProductos, modificarStockProductos, \
+    indexGestionCajaFinanzas, \
+    indexGestionFacturas, registroGestionFacturas, modificarGestionFacturas, \
+    indexInformes, \
+    indexPagoEfectivo, \
+    indexTablero, \
+    dashboard, \
+    
 # APIS
 from api import views as api_views
 
@@ -31,12 +42,12 @@ urlpatterns = [
     path('administracion/menus/registro/', registroMenus, name="registroMenus"),
     path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
     path('administracion/menus/eliminar/<id>/', eliminarMenus, name="eliminarMenus"),
+
     path('administracion/menus/index-producto/<id>/', indexMenusProductos, name="indexMenusProductos"),
     path('administracion/menus/registro-producto/<id>/', registroMenusProductos, name="registroMenusProductos"),
     path('administracion/menus/modificar-producto/<id>/', modificarMenusProductos, name="modificarMenusProductos"),
     path('crear-menus-productos/', crearMenusProductos, name="crearMenusProductos"),
     path('editar-menus-productos/', editarMenusProductos, name="editarMenusProductos"),
-
 
     path('administracion/insumos/', indexInsumos, name="indexInsumos"),
     path('crear-insumo/', crearInsumo, name="crearInsumo"),
@@ -64,19 +75,16 @@ urlpatterns = [
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
 
     path('administracion/pedidos-proveedor/', indexPedidosProveedor, name="indexPedidosProveedor"),
-
-    path('administracion/menus/', indexMenus, name="indexMenus"),
+    path('administracion/pedidos-proveedor/detalle/<id>/', detallePedidosProveedor, name="detallePedidosProveedor"),
+    path('autorizar-pedido/', autorizarPedidosProveedor, name="autorizarPedidosProveedor"),
 
     path('administracion/gestion-cajas/', indexGestionCajas, name="indexGestionCajas"),
-    
     path('administracion/gestion-cajas/registro/', registroGestionCajas, name="registroGestionCajas"),
-    
     path('administracion/gestion-cajas/modificar/<id>/', modificarGestionCajas, name="modificarGestionCajas"),
 
     path('bodega/stock-productos/', indexStockProductos, name="indexStockProductos"),
     path('bodega/stock-productos/registro/', registroStockProductos, name="registroStockProductos"),
     path('bodega/stock-productos/modificar/<id>/', modificarStockProductos, name="modificarStockProductos"),
-
 
     path('finanzas/gestion-caja/', indexGestionCajaFinanzas, name="indexGestionCajaFinanzas"),
 
@@ -116,5 +124,9 @@ urlpatterns = [
     path('api/modificar-mesa/', api_views.ModificarMesaAPIView.as_view() , name="modificarMesa"),
     
     path('api/eliminar-mesa/', api_views.EliminarMesaAPIView.as_view() , name="eliminarMesa"),
+    
+    path('api/asignar-mesa/', api_views.AsignarMesaAPIView.as_view() , name="asignarMesa"),
+    
+    path('api/eliminar-asignacion/', api_views.EliminarAsignacionMesaAPIView.as_view() , name="eliminarAsignacion"),
 
 ]

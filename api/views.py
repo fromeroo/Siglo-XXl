@@ -176,14 +176,11 @@ class ModificarMesaAPIView(generics.GenericAPIView):
         p_id_ubi = int(request.data["p_id_ubi"])
         v_salida = cursor.var(cx_Oracle.NUMBER)
         
-
         cursor.callproc("PKG_MESA.modificarMesa", [p_id_mesa, p_nro_mesa, p_cant_sillas, p_id_ubi, v_salida])
-    
-        # lista= []
-        # for fila in out_cur:
-        #     lista.append(fila)
 
-        if v_salida == 1:
+        res = v_salida.getvalue()
+
+        if res == 1:
             return Response({
                 'status': 400,
                 'message': 'Error al modificar Mesa'
@@ -202,14 +199,11 @@ class EliminarMesaAPIView(generics.GenericAPIView):
         p_id_mesa = int(request.data["p_id_mesa"])
         v_salida = cursor.var(cx_Oracle.NUMBER)
         
-
         cursor.callproc("PKG_MESA.eliminarMesa", [p_id_mesa, v_salida])
-    
-        # lista= []
-        # for fila in out_cur:
-        #     lista.append(fila)
 
-        if v_salida == 1:
+        res = v_salida.getvalue()
+
+        if res == 1:
             return Response({
                 'status': 400,
                 'message': 'Error al modificar Mesa'
@@ -220,3 +214,50 @@ class EliminarMesaAPIView(generics.GenericAPIView):
                 'message': 'Mesa Modificada'
             })
 
+
+class AsignarMesaAPIView(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+    
+        p_id_mesa = int(request.data["p_id_mesa"])
+        v_salida = cursor.var(cx_Oracle.NUMBER)
+        
+        cursor.callproc("PKG_MESA.asignarMesa", [p_id_mesa, v_salida])
+
+        res = v_salida.getvalue()
+
+        if res == 1:
+            return Response({
+                'status': 200,
+                'message': 'Mesa Asignada'
+            })
+        else:
+            return Response({
+                'status': 400,
+                'message': 'Error al asignar Mesa'
+            })
+
+class EliminarAsignacionMesaAPIView(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+    
+        p_id_mesa = int(request.data["p_id_mesa"])
+        v_salida = cursor.var(cx_Oracle.NUMBER)
+        
+        cursor.callproc("PKG_MESA.eliminarAsignacionMesa", [p_id_mesa, v_salida])
+
+        res = v_salida.getvalue()
+
+        if res == 1:
+            return Response({
+                'status': 200,
+                'message': 'Asignacion Eliminada'
+            })
+        else:
+            return Response({
+                'status': 400,
+                'message': 'Error al eliminar Asignacion'
+            })
+            
