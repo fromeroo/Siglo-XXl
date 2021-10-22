@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Usuario, Proveedor, Receta, Menu, Caja, Mesa, InventarioInsumo, Insumo, Factura, OrdenComida
 from .forms import CustomUserCreationForm, CustomProveedorCreationForm, CustomInsumoCreationForm, CustomRecetaCreationForm, \
     CustomMenusCreationForm, CustomCajasCreationForm, CustomMesasCreationForm, CustomInventarioInsumoCreationForm, \
-    CustomFacturaCreationForm
+    CustomFacturaCreationForm, CrearReservaForm
     
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
@@ -735,6 +735,38 @@ def detalleCliente(request):
 def pagoCliente(request):
     messages.success(request, "¡!")
     return render(request, 'app/cliente/pagoCliente.html')
+
+# RESERVA CLIENTE
+def reservaCliente(request):
+    data = {
+        'form': CrearReservaForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CrearReservaForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "Reserva exitosa!")
+            return redirect()
+        data['form'] = formulario
+        
+    return render(request, 'app/cliente/reservaCliente.html', data)
+
+#PRINCIPAL
+def principal(request):
+    data = {
+        'form': CrearReservaForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CrearReservaForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, "Reserva exitosa!")
+            return redirect()
+        data['form'] = formulario
+
+    return render(request, 'app/cliente/principal.html', data)
 
 
 
