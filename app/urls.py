@@ -3,8 +3,9 @@ from .views import indexUser, index, indexProveedores, registroProveedores, modi
     indexInsumos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
     indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, crearMesas, eliminarMesas, editarMesas, indexTablero, modificar_usuario, \
     administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, indexProductos, registroProductos, registroRecetas, \
-    modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, editarMenus, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
-    registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor, reservaCliente, principal
+    modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
+    registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor, actualizarProveedores, editarMenus, \
+    crearInsumo, actualizarInsumos, eliminarInsumos, crearMenusProductos, modificarMenusProductos, editarMenusProductos, indexMenusProductos, crearProductos, modificarProductos, editarProductos, eliminarProductos, reservaCliente, principal
 # APIS
 from api import views as api_views
 
@@ -19,6 +20,7 @@ urlpatterns = [
 
     path('administracion/proveedores/', indexProveedores, name="indexProveedores"),
     path('crear-proveedor/', crearProveedor, name="crearProveedor"),
+    path('actualizar-proveedor/', actualizarProveedores, name="actualizarProveedores"),
     path('administracion/proveedores/registro/', registroProveedores, name="registroProveedores"),
     path('administracion/proveedores/modificar/<id>/', modificarProveedores, name="modificarProveedores"),
     path('administracion/proveedores/eliminar/<id>/', eliminarProveedores, name="eliminarProveedores"),
@@ -29,15 +31,26 @@ urlpatterns = [
     path('administracion/menus/registro/', registroMenus, name="registroMenus"),
     path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
     path('administracion/menus/eliminar/<id>/', eliminarMenus, name="eliminarMenus"),
+    path('administracion/menus/index-producto/<id>/', indexMenusProductos, name="indexMenusProductos"),
     path('administracion/menus/registro-producto/<id>/', registroMenusProductos, name="registroMenusProductos"),
+    path('administracion/menus/modificar-producto/<id>/', modificarMenusProductos, name="modificarMenusProductos"),
+    path('crear-menus-productos/', crearMenusProductos, name="crearMenusProductos"),
+    path('editar-menus-productos/', editarMenusProductos, name="editarMenusProductos"),
 
 
     path('administracion/insumos/', indexInsumos, name="indexInsumos"),
+    path('crear-insumo/', crearInsumo, name="crearInsumo"),
+    path('actualizar-insumo/', actualizarInsumos, name="actualizarInsumos"),
     path('administracion/insumos/registro/', registroInsumos, name="registroInsumos"),
     path('administracion/insumos/modificar/<id>/', modificarInsumos, name="modificarInsumos"),
+    path('administracion/insumos/eliminar/<id>/', eliminarInsumos, name="eliminarInsumos"),
 
     path('administracion/productos/', indexProductos, name="indexProductos"),
+    path('crear-producto/', crearProductos, name="crearProductos"),
+    path('editar-producto/', editarProductos, name="editarProductos"),
     path('administracion/productos/registro/', registroProductos, name="registroProductos"),
+    path('administracion/productos/modificar/<id>/', modificarProductos, name="modificarProductos"),
+    path('administracion/productos/eliminar/<id>/', eliminarProductos, name="eliminarProductos"),
 
     path('administracion/mesas/', indexMesas, name="indexMesas"),
     path('crear-mesas/', crearMesas, name="crearMesas"),

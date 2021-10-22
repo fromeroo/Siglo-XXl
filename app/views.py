@@ -87,6 +87,7 @@ def eliminar_usuario(request, id):
     messages.success(request, "¡El usuario ha sido desactivado exitosamente!")
     return redirect(to="indexUser")
 
+
 @login_required
 def indexProveedores(request):
     django_cursor = connection.cursor()
@@ -105,17 +106,17 @@ def indexProveedores(request):
      
     return render(request, 'app/administrador/proveedores/indexProveedores.html', data)
 
-
 @login_required
 def registroProveedores(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
-
     out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
 
     cursor.callproc("PKG_DIRECCION.listarComunas", [out_cur])
     cursor.callproc("PKG_DIRECCION.listarTipoDireccion", [out_cur_two])
+    cursor.callproc("PKG_PROVEEDOR.listarGiros", [out_cur_three])
 
     lista= []
     for fila in out_cur:
@@ -125,9 +126,14 @@ def registroProveedores(request):
     for fila in out_cur_two:
         lista_tipo_direccion.append(fila)
 
+    lista_giro = []
+    for fila in out_cur_three:
+        lista_giro.append(fila)
+
     data = {
         'Comunas': lista,
-        'TipoDirecciones': lista_tipo_direccion
+        'TipoDirecciones': lista_tipo_direccion,
+        'Giros': lista_giro
     }
      
     return render(request, 'app/administrador/proveedores/registroProveedores.html', data)
@@ -156,29 +162,78 @@ def crearProveedor(request):
     
     if salida == 1:
         # ACA ES EL MENSAJE DE ERROR
-        return redirect('indexProveedores')
-    else:
         messages.success(request, "¡El Proveedor ha sido registrado exitosamente!")
         return redirect('indexProveedores')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexProveedores')
 
+def actualizarProveedores(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+
+    id_proveedor = int(request.GET["p_id"])
+    razon_social = request.GET["p_razon_social"]
+    nombre_corto = request.GET["p_nom_corto"]
+    telefono = request.GET["p_telefono"]
+    correo = request.GET["p_correo"]
+    id_giro = int(request.GET["p_id_giro"])
+    direccion = request.GET["p_direccion"]
+    numero_direcion = request.GET["p_num_dir"]
+    numero_casa = int(request.GET["p_nro_casa"])
+    tipo_direccion = int(request.GET["p_tipo_dir"])
+    id_comuna= int(request.GET["p_id_com"])
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc("PKG_PROVEEDOR.modificarProveedor", [id_proveedor, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_direcion, numero_casa, tipo_direccion, id_comuna, salida])
+    
+    if salida.getvalue() == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        messages.success(request, "¡El Proveedor ha sido modificado exitosamente!")
+        return redirect('indexProveedores')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexProveedores')
 
 @login_required
 def modificarProveedores(request, id):
-    proveedor = get_object_or_404(Proveedor, id_proveedor=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
+    out_cur_four = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_PROVEEDOR.buscarProveedor", [id, out_cur])
+    cursor.callproc("PKG_PROVEEDOR.listarGiros", [out_cur_two])
+    cursor.callproc("PKG_DIRECCION.listarComunas", [out_cur_three])
+    cursor.callproc("PKG_DIRECCION.listarTipoDireccion", [out_cur_four])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_giro = []
+    for fila in out_cur_two:
+        lista_giro.append(fila)
+
+    lista_comuna = []
+    for fila in out_cur_three:
+        lista_comuna.append(fila)
+
+    lista_tipo_direccion = []
+    for fila in out_cur_four:
+        lista_tipo_direccion.append(fila)
 
     data = {
-        'form': CustomProveedorCreationForm(instance=proveedor)
+        'Proveedor': lista,
+        'ListaGiro': lista_giro,
+        'ListaComuna': lista_comuna,
+        'ListaTipoDireccion': lista_tipo_direccion,
     }
-
-    if request.method == 'POST':
-        formulario = CustomProveedorCreationForm(data=request.POST, instance=proveedor)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡El proveedor ha sido modificado exitosamente!")
-            return redirect(to='indexProveedores')
-        data['form'] = formulario
+    
     return render(request, 'app/administrador/proveedores/editarProveedores.html', data)
-
 
 def eliminarProveedores(request, id):
     django_cursor = connection.cursor()
@@ -276,18 +331,6 @@ def editarMenus(request):
         return redirect('indexMenus')
 
 
-
-def registroMenusProductos(request, id):
-    menu = get_object_or_404(Menu, id_menu=id)
-    
-    id_menu = {
-        'id': menu.id_menu,
-    }
-    
-    print(id_menu)
-
-    return render(request, 'app/administrador/menus/registroMenusProductos.html', id_menu)
-
 def eliminarMenus(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -301,64 +344,392 @@ def eliminarMenus(request, id):
     messages.success(request, "¡El menu ha sido eliminado exitosamente!")
     return redirect(to="indexMenus")
 
+def indexMenusProductos(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    menu = get_object_or_404(Menu, id_menu=id)
+
+    p_id_menu = menu.id_menu
+
+    cursor.callproc("PKG_MENU.listarDetalleMenu", [p_id_menu, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Menus': lista
+    }
+     
+    return render(request, 'app/administrador/menus/indexMenusProductos.html', data)
+
+def registroMenusProductos(request, id):
+    menu = get_object_or_404(Menu, id_menu=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'id': menu.id_menu,
+        'Productos': lista
+    }
+
+    print(data)
+    return render(request, 'app/administrador/menus/registroMenusProductos.html', data)
+
+
+def crearMenusProductos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_menu = int(request.GET["p_id_menu"])
+    p_id_producto = int(request.GET["p_id_producto"])
+    p_descripcion = request.GET["p_descripcion"]
+
+    cursor.callproc("PKG_MENU.crearDetalleMenu", [p_id_menu, p_id_producto, p_descripcion, salida])
+
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexMenusProductos', id = str(p_id_menu))
+    else:
+        messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
+        return redirect('indexMenusProductos', id = str(p_id_menu))
+
+
+def modificarMenusProductos(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    
+    id_det_menu = id
+
+    cursor.callproc("PKG_MENU.buscarDetalleMenu", [id_det_menu, out_cur])
+    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur_two])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+    
+    lista_productos= []
+    for fila in out_cur_two:
+        lista_productos.append(fila)
+
+    data = {
+        'MenuProductos': lista,
+        'Productos' : lista_productos
+    }
+
+    return render(request, 'app/administrador/menus/editarMenusProductos.html', data)
+
+
+def editarMenusProductos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_det_menu = int(request.GET["p_id_det_menu"])
+    p_id_producto = int(request.GET["p_id_producto"])
+    p_descripcion = request.GET["p_descripcion"]
+
+    p_id_menu = request.GET["p_id_menu"]
+
+    cursor.callproc("PKG_MENU.modificarDetalleMenu", [p_id_det_menu, p_id_producto, p_descripcion, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexMenusProductos', id = p_id_menu)
+    else:
+        messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
+        return redirect('indexMenusProductos', id = p_id_menu)
+
 
 @login_required    
 def indexInsumos(request):
-    insumos = Insumo.objects.all()
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_INSUMO.listarInsumo", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
     data = {
-        'Insumos': insumos
+        'Insumos': lista
     }
      
     return render(request, 'app/administrador/insumos/indexInsumos.html', data)
 
-
 @login_required
 def registroInsumos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_INSUMO.listarTipoInsumo", [out_cur])
+    cursor.callproc("PKG_INSUMO.listarCategoriaInsumo", [out_cur_two])
+
+    lista_tipo_insumo= []
+    for fila in out_cur:
+        lista_tipo_insumo.append(fila)
+
+    lista_categoria_insumo = []
+    for fila in out_cur_two:
+        lista_categoria_insumo.append(fila)
+
     data = {
-        'form': CustomInsumoCreationForm()
+        'TipoInsumos': lista_tipo_insumo,
+        'CategoriasInsumo': lista_categoria_insumo,
     }
-
-    if request.method == 'POST':
-        formulario = CustomInsumoCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡El insumo ha sido registrado exitosamente!")
-            return redirect(to="indexInsumos")
-        data["form"] = formulario
-
+     
     return render(request, 'app/administrador/insumos/registroInsumos.html', data)
 
+def crearInsumo(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    nombre_insumo = request.GET["p_nom_insumo"]
+    tipo_insumo = int(request.GET["p_id_tipo_insumo"])
+    categoria_insumo = int(request.GET["p_id_cat_insumo"])
+
+    cursor.callproc("PKG_INSUMO.crearInsumo", [nombre_insumo, tipo_insumo, categoria_insumo, salida])
+    
+    if salida.getvalue() == 1:
+        messages.success(request, "¡El Insumo ha sido creado exitosamente!")
+        return redirect('indexInsumos')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexInsumos')
+
+@login_required
+def actualizarInsumos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+
+    id_insumo = int(request.GET["p_id_insumo"])
+    nombre_insumo = request.GET["p_nom_insumo"]
+    tipo_insumo = int(request.GET["p_id_tipo_insumo"])
+    categoria_insumo = int(request.GET["p_id_cat_insumo"])
+
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc("PKG_INSUMO.modificarInsumo", [id_insumo, nombre_insumo, tipo_insumo, categoria_insumo, salida])
+    
+    if salida.getvalue() == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        messages.success(request, "¡El Insumo ha sido modificado exitosamente!")
+        return redirect('indexInsumos')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexInsumos')
 
 @login_required
 def modificarInsumos(request, id):
-    insumo = get_object_or_404(Insumo, id_ins=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
+    id_insumo = id
+
+    cursor.callproc("PKG_INSUMO.buscarInsumo", [id_insumo, out_cur])
+    cursor.callproc("PKG_INSUMO.listarTipoInsumo", [out_cur_two])
+    cursor.callproc("PKG_INSUMO.listarCategoriaInsumo", [out_cur_three])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_tipo_insumo = []
+    for fila in out_cur_two:
+        lista_tipo_insumo.append(fila)
+
+    lista_categoria_insumo = []
+    for fila in out_cur_three:
+        lista_categoria_insumo.append(fila)
 
     data = {
-        'form': CustomInsumoCreationForm(instance=insumo)
+        'Insumo': lista,
+        'TipoInsumo': lista_tipo_insumo,
+        'CategoriaInsumo': lista_categoria_insumo
     }
 
-    if request.method == 'POST':
-        formulario = CustomInsumoCreationForm(data=request.POST, instance=insumo)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡El insumo ha sido modificado exitosamente!")
-            return redirect(to='indexInsumos')
-        data['form'] = formulario
     return render(request, 'app/administrador/insumos/editarInsumos.html', data)
+
+def eliminarInsumos(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    id_insumo = int(id)
+
+    cursor.callproc("PKG_INSUMO.eliminarInsumo", [id_insumo, salida])
+    
+    messages.success(request, "¡El insumo ha sido eliminado exitosamente!")
+    return redirect(to="indexInsumos")
 
 
 @login_required
 def indexProductos(request):
-    
-     
-    return render(request, 'app/administrador/productos/indexProductos.html')
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Productos': lista
+    }
+
+    return render(request, 'app/administrador/productos/indexProductos.html', data)
 
 
 @login_required
 def registroProductos(request):
-   
-    return render(request, 'app/administrador/productos/registroProductos.html')
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
 
+
+    cursor.callproc("PKG_PRODUCTO.listarCatProducto", [out_cur])
+    cursor.callproc("PKG_PRODUCTO.listarTipoProducto", [out_cur_two])
+    cursor.callproc("PKG_RECETA.listarReceta", [out_cur_three])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_tipo_producto = []
+    for fila in out_cur_two:
+        lista_tipo_producto.append(fila)
+
+    lista_receta = []
+    for fila in out_cur_three:
+        lista_receta.append(fila)
+
+    data = {
+        'Categorias': lista,
+        'TipoProductos': lista_tipo_producto,
+        'Recetas': lista_receta
+    }
+
+    return render(request, 'app/administrador/productos/registroProductos.html', data)
+
+
+def crearProductos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_nom_producto = request.GET["p_nom_producto"]
+    p_precio = int(request.GET["p_precio"])
+    p_id_cat = int(request.GET["p_id_cat"])
+    p_id_tipo = int(request.GET["p_id_tipo"])
+    p_id_receta = int(request.GET["p_id_receta"])
+
+    cursor.callproc("PKG_PRODUCTO.crearProducto", [p_nom_producto, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
+
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexProductos')
+    else:
+        messages.success(request, "¡El producto ha sido registrado exitosamente!")
+        return redirect('indexProductos')
+
+
+def modificarProductos(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
+    out_cur_four = django_cursor.connection.cursor()
+    id_producto = id
+
+    cursor.callproc("PKG_PRODUCTO.listarCatProducto", [out_cur])
+    cursor.callproc("PKG_PRODUCTO.listarTipoProducto", [out_cur_two])
+    cursor.callproc("PKG_RECETA.listarReceta", [out_cur_three])
+    cursor.callproc("PKG_PRODUCTO.buscarProducto", [id_producto, out_cur_four])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_tipo_producto = []
+    for fila in out_cur_two:
+        lista_tipo_producto.append(fila)
+
+    lista_receta = []
+    for fila in out_cur_three:
+        lista_receta.append(fila)
+    
+    lista_producto = []
+    for fila in out_cur_four:
+        lista_producto.append(fila)
+
+    data = {
+        'Categorias': lista,
+        'TipoProductos': lista_tipo_producto,
+        'Recetas': lista_receta,
+        'Productos': lista_producto
+    }
+
+    return render(request, 'app/administrador/productos/editarProductos.html', data)
+
+def editarProductos(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_producto = int(request.GET["p_id_producto"])
+    p_nom_prod = request.GET["p_nom_prod"]
+    p_precio = int(request.GET["p_precio"])
+    p_id_cat = int(request.GET["p_id_cat"])
+    p_id_tipo = int(request.GET["p_id_tipo"])
+    p_id_receta = int(request.GET["p_id_receta"])
+
+    cursor.callproc("PKG_PRODUCTO.modificarProducto", [p_id_producto, p_nom_prod, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
+    
+    if salida == 1:
+        # ACA ES EL MENSAJE DE ERROR
+        return redirect('indexProductos')
+    else:
+        messages.success(request, "¡El Producto ha sido editado exitosamente!")
+        return redirect('indexProductos')
+
+
+def eliminarProductos(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    id_producto = int(id)
+
+    cursor.callproc("PKG_PRODUCTO.eliminarProducto", [id_producto, salida])
+    
+    messages.success(request, "¡El producto ha sido eliminado exitosamente!")
+    return redirect(to="indexProductos")
 
 @login_required
 def indexRecetas(request):
