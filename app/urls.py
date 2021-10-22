@@ -16,6 +16,9 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexPagoEfectivo, \
     indexTablero, \
     dashboard, \
+    clienteMenu, detalleCliente, pagoCliente, \
+    reservaCliente, \
+    principal
     
 # APIS
 from api import views as api_views
@@ -100,12 +103,22 @@ urlpatterns = [
 
     path('dashboard/', dashboard, name="dashboard"),
 
-    #TABLET CLIENTE
+    # TABLET CLIENTE
     path('cliente/clienteMenu/', clienteMenu, name="clienteMenu"),
     path('cliente/detalleCliente/', detalleCliente, name="detalleCliente"),
     path('cliente/pagoCliente/', pagoCliente, name="pagoCliente"),
 
+    #RESERVA CLIENTE
+    path('cliente/reservaCliente', reservaCliente, name="reservaCliente"),
+
+    # PRINCIPAL
+    path('cliente/principal', principal, name="principal"),
+
     # APIS URL MESAS
+    
+
+    # APIS URL
+    #path('api/listar-proveedores/', api_views.ListarProveedoresAPIView.as_view() , name="listarProveedores"),
     
     path('api/listar-todo-mesas/', api_views.ListarTodoMesasAPIView.as_view() , name="todoMesas"),
     
