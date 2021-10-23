@@ -6,7 +6,8 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexInsumos, crearInsumo, actualizarInsumos, registroInsumos, modificarInsumos, eliminarInsumos, \
     indexProductos, crearProductos, editarProductos, registroProductos, modificarProductos, eliminarProductos, \
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
-    indexRecetas, registroRecetas, modificarRecetas, \
+    indexRecetas, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
+    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas,\
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, \
     indexStockProductos, registroStockProductos, modificarStockProductos, \
@@ -74,8 +75,15 @@ urlpatterns = [
     path('administracion/mesas/modificar/<id>/', modificarMesas, name="modificarMesas"),
     
     path('administracion/recetas/', indexRecetas, name="indexRecetas"),
+    path('crear-recetas/', crearRecetas, name="crearRecetas"),
+    path('editar-recetas/', editarRecetas, name="editarRecetas"),
+    path('administracion/recetas/eliminar/<id>/', eliminarRecetas, name="eliminarRecetas"),
     path('administracion/recetas/registro/', registroRecetas, name="registroRecetas"),
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
+
+    path('administracion/recetas/index-ingredientes-recetas/<id>/', indexIngredientesRecetas, name="indexIngredientesRecetas"),
+    path('administracion/recetas/registro-ingredientes-recetas/<id>/', registroIngredientesRecetas, name="registroIngredientesRecetas"),
+    path('crear-ingredientes-recetas/', crearIngredientesRecetas, name="crearIngredientesRecetas"),
 
     path('administracion/pedidos-proveedor/', indexPedidosProveedor, name="indexPedidosProveedor"),
     path('administracion/pedidos-proveedor/detalle/<id>/', detallePedidosProveedor, name="detallePedidosProveedor"),

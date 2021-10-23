@@ -15,7 +15,6 @@ from django.db import connection
 
 import cx_Oracle
 
-# Create your views here.
 
 @login_required
 def indexUser(request):
@@ -25,16 +24,13 @@ def indexUser(request):
     }
     return render(request, 'app/administrador/usuarios/indexUser.html', data)
 
-
 @login_required
 def register(request):
     return render(request, 'registration/register.html')
 
-
 @login_required
 def index(request):
     return render(request, 'app/index.html')
-
 
 @login_required
 def administrador(request):
@@ -43,7 +39,6 @@ def administrador(request):
         'Usuario': usuario
     }
     return render(request, 'app/administrador.html', data)
-
 
 @login_required
 def registro(request):
@@ -60,7 +55,6 @@ def registro(request):
         data["form"] = formulario
 
     return render(request, 'app/administrador/usuarios/registroUser.html', data)
-
 
 @login_required
 def modificar_usuario(request, id):
@@ -79,14 +73,12 @@ def modificar_usuario(request, id):
         data['form'] = formulario
     return render(request, 'app/administrador/usuarios/editarUser.html', data)
 
-
 @login_required
 def eliminar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
     usuario.delete()
     messages.success(request, "¡El usuario ha sido desactivado exitosamente!")
     return redirect(to="indexUser")
-
 
 @login_required
 def indexProveedores(request):
@@ -138,6 +130,7 @@ def registroProveedores(request):
      
     return render(request, 'app/administrador/proveedores/registroProveedores.html', data)
 
+@login_required
 def crearProveedor(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -168,6 +161,7 @@ def crearProveedor(request):
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexProveedores')
 
+@login_required
 def actualizarProveedores(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -235,6 +229,7 @@ def modificarProveedores(request, id):
     
     return render(request, 'app/administrador/proveedores/editarProveedores.html', data)
 
+@login_required
 def eliminarProveedores(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -247,7 +242,6 @@ def eliminarProveedores(request, id):
     
     messages.success(request, "¡El proveedor ha sido eliminado exitosamente!")
     return redirect(to="indexProveedores")
-
 
 @login_required
 def indexMenus(request):
@@ -267,6 +261,7 @@ def indexMenus(request):
      
     return render(request, 'app/administrador/menus/indexMenus.html', data)
 
+@login_required
 def crearMenus(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -290,7 +285,6 @@ def registroMenus(request):
    
     return render(request, 'app/administrador/menus/registroMenus.html')
 
-
 @login_required
 def modificarMenus(request, id):
     django_cursor = connection.cursor()
@@ -310,7 +304,7 @@ def modificarMenus(request, id):
 
     return render(request, 'app/administrador/menus/editarMenus.html', data)
 
-
+@login_required
 def editarMenus(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -330,7 +324,7 @@ def editarMenus(request):
         messages.success(request, "¡El Menu ha sido editado exitosamente!")
         return redirect('indexMenus')
 
-
+@login_required
 def eliminarMenus(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -344,6 +338,7 @@ def eliminarMenus(request, id):
     messages.success(request, "¡El menu ha sido eliminado exitosamente!")
     return redirect(to="indexMenus")
 
+@login_required
 def indexMenusProductos(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -360,11 +355,13 @@ def indexMenusProductos(request, id):
         lista.append(fila)
 
     data = {
-        'Menus': lista
+        'Menus': lista,
+        'id': p_id_menu
     }
      
     return render(request, 'app/administrador/menus/indexMenusProductos.html', data)
 
+@login_required
 def registroMenusProductos(request, id):
     menu = get_object_or_404(Menu, id_menu=id)
     django_cursor = connection.cursor()
@@ -382,10 +379,9 @@ def registroMenusProductos(request, id):
         'Productos': lista
     }
 
-    print(data)
     return render(request, 'app/administrador/menus/registroMenusProductos.html', data)
 
-
+@login_required
 def crearMenusProductos(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -405,7 +401,7 @@ def crearMenusProductos(request):
         messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
         return redirect('indexMenusProductos', id = str(p_id_menu))
 
-
+@login_required
 def modificarMenusProductos(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -432,7 +428,7 @@ def modificarMenusProductos(request, id):
 
     return render(request, 'app/administrador/menus/editarMenusProductos.html', data)
 
-
+@login_required
 def editarMenusProductos(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -453,7 +449,6 @@ def editarMenusProductos(request):
     else:
         messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
         return redirect('indexMenusProductos', id = p_id_menu)
-
 
 @login_required    
 def indexInsumos(request):
@@ -498,6 +493,7 @@ def registroInsumos(request):
      
     return render(request, 'app/administrador/insumos/registroInsumos.html', data)
 
+@login_required
 def crearInsumo(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -571,6 +567,7 @@ def modificarInsumos(request, id):
 
     return render(request, 'app/administrador/insumos/editarInsumos.html', data)
 
+@login_required
 def eliminarInsumos(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -581,7 +578,6 @@ def eliminarInsumos(request, id):
     
     messages.success(request, "¡El insumo ha sido eliminado exitosamente!")
     return redirect(to="indexInsumos")
-
 
 @login_required
 def indexProductos(request):
@@ -600,7 +596,6 @@ def indexProductos(request):
     }
 
     return render(request, 'app/administrador/productos/indexProductos.html', data)
-
 
 @login_required
 def registroProductos(request):
@@ -635,7 +630,7 @@ def registroProductos(request):
 
     return render(request, 'app/administrador/productos/registroProductos.html', data)
 
-
+@login_required
 def crearProductos(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -657,7 +652,7 @@ def crearProductos(request):
         messages.success(request, "¡El producto ha sido registrado exitosamente!")
         return redirect('indexProductos')
 
-
+@login_required
 def modificarProductos(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -697,6 +692,7 @@ def modificarProductos(request, id):
 
     return render(request, 'app/administrador/productos/editarProductos.html', data)
 
+@login_required
 def editarProductos(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -719,7 +715,7 @@ def editarProductos(request):
         messages.success(request, "¡El Producto ha sido editado exitosamente!")
         return redirect('indexProductos')
 
-
+@login_required
 def eliminarProductos(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -756,24 +752,146 @@ def registroRecetas(request):
     return render(request, 'app/administrador/recetas/registroRecetas.html')
 
 
+def crearRecetas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_nom_receta = request.GET["p_nom_receta"]
+    p_tiempo_prep = int(request.GET["p_tiempo_prep"])
+    p_temp_ideal = int(request.GET["p_temp_ideal"])
+    p_instrucciones = request.GET["p_instrucciones"]
+
+    cursor.callproc("PKG_RECETA.crearReceta", [p_nom_receta, p_tiempo_prep, p_temp_ideal, p_instrucciones, salida])
+
+    res = salida.getvalue()
+    if res == 1:
+        messages.success(request, "¡La receta ha sido registrada exitosamente!")
+        return redirect('indexRecetas')
+    else:
+        return redirect('indexRecetas')
+
+
+
 @login_required
 def modificarRecetas(request, id):
-    receta = get_object_or_404(Receta, id_receta=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_receta = id
+
+    cursor.callproc("PKG_RECETA.buscarReceta", [id_receta, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
 
     data = {
-        'form': CustomRecetaCreationForm(instance=receta)
+        'Recetas': lista
     }
-
-    if request.method == 'POST':
-        formulario = CustomRecetaCreationForm(data=request.POST, instance=receta)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡Receta modificada exitosamente!")
-            return redirect(to='indexRecetas')
-        data['form'] = formulario
+    
     return render(request, 'app/administrador/recetas/editarRecetas.html', data)
 
+def editarRecetas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
 
+    p_id_receta = int(request.GET["p_id_receta"])
+    p_nom_receta = request.GET["p_nom_receta"]
+    p_tiempo_prep = int(request.GET["p_tiempo_prep"])
+    p_temp_ideal = int(request.GET["p_temp_ideal"])
+    p_instrucciones = request.GET["p_instrucciones"]
+
+    cursor.callproc("PKG_RECETA.modificarReceta", [p_id_receta, p_nom_receta, p_tiempo_prep, p_temp_ideal, p_instrucciones, salida])
+    
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡La Receta ha sido editada exitosamente!")
+        return redirect('indexRecetas')
+    else:
+        return redirect('indexRecetas')
+
+
+@login_required
+def eliminarRecetas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    id_receta = int(id)
+
+    cursor.callproc("PKG_RECETA.eliminarReceta", [id_receta, salida])
+    
+    messages.success(request, "¡La Receta ha sido eliminada exitosamente!")
+    return redirect(to="indexRecetas")
+
+
+@login_required
+def indexIngredientesRecetas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    receta = get_object_or_404(Receta, id_receta=id)
+
+    p_id_receta = receta.id_receta
+
+    cursor.callproc("PKG_RECETA.listarIngredientesReceta", [p_id_receta, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'id': p_id_receta,
+        'IngredientesRecetas': lista
+    }
+    print(data)
+    return render(request, 'app/administrador/recetas/indexIngredientesRecetas.html', data)
+
+@login_required
+def registroIngredientesRecetas(request, id):
+    receta = get_object_or_404(Receta, id_receta=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_INSUMO.listarInsumo", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'id': receta.id_receta,
+        'Ingredientes': lista
+    }
+
+    return render(request, 'app/administrador/recetas/registroIngredientesRecetas.html', data)
+
+@login_required
+def crearIngredientesRecetas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_receta = int(request.GET["p_id_receta"])
+    p_id_insumo = int(request.GET["p_id_insumo"])
+    p_cant = int(request.GET["p_cant"])
+
+    cursor.callproc("PKG_RECETA.crearRecetaInsumo", [p_id_receta, p_id_insumo, p_cant, salida])
+
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El Ingrediente de la receta ha sido registrado exitosamente!")
+        return redirect('indexIngredientesRecetas', id = str(p_id_receta))
+    else:
+        return redirect('indexIngredientesRecetas', id = str(p_id_receta))
 
 @login_required
 def indexPedidosProveedor(request):
@@ -790,8 +908,6 @@ def indexPedidosProveedor(request):
     data = {
         'PedidosNuevos': lista
     }
-
-    print(data)
 
     return render(request, 'app/administrador/pedidos-proveedor/indexPedidosProveedor.html', data)
 
@@ -814,8 +930,6 @@ def detallePedidosProveedor(request, id):
 
     return render(request, 'app/administrador/pedidos-proveedor/detallePedidosProveedor.html', data)
 
-
-
 def autorizarPedidosProveedor(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -834,7 +948,6 @@ def autorizarPedidosProveedor(request):
     else:
         messages.success(request, "¡Cambio realizado con exito!")
         return redirect('indexPedidosProveedor')
-
 
 @login_required
 def indexMesas(request):
@@ -919,7 +1032,6 @@ def modificarMesas(request, id):
         'Mesas': lista,
         'Ubicaciones': lista_ubicacion
     }
-    print(data)
 
     return render(request, 'app/administrador/mesas/editarMesas.html', data)
 
