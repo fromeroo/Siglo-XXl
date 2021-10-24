@@ -911,7 +911,6 @@ def indexPedidosProveedor(request):
 
     return render(request, 'app/administrador/pedidos-proveedor/indexPedidosProveedor.html', data)
 
-
 def detallePedidosProveedor(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -947,6 +946,37 @@ def autorizarPedidosProveedor(request):
         return redirect('indexPedidosProveedor')
     else:
         messages.success(request, "¡Cambio realizado con exito!")
+        return redirect('indexPedidosProveedor')
+
+@login_required
+def registrarOrdenCompra(request, id):
+    
+    id_pedido = id
+
+    data = {
+        'id': id_pedido,
+    }
+
+    return render(request, 'app/administrador/pedidos-proveedor/generarOrdenCompra.html', data)
+
+@login_required
+def crearOrdenCompra(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+
+    p_neto = int(request.GET["p_neto"])
+    p_id_pedido = int(request.GET["p_id_pedido"])
+    p_vigencia = int(request.GET["p_vigencia"])
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc("PKG_ORDEN_COMPRA.crearOrdenCompra", [p_neto, p_id_pedido, p_vigencia, salida])
+
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡Orden de Compra generada exitosamente!")
+        return redirect('indexPedidosProveedor')
+    else:
         return redirect('indexPedidosProveedor')
 
 @login_required

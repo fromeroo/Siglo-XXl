@@ -9,6 +9,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexRecetas, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
     indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas,\
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
+    registrarOrdenCompra, crearOrdenCompra, \
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, \
     indexStockProductos, registroStockProductos, modificarStockProductos, \
     indexGestionCajaFinanzas, \
@@ -96,6 +97,8 @@ urlpatterns = [
     path('bodega/stock-productos/', indexStockProductos, name="indexStockProductos"),
     path('bodega/stock-productos/registro/', registroStockProductos, name="registroStockProductos"),
     path('bodega/stock-productos/modificar/<id>/', modificarStockProductos, name="modificarStockProductos"),
+    path('bodega/stock-productos/registrar-oc/<id>/', registrarOrdenCompra, name="registrarOrdenCompra"),
+    path('crear-orden-compra/', crearOrdenCompra, name="crearOrdenCompra"),
 
     path('finanzas/gestion-caja/', indexGestionCajaFinanzas, name="indexGestionCajaFinanzas"),
 
