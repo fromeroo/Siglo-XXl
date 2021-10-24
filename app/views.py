@@ -273,11 +273,12 @@ def crearMenus(request):
 
     cursor.callproc("PKG_MENU.crearMenu", [nro_menu, nombre_menu, salida])
 
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El Menu ha sido registrado exitosamente!")
         return redirect('indexMenus')
     else:
-        messages.success(request, "¡El Menu ha sido registrado exitosamente!")
         return redirect('indexMenus')
 
 @login_required
@@ -317,11 +318,12 @@ def editarMenus(request):
 
     cursor.callproc("PKG_MENU.modificarMenu", [id_menu, nro_menu, nom_menu, salida])
     
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El Menu ha sido editado exitosamente!")
         return redirect('indexMenus')
     else:
-        messages.success(request, "¡El Menu ha sido editado exitosamente!")
         return redirect('indexMenus')
 
 @login_required
@@ -394,11 +396,12 @@ def crearMenusProductos(request):
 
     cursor.callproc("PKG_MENU.crearDetalleMenu", [p_id_menu, p_id_producto, p_descripcion, salida])
 
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
         return redirect('indexMenusProductos', id = str(p_id_menu))
     else:
-        messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
         return redirect('indexMenusProductos', id = str(p_id_menu))
 
 @login_required
@@ -443,11 +446,12 @@ def editarMenusProductos(request):
 
     cursor.callproc("PKG_MENU.modificarDetalleMenu", [p_id_det_menu, p_id_producto, p_descripcion, salida])
     
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
         return redirect('indexMenusProductos', id = p_id_menu)
     else:
-        messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
         return redirect('indexMenusProductos', id = p_id_menu)
 
 @login_required    
