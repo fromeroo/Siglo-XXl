@@ -649,11 +649,12 @@ def crearProductos(request):
 
     cursor.callproc("PKG_PRODUCTO.crearProducto", [p_nom_producto, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
 
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El producto ha sido registrado exitosamente!")
         return redirect('indexProductos')
     else:
-        messages.success(request, "¡El producto ha sido registrado exitosamente!")
         return redirect('indexProductos')
 
 @login_required
@@ -712,11 +713,12 @@ def editarProductos(request):
 
     cursor.callproc("PKG_PRODUCTO.modificarProducto", [p_id_producto, p_nom_prod, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
     
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El Producto ha sido editado exitosamente!")
         return redirect('indexProductos')
     else:
-        messages.success(request, "¡El Producto ha sido editado exitosamente!")
         return redirect('indexProductos')
 
 @login_required
