@@ -749,12 +749,10 @@ def indexRecetas(request):
      
     return render(request, 'app/administrador/recetas/indexRecetas.html', data)
 
-
 @login_required
 def registroRecetas(request):
 
     return render(request, 'app/administrador/recetas/registroRecetas.html')
-
 
 def crearRecetas(request):
     django_cursor = connection.cursor()
@@ -775,8 +773,6 @@ def crearRecetas(request):
         return redirect('indexRecetas')
     else:
         return redirect('indexRecetas')
-
-
 
 @login_required
 def modificarRecetas(request, id):
@@ -819,7 +815,6 @@ def editarRecetas(request):
     else:
         return redirect('indexRecetas')
 
-
 @login_required
 def eliminarRecetas(request, id):
     django_cursor = connection.cursor()
@@ -831,7 +826,6 @@ def eliminarRecetas(request, id):
     
     messages.success(request, "¡La Receta ha sido eliminada exitosamente!")
     return redirect(to="indexRecetas")
-
 
 @login_required
 def indexIngredientesRecetas(request, id):
@@ -853,7 +847,7 @@ def indexIngredientesRecetas(request, id):
         'id': p_id_receta,
         'IngredientesRecetas': lista
     }
-    print(data)
+
     return render(request, 'app/administrador/recetas/indexIngredientesRecetas.html', data)
 
 @login_required
@@ -1001,7 +995,6 @@ def indexMesas(request):
     
     return render(request, 'app/administrador/mesas/indexMesas.html', data)
 
-
 @login_required
 def registroMesas(request):
     django_cursor = connection.cursor()
@@ -1020,7 +1013,7 @@ def registroMesas(request):
 
     return render(request, 'app/administrador/mesas/registroMesas.html', data)
 
-
+@login_required
 def crearMesas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1033,11 +1026,12 @@ def crearMesas(request):
     
     cursor.callproc("PKG_MESA.crearMesa", [nro_mesa, nro_silla, id_ubicacion, salida])
     
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡La Mesa ha sido registrado exitosamente!")
         return redirect('indexMesas')
     else:
-        messages.success(request, "¡La Mesa ha sido registrado exitosamente!")
         return redirect('indexMesas')
 
 @login_required
@@ -1069,6 +1063,7 @@ def modificarMesas(request, id):
 
     return render(request, 'app/administrador/mesas/editarMesas.html', data)
 
+@login_required
 def editarMesas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1082,13 +1077,15 @@ def editarMesas(request):
 
     cursor.callproc("PKG_MESA.modificarMesa", [id_mesa, nro_mesa, cant_sillas, id_ubic, salida])
     
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
-        return redirect('indexMesas')
-    else:
+    res = salida.getvalue()
+
+    if res == 1:
         messages.success(request, "¡La Mesa ha sido editada exitosamente!")
         return redirect('indexMesas')
+    else:
+        return redirect('indexMesas')
 
+@login_required
 def eliminarMesas(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1110,7 +1107,6 @@ def indexGestionCajas(request):
     } 
      
     return render(request, 'app/administrador/gestion-cajas/indexCajas.html', data)
-
 
 @login_required
 def registroGestionCajas(request):
