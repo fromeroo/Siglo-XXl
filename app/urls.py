@@ -3,9 +3,11 @@ from .views import indexUser, index, indexProveedores, registroProveedores, modi
     indexInsumos, indexRecetas, indexPedidosProveedor, indexStockProductos, indexGestionCajaFinanzas, indexGestionCajas, \
     indexGestionFacturas,indexInformes, indexPagoEfectivo ,indexMesas, crearMesas, eliminarMesas, editarMesas, indexTablero, modificar_usuario, \
     administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, indexProductos, registroProductos, registroRecetas, \
-    modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
-    registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor, actualizarProveedores, editarMenus, \
-    crearInsumo, actualizarInsumos, eliminarInsumos, crearMenusProductos, modificarMenusProductos, editarMenusProductos, indexMenusProductos, crearProductos, modificarProductos, editarProductos, eliminarProductos
+    modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, registroGestionCajas, modificarGestionCajas, \
+    registroMesas, modificarMesas, registroStockProductos, modificarStockProductos, registroFacturas, modificarGestionFacturas, clienteMenu, \
+    detalleCliente, pagoCliente, crearProveedor, actualizarProveedores, editarMenus, crearInsumo, actualizarInsumos, eliminarInsumos, crearMenusProductos,\
+    modificarMenusProductos, editarMenusProductos, indexMenusProductos, crearProductos, modificarProductos, editarProductos, eliminarProductos, crearFactura,\
+    actualizarFacturas, eliminarFacturas
 # APIS
 from api import views as api_views
 
@@ -80,9 +82,18 @@ urlpatterns = [
 
     path('finanzas/gestion-caja/', indexGestionCajaFinanzas, name="indexGestionCajaFinanzas"),
 
+
+
+
     path('finanzas/gestion-facturas/', indexGestionFacturas, name="indexGestionFacturas"),
-    path('finanzas/gestion-facturas/registro/', registroGestionFacturas, name="registroGestionFacturas"),
+    path('crear-factura/', crearFactura, name="crearFactura"),
+    path('actualizar-factura/', actualizarFacturas, name="actualizarFacturas"),
+    path('finanzas/gestion-facturas/registro/', registroFacturas, name="registroFacturas"),
     path('finanzas/gestion-facturas/modificar/<id>/', modificarGestionFacturas, name="modificarGestionFacturas"),
+    path('finanzas/gestion-facturas/eliminar/<id>/', eliminarFacturas, name="eliminarFacturas"),
+
+
+
 
     path('finanzas/informes/', indexInformes, name="indexInformes"),
 

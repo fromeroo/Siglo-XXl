@@ -28,14 +28,14 @@
       </tr>
     </thead>
     <tbody>
-      {% for i in Insumos %}
+      {% for sp in StockProductos %}
       <tr>
         <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>{{i.id_ins}}</td>
-        <td>{{i.stock}}</td>
-        <td>{{i.fec_vencimiento}}</td>
-        <td>{{i.id_un_med}}</td>
-        <td>{{i.id_est_ins}}</td>
+        <td>{{sp.2}}</td>
+        <td>{{sp.3}}</td>
+        <td>{{sp.4}}</td>
+        <td>{{sp.6}}</td>
+        <td>{{sp.8}}</td>
         <td class="p-1">
           <a href="" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Realizar Pedido</i></a>
           <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
