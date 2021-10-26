@@ -14,6 +14,7 @@ from django.shortcuts import render
 from django.db import connection
 
 import cx_Oracle
+from datetime import datetime
 
 
 @login_required
@@ -1159,11 +1160,22 @@ def indexGestionCajaFinanzas(request):
 
 @login_required
 def indexStockProductos(request):
-    insumo = InventarioInsumo.objects.all()
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_INVENTARIO.listarInventario", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
     data = {
-        'Insumos': insumo
+        'StockProductos': lista
     }
-     
+
+    print(data)
+    
     return render(request, 'app/bodega/stock-productos/indexStockProductos.html', data)
 
 @login_required
@@ -1226,50 +1238,159 @@ def modificarStockProductos(request, id):
 
 @login_required
 def indexGestionFacturas(request):
-    factura = Factura.objects.all()
-    data = {
-        'Facturas': factura
-    }
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
 
+    cursor.callproc("PKG_FACTURA.listarFactura", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Facturas': lista
+    }
+     
     return render(request, 'app/finanzas/facturas/indexFacturas.html', data)
 
+def crearFactura(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    
+    salida = cursor.var(cx_Oracle.NUMBER)
 
+    nro_factura = int(request.GET["p_nro_factura"])
+    fec_emision = request.GET["p_fec_emision"]
+    formated_fec_emision = datetime.strftime(datetime.strptime(fec_emision, "%Y-%m-%d"), "%Y-%m-%d")
+    fec_pago = request.GET["p_fec_pago"]
+    formated_fec_pago = datetime.strftime(datetime.strptime(fec_pago, "%Y-%m-%d"), "%Y-%m-%d")
+    neto = int(request.GET["p_neto"])
+    id_oc = int(request.GET["p_id_oc"])
+    id_forma_pago = int(request.GET["p_id_forma_pago"])
+
+    print([formated_fec_emision, formated_fec_pago])
+    
+    cursor.callproc("PKG_FACTURA.crearFactura", [nro_factura, formated_fec_emision, formated_fec_pago, neto, id_oc, id_forma_pago, salida])
+    
+    if salida.getvalue() == 1:
+        messages.success(request, "¡La Factura ha sido creada exitosamente!")
+        return redirect('indexGestionFacturas')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexGestionFacturas')
+
+def actualizarFacturas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_factura = int(request.GET["p_id_factura"])
+    nro_factura = int(request.GET["p_nro_factura"])
+    fec_emision = request.GET["p_fec_emision"]
+    formated_fec_emision = datetime.strftime(datetime.strptime(fec_emision, "%Y-%m-%d"), "%Y-%m-%d")
+    fec_pago = request.GET["p_fec_pago"]
+    formated_fec_pago = datetime.strftime(datetime.strptime(fec_pago, "%Y-%m-%d"), "%Y-%m-%d")
+    neto = int(request.GET["p_neto"])
+    id_oc = int(request.GET["p_id_oc"])
+    id_forma_pago = int(request.GET["p_id_forma_pago"])
+
+    print(id_factura)
+    print(nro_factura)
+    print(fec_emision)
+    print(formated_fec_emision)
+    print(fec_pago)
+    print(formated_fec_pago)
+    print(neto)
+    print(id_oc)
+    print(id_forma_pago)
+
+    cursor.callproc("PKG_FACTURA.modificarFactura", [id_factura, nro_factura, formated_fec_emision, formated_fec_pago, neto, id_oc, id_forma_pago, salida])
+    
+    if salida == 1:
+        messages.success(request, "¡La Factura ha sido editada exitosamente!")
+        return redirect('indexGestionFacturas')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexGestionFacturas')
 
 @login_required
-def registroGestionFacturas(request):
-    data = {
-        'form': CustomFacturaCreationForm()
-    }
+def registroFacturas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
 
-    if request.method == 'POST':
-        formulario = CustomFacturaCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡La factura ha sido registrado exitosamente!")
-            return redirect(to="indexGestionFacturas")
-        data["form"] = formulario
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_FACTURA.listarFormaPago", [out_cur])
+    cursor.callproc("PKG_ORDEN_COMPRA.listarOC", [out_cur_two])
+
+    lista_forma_pago = []
+    for fila in out_cur:
+        lista_forma_pago.append(fila)
+
+    lista_orden_compra = []
+    for fila in out_cur_two:
+        lista_orden_compra.append(fila)
+    
+    data = {
+        'FormaPago': lista_forma_pago,
+        'OrdenCompra': lista_orden_compra,
+    }
 
     return render(request, 'app/finanzas/facturas/registroFacturas.html', data)
 
 
 @login_required
 def modificarGestionFacturas(request, id):
-    factura = get_object_or_404(Factura, id_factura=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
+
+    id_factura = id
+
+    cursor.callproc("PKG_FACTURA.buscarFactura", [id_factura, out_cur])
+    cursor.callproc("PKG_FACTURA.listarFormaPago", [out_cur_two])
+    cursor.callproc("PKG_ORDEN_COMPRA.listarOC", [out_cur_three])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_forma_pago = []
+    for fila in out_cur_two:
+        lista_forma_pago.append(fila)
+
+    lista_orden_compra = []
+    for fila in out_cur_three:
+        lista_orden_compra.append(fila)
+
+    fecha_emision = datetime.strftime(lista[0][2], "%Y-%m-%d")
+    fecha_pago = datetime.strftime(lista[0][3], "%Y-%m-%d")
 
     data = {
-        'form': CustomFacturaCreationForm(instance=factura)
+        'Factura': lista,
+        'OrdenCompra': lista_orden_compra,
+        'FormaPago': lista_forma_pago,
+        'FechaEmision': fecha_emision,
+        'FechaPago': fecha_pago
     }
 
-    if request.method == 'POST':
-        formulario = CustomFacturaCreationForm(data=request.POST, instance=factura)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "La factura ha sido modificado exitosamente!")
-            return redirect(to='indexGestionFacturas')
-        data['form'] = formulario
     return render(request, 'app/finanzas/facturas/editarFacturas.html', data)
 
+def eliminarFacturas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
 
+    id_factura = int(id)
+
+    cursor.callproc("PKG_FACTURA.eliminarFactura", [id_factura, salida])
+    
+    messages.success(request, "¡La Factura ha sido eliminada exitosamente!")
+    return redirect(to="indexGestionFacturas")
 
 @login_required
 def indexInformes(request):
