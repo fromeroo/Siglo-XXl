@@ -3,90 +3,49 @@
   
 {% block js %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      let FIRST_NAME = $("#id_first_name").val();
-      let LAST_NAME = $("#id_last_name").val();
-      let EMAIL = $("#id_email").val();
-      
-      $('#id_username').prop('readonly', true);
-      $('#id_first_name').prop('required', true);
-      $('#id_last_name').prop('required', true);
-
-      var minLength = 3;
-
-      $("#id_first_name").on("blur", function(){
-        var value = $(this).val();
-        if (value.length < minLength) {
-          $("#id_first_name").val(FIRST_NAME);
-
-          Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'El nombre debe tener mínimo 3 carácteres',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        }
-      });
-
-      $("#id_last_name").on("blur", function(){
-        var value = $(this).val();
-        if (value.length < minLength) {
-          $("#id_last_name").val(LAST_NAME);
-    
-          Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'El apellido debe tener mínimo 3 carácteres',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        }
-      });
-
-      $("#id_email").on("blur", function(){
-        var value = $(this).val();
-        if (value.length < (minLength + 5)) {
-          $("#id_email").val(EMAIL);
-    
-          Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'El email debe tener mínimo 8 carácteres',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        }
-      });
-    });
-
-    
-  </script>
 {% endblock %}
 
 {% block contenido %}
 {% load static %}
-    <!-- /.content-wrapper -->
-    
-    {% load crispy_forms_tags %}
-    <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
-      <form action="" method="post">
-        <h2>Editar receta</h2>
-        <hr>
-        {% csrf_token %}
-        {{ form | crispy }}
-        <div class="col">
-          <div class="row">
-            <button class="btn btn-primary d-flex mr-auto">
-              <a href="{% url 'indexRecetas' %}" style="color: white;">Cancelar</a>
-            </button>
-            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+
+  <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
+    <form action="/editar-recetas/" method="GET">
+      <h2>Editar receta</h2>
+      <hr>      
+      {% for r in Recetas %}
+      <div class="col">
+        <div class="row">
+          <input type="hidden" name="p_id_receta" class="form-control" value="{{r.0}}"/>
+          <div class="form-group col-md-6">
+            <label for="p_nom_receta">Nombre Receta:</label>
+            <input type="text" name="p_nom_receta" class="form-control" value="{{r.1}}" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="p_tiempo_prep">Tiempo Preparación (Min):</label>
+            <input type="number" name="p_tiempo_prep" class="form-control" value="{{r.4}}" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="p_temp_ideal">Temperatura Ideal (C):</label>
+            <input type="number" name="p_temp_ideal" class="form-control" value="{{r.5}}" required>
+          </div>
+          <div class="form-group col-md-12">
+            <label for="p_instrucciones">Instrucciones:</label>
+            <textarea class="form-control" name="p_instrucciones" id="" cols="30" rows="10" required>{{r.6}}</textarea>
           </div>
         </div>
-      </form>
-    </div>
-  <!-- /#wrapper -->
+      </div>
+      {% endfor %}
+      <div class="col mt-4">
+        <div class="row">
+          <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexRecetas' %}">
+            Volver
+          </a>
+          <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+        </div>  
+      </div>
+    </form>
+  </div>
+
 
   <style>
     #user-table{

@@ -2,99 +2,44 @@
 
 {% block js %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      $('#id_username').prop('required', true);
-      $('#id_first_name').prop('required', true);
-      $('#id_last_name').prop('required', true);
-
-      var minLength = 3;
-
-      $("#id_username").on("blur", function(){
-        var value = $(this).val();
-        if (value.length < minLength) {
-          $("#id_username").val("");
-
-          Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'El nombre debe tener mínimo 3 carácteres',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        }
-      });
-
-      $("#id_first_name").on("blur", function(){
-        var value = $(this).val();
-        if (value.length < minLength) {
-          $("#id_first_name").val("");
-
-          Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'El nombre debe tener mínimo 3 carácteres',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        }
-      });
-
-      $("#id_last_name").on("blur", function(){
-        var value = $(this).val();
-        if (value.length < minLength) {
-          $("#id_last_name").val("");
-    
-          Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'El apellido debe tener mínimo 3 carácteres',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        }
-      });
-
-      $("#id_email").on("blur", function(){
-        var value = $(this).val();
-        if (value.length < (minLength + 5)) {
-          $("#id_email").val("");
-    
-          Swal.fire({
-            position: 'center',
-            icon: 'warning',
-            title: 'El email debe tener mínimo 8 carácteres',
-            showConfirmButton: false,
-            timer: 1500
-          })
-        }
-      });
-    });
-
-    
-  </script>
 {% endblock %}
 
 {% block contenido %}
 {% load static %}
     <!-- /.content-wrapper -->
     
-    {% load crispy_forms_tags %}
+
     <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
       <h2>Registro de Recetas</h2>
       <hr>
-      <form action="" method="post">
-        {% csrf_token %}
-        {{ form | crispy }}
+      <form action="/crear-recetas/" method="GET">
         <div class="col">
           <div class="row">
-            <button class="btn btn-primary d-flex mr-auto">
-              <a href="{% url 'indexRecetas' %}" 
-              style="color: white;"
-              >Ir al inicio</a>
-            </button>
-            <button class="btn btn-primary d-flex ml-auto" type="submit">Registrar</button>
+            <div class="form-group col-md-6">
+              <label for="p_nom_receta">Nombre Receta:</label>
+              <input type="text" name="p_nom_receta" class="form-control" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_tiempo_prep">Tiempo Preparación (Min):</label>
+              <input type="number" name="p_tiempo_prep" class="form-control" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_temp_ideal">Temperatura Ideal (C):</label>
+              <input type="number" name="p_temp_ideal" class="form-control" required>
+            </div>
+            <div class="form-group col-md-12">
+              <label for="p_instrucciones">Instrucciones:</label>
+              <textarea class="form-control" name="p_instrucciones" id="" cols="30" rows="10" required></textarea>
+            </div>
           </div>
+        </div>
+        <div class="col mt-4">
+          <div class="row">
+            <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexRecetas' %}">
+              Volver
+            </a>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+          </div>  
         </div>
       </form>
     </div>
