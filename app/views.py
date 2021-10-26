@@ -1166,6 +1166,24 @@ def indexStockProductos(request):
      
     return render(request, 'app/bodega/stock-productos/indexStockProductos.html', data)
 
+@login_required
+def editarStockProducto(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_inv = int(request.GET["p_id_inv"])
+    p_add_stock = int(request.GET["p_add_stock"])
+
+    cursor.callproc("PKG_INVENTARIO.editarStock", [p_id_inv, p_add_stock, salida])
+    
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El Stock del Insumos ha sido aumentado exitosamente!")
+        return redirect(to='indexStockProductos')
+    else:
+        return redirect(to='indexStockProductos')
 
 @login_required
 def registroStockProductos(request):
@@ -1183,22 +1201,23 @@ def registroStockProductos(request):
 
     return render(request, 'app/bodega/stock-productos/registroStockProductos.html', data)
 
-
 @login_required
 def modificarStockProductos(request, id):
-    insumo = get_object_or_404(InventarioInsumo, id_inv_ins=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_inventario = id
+
+    cursor.callproc("PKG_INVENTARIO.buscarInvInsumo", [id_inventario, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
 
     data = {
-        'form': CustomInventarioInsumoCreationForm(instance=insumo)
+        'InvetarioStock': lista
     }
 
-    if request.method == 'POST':
-        formulario = CustomInventarioInsumoCreationForm(data=request.POST, instance=insumo)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡El producto ha sido modificado exitosamente!")
-            return redirect(to='indexStockProductos')
-        data['form'] = formulario
     return render(request, 'app/bodega/stock-productos/editarStockProductos.html', data)
 
 
