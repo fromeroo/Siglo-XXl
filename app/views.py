@@ -1164,7 +1164,7 @@ def indexStockProductos(request):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("PKG_INVENTARIO.listarInventario", [out_cur])
+    cursor.callproc("PKG_INVENTARIO.listarInsumosStockCritico", [out_cur])
 
     lista= []
     for fila in out_cur:
@@ -1212,6 +1212,79 @@ def registroStockProductos(request):
         data["form"] = formulario
 
     return render(request, 'app/bodega/stock-productos/registroStockProductos.html', data)
+
+
+@login_required
+def registroRealizarPedido(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
+
+    id_inv_ins = id
+    id_usr = request.user.id
+
+    cursor.callproc("PKG_INVENTARIO.buscarInvInsumo", [id_inv_ins, out_cur])
+    cursor.callproc("PKG_PROVEEDOR.listarProveedor", [out_cur_two])
+    cursor.callproc("PKG_PEDIDO_INSUMO.listarMarca ", [out_cur_three])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_proveedor= []
+    for fila in out_cur_two:
+        lista_proveedor.append(fila)
+
+    lista_marca= []
+    for fila in out_cur_three:
+        lista_marca.append(fila)
+
+    data = {
+        'id_usuario': id_usr,
+        'Inventarios': lista,
+        'Proveedores': lista_proveedor,
+        'Marcas': lista_marca,
+    }
+
+    return render(request, 'app/bodega/stock-productos/registroStockProductos.html', data)
+
+
+@login_required
+def crearRealizarPedido(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    salida_id = cursor.var(cx_Oracle.NUMBER)
+    salida_dos = cursor.var(cx_Oracle.NUMBER)
+    p_id_proveedor = int(request.GET["p_id_proveedor"])
+    p_id_usuario = int(request.GET["p_id_usuario"])
+    p_cantidad = int(request.GET["p_cantidad"])
+    p_medida = request.GET["p_medida"]
+    p_id_marca = int(request.GET["p_id_marca"])
+
+    cursor.callproc("PKG_PEDIDO_INSUMO.crearPedidoInsumo", [p_id_proveedor, p_id_usuario, salida, salida_id])
+
+    res = salida.getvalue()
+
+    if res == 1:
+        p_id_insumo = int(request.GET["p_id_insumo"])
+        p_id_pedido = int(salida_id.getvalue())
+        cursor.callproc("PKG_PEDIDO_INSUMO.crearDetallePedido", [p_id_pedido, p_id_insumo, p_cantidad, p_medida, p_id_marca, salida_dos])
+        res_dos = salida_dos.getvalue()
+
+        if res_dos == 1:
+            messages.success(request, "¡El Pedido ha sido registrado exitosamente!")
+            return redirect(to='indexStockProductos')
+        else:
+            messages.success(request, "Error en el segundo IF")
+            return redirect(to='indexStockProductos')
+
+    else:
+        messages.success(request, "Error en el primer IF")
+        return redirect(to='indexStockProductos')
+
 
 @login_required
 def modificarStockProductos(request, id):

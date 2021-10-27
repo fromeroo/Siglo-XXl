@@ -9,21 +9,27 @@
 {% load static %}
 
   <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
-    <form action="" method="post">
-      <h2>Editar Stock de Insumo</h2>
+    <form action="/editar-stock-productos/" method="GET">
+      <h2>Aumentar Stock</h2>
       <hr>
       <div class="col mt-4">
+        {% for i in InvetarioStock %}
         <div class="row">
           <!-- id -->
-          <input type="hidden" name="p_id_producto" value="{{i.0}}">
-          <div class="form-group col-md-6">
-            <label for="p_nom_prod">Nombre:</label>
-            <input type="text" name="p_nom_prod" class="form-control" value="{{i.1}}" required>
+          <input type="hidden" name="p_id_inv" value="{{i.0}}">
+          <div class="form-group col-md-12">
+            <label for="p_add_stock">Cantidad a Sumar:</label>
+            <input type="number" name="p_add_stock" class="form-control text-center" required>
           </div>
-          <div class="form-group col-md-6">
-            <label for="p_precio">Precio:</label>
-            <input type="number" name="p_precio" id="" class="form-control" value="{{i.2}}" required>
-          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col mt-4">
+        <div class="row">
+          <a href="{% url 'indexStockProductos' %}" class="btn btn-primary d-flex mr-auto">
+            Volver
+          </a>
+          <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
         </div>
       </div>
     </form>

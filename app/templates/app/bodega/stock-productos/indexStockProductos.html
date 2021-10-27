@@ -37,7 +37,8 @@
         <td>{{sp.6}}</td>
         <td>{{sp.8}}</td>
         <td class="p-1">
-          <a href="" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Realizar Pedido</i></a>
+          <a href="{% url 'modificarStockProductos' sp.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-plus"> Aumentar Stock</i></a>
+          <a href="{% url 'registroRealizarPedido' sp.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Realizar Pedido</i></a>
           <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
         </td>
       </tr>
