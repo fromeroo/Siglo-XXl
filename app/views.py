@@ -1295,19 +1295,9 @@ def actualizarFacturas(request):
     id_oc = int(request.GET["p_id_oc"])
     id_forma_pago = int(request.GET["p_id_forma_pago"])
 
-    print(id_factura)
-    print(nro_factura)
-    print(fec_emision)
-    print(formated_fec_emision)
-    print(fec_pago)
-    print(formated_fec_pago)
-    print(neto)
-    print(id_oc)
-    print(id_forma_pago)
-
     cursor.callproc("PKG_FACTURA.modificarFactura", [id_factura, nro_factura, formated_fec_emision, formated_fec_pago, neto, id_oc, id_forma_pago, salida])
     
-    if salida == 1:
+    if salida.getvalue() == 1:
         messages.success(request, "¡La Factura ha sido editada exitosamente!")
         return redirect('indexGestionFacturas')
     else:
