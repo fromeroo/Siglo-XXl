@@ -1193,14 +1193,6 @@ def asignarUsuarioCaja(request):
     else:
         return redirect('indexGestionCajas')
 
-@login_required
-def indexGestionCajaFinanzas(request):
-    cajas = Caja.objects.all()
-    data = {
-        'Cajas': cajas
-    }
-     
-    return render(request, 'app/finanzas/cajas/indexGestionCajaFinanzas.html', data)
 
 # BODEGA
 
@@ -1355,6 +1347,80 @@ def modificarStockProductos(request, id):
 
 # FINANZAS
 
+@login_required
+def indexGestionCajaFinanzas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_CAJA.listarCajasActivas", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Cajas': lista
+    }
+     
+    return render(request, 'app/finanzas/cajas/indexGestionCajaFinanzas.html', data)
+
+@login_required
+def buscarCajasFinanzas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_caja = id
+
+    cursor.callproc("PKG_CAJA.buscarCajasActivas", [id_caja, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+     
+    data = {
+        'Cajas': lista
+    }
+
+    return render(request, 'app/finanzas/cajas/abrirCajas.html', data)
+
+@login_required
+def abrirCajasFinanzas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_caja = int(request.GET["id_caja"])
+    p_amount = int(request.GET["p_amount"])
+
+    cursor.callproc("PKG_CAJA.abrirCaja", [id_caja, p_amount, salida])
+    
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡Caja abierta exitosamente!")
+        return redirect(to='indexGestionCajaFinanzas')
+    else:
+        return redirect(to='indexGestionCajaFinanzas')
+
+@login_required
+def detalleCajasFinanzas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_caja = id
+
+    cursor.callproc("PKG_CAJA.buscarCajasActivas", [id_caja, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+     
+    data = {
+        'Cajas': lista
+    }
+
+    return render(request, 'app/finanzas/cajas/detalleCajas.html', data)
 
 @login_required
 def indexGestionFacturas(request):
