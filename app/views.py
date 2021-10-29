@@ -1104,47 +1104,94 @@ def eliminarMesas(request, id):
 
 @login_required
 def indexGestionCajas(request):
-    cajas = Caja.objects.all()
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_CAJA.listarCajasActivas", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
     data = {
-        'Cajas': cajas
-    } 
+        'Cajas': lista
+    }
      
     return render(request, 'app/administrador/gestion-cajas/indexCajas.html', data)
 
 @login_required
 def registroGestionCajas(request):
-    data = {
-        'form': CustomCajasCreationForm()
-    }
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    id_usr = request.user.id
+    salida = cursor.var(cx_Oracle.NUMBER)
+    
+    cursor.callproc("PKG_CAJA.crearCaja", [id_usr, salida])
+    
+    res = salida.getvalue()
 
-    if request.method == 'POST':
-        formulario = CustomCajasCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "¡La Caja ha sido registrada exitosamente!")
-            return redirect(to="indexGestionCajas")
-        data["form"] = formulario
+    if res == 1:
+        messages.success(request, "¡La Caja ha sido creada exitosamente!")
+        return redirect('indexGestionCajas')
+    else:
+        return redirect('indexGestionCajas')
 
-    return render(request, 'app/administrador/gestion-cajas/registroCajas.html', data)
+@login_required
+def eliminarGestionCajas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    id_caja = int(id)
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc("PKG_CAJA.eliminarCaja", [id_caja, salida])
+
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡La Caja ha sido eliminada exitosamente!")
+        return redirect(to="indexGestionCajas")    
+    else:
+        return redirect(to="indexGestionCajas")
 
 
 @login_required
 def modificarGestionCajas(request, id):
-    caja = get_object_or_404(Caja, id_caja=id)
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_caja = id
 
+    cursor.callproc("PKG_USUARIO.listarUsuarios", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+     
     data = {
-        'form': CustomCajasCreationForm(instance=caja)
+        'id': id_caja,
+        'Usuarios': lista
     }
 
-    if request.method == 'POST':
-        formulario = CustomCajasCreationForm(data=request.POST, instance=caja)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "La Caja ha sido modificada exitosamente!")
-            return redirect(to='indexGestionCajas')
-        data['form'] = formulario
     return render(request, 'app/administrador/gestion-cajas/editarCajas.html', data)
 
+@login_required
+def asignarUsuarioCaja(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    id_caja = int(request.GET["id_caja"])
+    p_usr = int(request.GET["p_usr"])
+    salida = cursor.var(cx_Oracle.NUMBER)
+    
+    cursor.callproc("PKG_CAJA.cambiarUsuarioCaja", [id_caja, p_usr, salida])
+    
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡Usuario asignado exitosamente!")
+        return redirect('indexGestionCajas')
+    else:
+        return redirect('indexGestionCajas')
 
 @login_required
 def indexGestionCajaFinanzas(request):

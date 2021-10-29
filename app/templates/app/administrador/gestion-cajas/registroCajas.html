@@ -88,11 +88,9 @@
         {{ form | crispy }}
         <div class="col">
           <div class="row">
-            <button class="btn btn-primary d-flex mr-auto">
-              <a href="{% url 'indexCajas' %}" 
-              style="color: white;"
-              >Volver</a>
-            </button>
+            <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexGestionCajas' %}">
+              Volver
+            </a>
             <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
           </div>
         </div>

@@ -20,10 +20,9 @@
       <tr>
         <!-- <th scope="col">#</th> -->
         <th scope="col">N° de Caja</th>
-        <th scope="col">Fecha de Apertura</th>
-        <th scope="col">Fecha de Cierre</th>
-        <th scope="col">Monto Apertura</th>
+        <th scope="col">Fecha de Creacion</th>
         <th scope="col">Estado de Caja</th>
+        <th scope="col">Usuario Asignado</th>
         <th scope="col">Acciónes</th>
       </tr>
     </thead>
@@ -31,14 +30,13 @@
       {% for c in Cajas %}
       <tr>
         <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>{{c.id_nro_caja}}</td>
-        <td>{{c.fec_hora_apertura}}</td>
-        <td>{{c.fec_hora_cierre}}</td>
-        <td>{{c.monto_apertura}}</td>
-        <td>{{c.id_est_caja}}</td>
+        <td>{{c.1}}</td>
+        <td>{{c.2}}</td>
+        <td>{{c.4}}</td>
+        <td>{{c.6}}</td>
         <td class="p-1">
-          <a href="{% url 'modificarGestionCajas' c.id_caja %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
-          <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
+          <a href="{% url 'modificarGestionCajas' c.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Asignar Usuario</i></a>
+          <a onclick="eliminarCajas({{ c.0 }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
         </td>
       </tr>
       {% endfor %}
@@ -53,5 +51,32 @@
   font-size: 14px;
 }
 </style>
+
+{% endblock %}
+
+
+{% block js %}
+
+  <script>
+    function eliminarCajas(id)
+    {
+      swal.fire({
+        "title": "¿Estás seguro?",
+        "text": "¡Estás apunto de eliminar la Caja!",
+        "icon": "question",
+        "showCancelButton": true,
+        "cancelButtonText": "No, cancelar",
+        "confirmButtonText": "Si, Eliminar",
+        "reverseButtons": true,
+        "confirmButtonColor": "#dc3545",
+        "cancelButtonColor": "#0069D9"
+      })
+      .then(function(result) {
+        if(result.isConfirmed) {
+          window.location.href = "eliminar/"+id+"/"
+        }
+      })
+    }
+  </script>
 
 {% endblock %}
