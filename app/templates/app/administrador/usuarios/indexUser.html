@@ -54,11 +54,11 @@
         <tbody>
           {% for u in Usuarios %}
           <tr>
-            <!-- <th scope="row">{{ u.id }}</th> -->
             <td>{{ u.first_name }}</td>
             <td>{{ u.last_name }}</td>
             <td>{{ u.email }}</td>
             <td class="p-1">
+              <a href="{% url 'listarRolesUsuario' u.id %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-key"> Asignar Rol</i></a>
               <a href="{% url 'modificar_usuario' u.id %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
               <a onclick="desactivarUsuario({{ u.id }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
             </td>

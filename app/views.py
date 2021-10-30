@@ -25,6 +25,50 @@ def indexUser(request):
     }
     return render(request, 'app/administrador/usuarios/indexUser.html', data)
 
+def listarRolesUsuario(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_USER_GROUP.listarGroup", [out_cur])
+    cursor.callproc("PKG_USER_GROUP.buscarUserGroup", [id, out_cur_two])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+    
+    lista_user_group = []
+    for fila in out_cur_two:
+        lista_user_group.append(fila)
+    
+    data = {
+        'Grupos': lista,
+        'IdUser': id,
+        'UserGroup': lista_user_group
+    }
+
+    print(lista_user_group)
+     
+    return render(request, 'app/administrador/usuarios/listarRolesUsuario.html', data)
+
+def cambiarRolUsuario(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_user = int(request.GET["p_id_user"])
+    p_id_oc = int(request.GET["p_id_oc"])
+
+    cursor.callproc("PKG_USER_GROUP.actualizarUserGroup", [p_id_user, p_id_oc, salida])
+    
+    if salida.getvalue() == 1:
+        messages.success(request, "¡El rol de usuario ha sido editado exitosamente!")
+        return redirect('indexUser')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexUser')
+
 @login_required
 def register(request):
     return render(request, 'registration/register.html')
@@ -1590,9 +1634,23 @@ def indexPagoEfectivo(request):
 
 @login_required
 def indexTablero(request):
-    ordenComida = OrdenComida.objects.all()
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    menu = get_object_or_404(Menu, id_menu=id)
+
+    p_id_menu = menu.id_menu
+
+    cursor.callproc("PKG_MENU.listarDetalleMenu", [p_id_menu, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
     data = {
-        'OrdenComida': ordenComida
+        'Menus': lista,
+        'id': p_id_menu
     }
      
     return render(request, 'app/cocina/tablero/indexTablero.html', data)
