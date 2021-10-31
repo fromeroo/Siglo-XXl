@@ -20,7 +20,8 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     dashboard, \
     clienteMenu, detalleCliente, pagoCliente, \
     reservaCliente, \
-    principal
+    principal, \
+    listarRolesUsuario, cambiarRolUsuario
     
 # APIS
 from api import views as api_views
@@ -33,6 +34,8 @@ urlpatterns = [
     path('administracion/usuario/', indexUser, name="indexUser"),
     path('administracion/usuario/eliminar/<id>/', eliminar_usuario, name='eliminar_usuario'),
     path('administracion/usuario/modificar/<id>/', modificar_usuario, name='modificar_usuario'),
+    path('administracion/usuario/listar-roles/<id>/', listarRolesUsuario, name='listarRolesUsuario'),
+    path('administracion/usuario/cambiar-rol/', cambiarRolUsuario, name='cambiarRolUsuario'),
 
     path('administracion/proveedores/', indexProveedores, name="indexProveedores"),
     path('crear-proveedor/', crearProveedor, name="crearProveedor"),
