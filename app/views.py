@@ -1578,9 +1578,18 @@ def indexInformes(request):
 
 @login_required
 def indexPagoEfectivo(request):
-    mesa = Mesa.objects.all()
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_MESA.listarMesaOcupada", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
     data = {
-        'Mesas': mesa
+        'Mesas': lista
     }
 
     return render(request, 'app/caja/pago-efectivo/indexPagoEfectivo.html', data)
