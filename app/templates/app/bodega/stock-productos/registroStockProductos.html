@@ -86,7 +86,7 @@
         <div class="row">
           <!-- id -->
           <input type="hidden" name="p_id_usuario" value="{{id_usuario}}">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-12">
             <label for="p_id_proveedor">Proveedor:</label>
             <select name="p_id_proveedor" id="" class="form-control">
               {% for p in Proveedores %}
@@ -96,39 +96,15 @@
               {% endfor %}
             </select>
           </div>
-          <div class="form-group col-md-6">
-            <label for="p_id_marca">Marca:</label>
-            <select name="p_id_marca" id="" class="form-control">
-              {% for m in Marcas %}
-              <option value="{{m.0}}">
-                {{m.1}}
-              </option>
-              {% endfor %}
-            </select>
-          </div>
-          {% for i in Inventarios %}
-          <div class="form-group col-md-6">
-            <input type="hidden" name="p_id_insumo" value="{{i.1}}">
-            <label for="p_add_stock">Insumo:</label>
-            <input class="form-control" type="text" name="" id="" value="{{i.2}}" disabled>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="p_medida">Unidad de Medida:</label>
-            <input class="form-control" type="text" name="p_medida" id="" value="{{i.6}}" readonly>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="p_cantidad">Cantidad:</label>
-            <input class="form-control" type="number" name="p_cantidad" id="" min="{{i.3}}" required>
-          </div>
-          {% endfor %}
+          
         </div>
       </div>
       <div class="col mt-4">
         <div class="row">
-          <button class="btn btn-primary d-flex mr-auto">
-            <a href="{% url 'indexStockProductos' %}" 
-            style="color: white;"
-            >Ir al inicio</a>
+         
+          <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexStockProductos' %}">
+            Ir al inicio
+          </a>
           </button>
           <button class="btn btn-primary d-flex ml-auto" type="submit">Registrar</button>
         </div>

@@ -11,7 +11,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, \
-    indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido,\
+    indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, \
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, \
     indexInformes, \
@@ -103,9 +103,10 @@ urlpatterns = [
     path('bodega/stock-productos/registro/', registroStockProductos, name="registroStockProductos"),
     path('bodega/stock-productos/modificar/<id>/', modificarStockProductos, name="modificarStockProductos"),
     path('bodega/stock-productos/registrar-oc/<id>/', registrarOrdenCompra, name="registrarOrdenCompra"),
-    path('bodega/stock-productos/registro-pedido/<id>/', registroRealizarPedido, name="registroRealizarPedido"),
+    path('bodega/stock-productos/registro-pedido/', registroRealizarPedido, name="registroRealizarPedido"),
     path('crear-orden-compra/', crearOrdenCompra, name="crearOrdenCompra"),
     path('crear-realizar-pedido/', crearRealizarPedido, name="crearRealizarPedido"),
+    path('agregar-realizar-pedido/', agregarRealizarPedido, name="agregarRealizarPedido"),
     path('editar-stock-productos/', editarStockProducto, name="editarStockProducto"),
 
     path('finanzas/gestion-caja/', indexGestionCajaFinanzas, name="indexGestionCajaFinanzas"),

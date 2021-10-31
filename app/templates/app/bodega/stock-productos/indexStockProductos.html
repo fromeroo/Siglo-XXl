@@ -8,9 +8,9 @@
 <div id="proveedores-table" class="col-lg-10 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
   <h2>Stock Insumos</h2>
 
-  <!-- <div id="toolbar">
-    <button class="btn btn-primary d-flex pr-auto mb-2"><a href="{% url 'registroStockProductos' %}" style="color: white; text-decoration: none;">Crear nuevo proveedor</a></button>
-  </div> -->
+  <div id="toolbar">
+    <a href="{% url 'registroRealizarPedido' %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-plus"> Realizar Pedido</i></a>
+  </div>
   <table id="table" class="table table-striped table-bordered" style="width: 100%;"
   data-toggle="table"
   data-toolbar="#toolbar"
@@ -21,7 +21,6 @@
         <!-- <th scope="col">#</th> -->
         <th scope="col">Nombre</th>
         <th scope="col">Stock </th>
-        <th scope="col">Fecha Vencimiento</th>
         <th scope="col">Unidad de Medida</th>
         <th scope="col">Estado</th>
         <th scope="col">Acciónes</th>
@@ -33,12 +32,10 @@
         <!-- <th scope="row">{{ u.id }}</th> -->
         <td>{{sp.2}}</td>
         <td>{{sp.3}}</td>
-        <td>{{sp.4}}</td>
         <td>{{sp.6}}</td>
         <td>{{sp.8}}</td>
         <td class="p-1">
-          <a href="{% url 'modificarStockProductos' sp.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-plus"> Aumentar Stock</i></a>
-          <a href="{% url 'registroRealizarPedido' sp.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Realizar Pedido</i></a>
+          <a href="{% url 'modificarStockProductos' sp.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Detalle</i></a>
           <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a>
         </td>
       </tr>
