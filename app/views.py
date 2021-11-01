@@ -1359,7 +1359,6 @@ def crearRealizarPedido(request):
         messages.success(request, "Error en el primer IF")
         return redirect(to='indexStockProductos')
 
-
 @login_required
 def agregarRealizarPedido(request):
     django_cursor = connection.cursor()
@@ -1400,7 +1399,6 @@ def agregarRealizarPedido(request):
     else:
         return redirect(to='indexStockProductos')
 
-
 @login_required
 def modificarStockProductos(request, id):
     django_cursor = connection.cursor()
@@ -1420,6 +1418,41 @@ def modificarStockProductos(request, id):
 
     return render(request, 'app/bodega/stock-productos/editarStockProductos.html', data)
 
+@login_required
+def indexPedidosBodegas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_PEDIDO_INSUMO.listarTodoPedidos", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Pedidos': lista
+    }
+    
+    return render(request, 'app/bodega/pedidos/indexPedidosBodegas.html', data)
+
+def detallePedidosBodegas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_pedido = id
+
+    cursor.callproc("PKG_PEDIDO_INSUMO.buscarDetPedido", [id_pedido, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'DetallePedidos': lista
+    }
+
+    return render(request, 'app/bodega/pedidos/detallePedidosBodegas.html', data)
 
 # FINANZAS
 

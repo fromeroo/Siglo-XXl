@@ -12,6 +12,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     registrarOrdenCompra, crearOrdenCompra, \
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, \
     indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, \
+    indexPedidosBodegas, detallePedidosBodegas, \
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, \
     indexInformes, \
@@ -108,6 +109,9 @@ urlpatterns = [
     path('crear-realizar-pedido/', crearRealizarPedido, name="crearRealizarPedido"),
     path('agregar-realizar-pedido/', agregarRealizarPedido, name="agregarRealizarPedido"),
     path('editar-stock-productos/', editarStockProducto, name="editarStockProducto"),
+
+    path('bodega/pedidos/', indexPedidosBodegas, name="indexPedidosBodegas"),
+    path('bodega/pedidos/detalle/<id>/', detallePedidosBodegas, name="detallePedidosBodegas"),
 
     path('finanzas/gestion-caja/', indexGestionCajaFinanzas, name="indexGestionCajaFinanzas"),
     path('abrir-cajas/', abrirCajasFinanzas, name="abrirCajasFinanzas"),
