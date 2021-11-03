@@ -1532,6 +1532,46 @@ def detalleCajasFinanzas(request, id):
     return render(request, 'app/finanzas/cajas/detalleCajas.html', data)
 
 @login_required
+def cuadrarCajasFinanzas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_caja = id
+
+    cursor.callproc("PKG_CAJA.listarMotivoDescuadre", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+     
+    data = {
+        'id_caja': id_caja,
+        'Motivos': lista
+    }
+
+    return render(request, 'app/finanzas/cajas/cuadrarCajas.html', data)
+
+@login_required
+def crearCuadraturaCajasFinanzas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    id_caja = int(request.GET["p_id_caja"])
+    p_monto_cuadrado = int(request.GET["p_monto_cuadrado"])
+    p_tuvo_descuadre = int(request.GET["p_tuvo_descuadre"])
+    p_id_motivo = int(request.GET["p_id_motivo"])
+    p_monto_descuadre = int(request.GET["p_monto_descuadre"])
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc("PKG_CAJA.cuadrarCaja", [id_caja, p_monto_cuadrado, p_tuvo_descuadre, p_id_motivo, p_monto_descuadre, salida])
+    
+    if salida.getvalue() == 1:
+        messages.success(request, "¡Caja Cuadrada exitosamente!")
+        return redirect('indexGestionCajaFinanzas')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexGestionCajaFinanzas')
+
+@login_required
 def indexGestionFacturas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
