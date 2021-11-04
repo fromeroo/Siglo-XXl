@@ -3,35 +3,36 @@
   
 {% block js %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  
 {% endblock %}
 
 {% block contenido %}
 {% load static %}
 
   <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
-    <form action="/asignar-usuario-caja/" method="GET">
-      <h2>Cambiar Usuario Encargado</h2>
+    <form action="/abrir-cajas/" method="GET">
+    {% for c in Cajas %}
+      <h2>Abrir Caja Nro:</h2>
       <hr>
       <div class="col">
         <div class="row">
+          <!-- ID -->
+          <input type="hidden" name="id_caja" value="{{c.0}}">
           <div class="form-group col-md-12">
-            <input type="hidden" name="id_caja" value="{{id}}">
-            <label for="p_usr">Usuarios</label>
-            <select class="form-control" name="p_usr" id="" required>
-              {% for u in Usuarios %}
-                <option value="{{u.0}}">{{u.1}}</option>
-              {% endfor %}
-            </select>
+            <label for="p_amount" >Monto Apertura:</label>
+            <input type="number" name="p_amount" id="" class="form-control text-center" min="0" placeholder="0"  required>
           </div>
+          
         </div>
-      </div>
-      <div class="col mt-4">
+    </div>
+    {% endfor %}
+    <div class="col mt-4">
         <div class="row">
-          <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexGestionCajas' %}">
+          <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexGestionCajaFinanzas' %}">
             Volver
           </a>
           <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
-        </div>
+        </div>  
       </div>
     </form>
   </div>

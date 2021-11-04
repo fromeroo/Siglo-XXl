@@ -31,14 +31,15 @@
       {% for r in Recetas %}
       <tr>
         <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>{{r.nom_receta}}</td>
-        <td>{{r.id_est_receta}}</td>
-        <td>{{r.tiempo_prep}}</td>
-        <td>{{r.temp_ideal}}</td>
-        <td>{{r.instrucciones}}</td>
+        <td>{{r.1}}</td>
+        <td>{{r.3}}</td>
+        <td>{{r.4}}</td>
+        <td>{{r.5}}</td>
+        <td>{{r.6}}</td>
         <td class="p-1">
-          <a href="{% url 'modificarRecetas' r.id_receta %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
-          <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
+          <a href="{% url 'indexIngredientesRecetas' r.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-eye"> Ingredientes</i></a>
+          <a href="{% url 'modificarRecetas' r.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Editar</i></a>
+          <a onclick="eliminarReceta({{ r.0 }})" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Eliminar</i></a>
         </td>
       </tr>
       {% endfor %}
@@ -53,5 +54,32 @@
   font-size: 14px;
 }
 </style>
+
+{% endblock %}
+
+
+{% block js %}
+
+  <script>
+    function eliminarReceta(id)
+    {
+      swal.fire({
+        "title": "¿Estás seguro?",
+        "text": "¡Estás apunto de eliminar la receta!",
+        "icon": "question",
+        "showCancelButton": true,
+        "cancelButtonText": "No, cancelar",
+        "confirmButtonText": "Si, Eliminar",
+        "reverseButtons": true,
+        "confirmButtonColor": "#dc3545",
+        "cancelButtonColor": "#0069D9"
+      })
+      .then(function(result) {
+        if(result.isConfirmed) {
+          window.location.href = "eliminar/"+id+"/"
+        }
+      })
+    }
+  </script>
 
 {% endblock %}
