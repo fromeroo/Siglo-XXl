@@ -5,7 +5,7 @@ from .views import indexUser, index, indexProveedores, registroProveedores, modi
     administrador, dashboard, registro, eliminar_usuario, registroInsumos, modificarInsumos, indexProductos, registroProductos, registroRecetas, \
     modificarRecetas, registroMenus, modificarMenus, crearMenus, eliminarMenus, registroMenusProductos, registroGestionCajas, modificarGestionCajas, registroMesas, modificarMesas, \
     registroStockProductos, modificarStockProductos, registroGestionFacturas, modificarGestionFacturas, clienteMenu, detalleCliente, pagoCliente, crearProveedor, actualizarProveedores, editarMenus, \
-    crearInsumo, actualizarInsumos, eliminarInsumos, crearMenusProductos, modificarMenusProductos, editarMenusProductos, indexMenusProductos, crearProductos, modificarProductos, editarProductos, eliminarProductos, reservaCliente, principal
+    crearInsumo, actualizarInsumos, eliminarInsumos, crearMenusProductos, modificarMenusProductos, editarMenusProductos, indexMenusProductos,  crearProductos, modificarProductos, editarProductos, eliminarProductos, reservaCliente, principal, CrearReserva, eliminarReserva, buscarReservaRut
 # APIS
 from api import views as api_views
 
@@ -102,6 +102,9 @@ urlpatterns = [
 
     # PRINCIPAL
     path('cliente/principal', principal, name="principal"),
+    path('crear-reserva/', CrearReserva, name="CrearReserva"),
+    path('eliminar-reserva/', eliminarReserva, name="eliminarReserva"),
+    path('buscar-reserva/', buscarReservaRut, name="buscarReservaRut"),
 
     # APIS URL MESAS
     

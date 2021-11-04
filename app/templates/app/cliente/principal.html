@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load static %}
-{% load crispy_forms_tags %}
 
 <head>
     <meta charset="utf-8" />
@@ -37,7 +36,7 @@
                     <li class="nav-item"><a class="nav-link" href="#about">Nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Servicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="#Reserva">Reservas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'reservaCliente' %}">Reservas</a></li>
+                    <!-- <li class="nav-item"><a class="nav-link" href="{% url 'reservaCliente' %}">Reservas</a></li> -->
                 </ul>
             </div>
         </div>
@@ -180,20 +179,113 @@
             <h2 class="text-center mt-0">Reservas</h2>
             <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
                 <div class="col-lg-6">
-                    <form id="contactForm" data-sb-form-api-token="API_TOKEN" method="post">
+                    <!-- Form para agregar -->
+                    <form action="/crear-reserva/" method="GET">
                         {% csrf_token %}
-                        {{ form | crispy }}
-                        <br>
-                        <div class="d-none" id="submitSuccessMessage">
-                            <div class="text-center mb-3">
-                                <div class="fw-bolder">Reserva Solicitada Correctamente</div>
-                                Lo esperamos en nuestro local
-                                <br />
+                        <div class="col">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="p_rut">Rut</label>
+                                    <input type="text" name="p_rut" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="p_nombre">Nombre</label>
+                                    <input type="text" name="p_nombre" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="p_correo">Correo</label>
+                                    <input type="text" name="p_correo" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="p_telefono">Telefono</label>
+                                    <input type="text" name="p_telefono" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="p_asistentes">Cantidad de asistentes</label>
+                                    <input type="text" name="p_asistentes" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="p_fecha_reserva">Fecha</label>
+                                    <input type="date" name="p_fecha_reserva" class="form-control" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="p_hora_reserva">Horario</label>
+                                    <input type="time" name="p_hora_reserva" class="form-control"
+                                        format="datetime-local" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="p_id_disp">disponibilidad</label>
+                                    <div class="dropdown ">
+                                        <select name="p_id_disp" class="btn btn-secondary dropdown-toggle col-md-12"
+                                            type="button" data-bs-toggle="dropdown">
+                                            <option value="">Seleccione una Disponibilidad</option>
+                                            {% for ltd in listarDisponibilidad %}
+                                            <option value="{{ltd.0}}">{{ltd.2}} {{ltd.3}} {{ltd.4}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="p_id_mesa">Mesa</label>
+                                    <div class="dropdown ">
+                                        <select name="p_id_mesa" class="btn btn-secondary dropdown-toggle col-md-12"
+                                            type="button" data-bs-toggle="dropdown">
+                                            <option value="">Seleccione una Mesa</option>
+                                            {% for ltd in listarMesasDisponibles %}
+                                            <option value="{{ltd.0}}">{{ltd.1}} Personas en {{ltd.4}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton"
-                                type="submit">Reservar</button></div>
+                        <div class="col mt-4">
+                            <div class="row">
+                                <button class="btn btn-primary btn-xl enable" href="{% url 'CrearReserva' %}"
+                                    type="submit">Aceptar</button>
+                            </div>
+                        </div>
                     </form>
+                    <!-- REVISAR  RESERVA -->
+                    <a class="text-center" href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Revisar
+                        reserva</a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Reserva</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <form action="/buscar-reserva/" method="get">
+                                            <div class="form-group col-md-6 ">
+                                                <label for="p_rut">Rut</label>
+                                                <input type="text" name="p_rut" class="form-control" id="p_rut"
+                                                    placeholder="12345678-9" required>
+                                            </div>
+                                            <div class="form-group col-md-6  align-self-end">
+                                                <br>
+                                                <button class="btn btn-primary btn-s enable " id="submitButton"
+                                                    href="{% url 'buscarReservaRut' %}" type="submit">Aceptar</button>
+                                            </div>
+                                        </form>
+                                        <div class="form-group col-md-12 ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Volver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- REVISAR RESERVA -->
+
                 </div>
             </div>
             <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -205,6 +297,7 @@
         </div>
     </section>
 
+
     <footer class="bg-light py-5">
         <div class="container px-4 px-lg-5">
             <div class="small text-center text-muted">Copyright &copy; 2019 - TortugAPP</div>
@@ -214,4 +307,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+    {% for m in messages %}
+    <script>
+        swal.fire({
+            "title": "",
+            "text": "{{m}}",
+            "icon": "success",
+        })
+    </script>
+    {% endfor %}
+    {% endif %}
 </body>
