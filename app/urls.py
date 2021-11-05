@@ -16,7 +16,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, \
     indexInformes, \
-    indexPagoEfectivo, \
+    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, \
     indexTablero, \
     dashboard, \
     clienteMenu, detalleCliente, pagoCliente, \
@@ -127,12 +127,11 @@ urlpatterns = [
     path('crear-cuadratura-caja/', crearCuadraturaCajasFinanzas, name="crearCuadraturaCajasFinanzas"),
     path('finanzas/gestion-facturas/eliminar/<id>/', eliminarFacturas, name="eliminarFacturas"),
 
-
-
-
     path('finanzas/informes/', indexInformes, name="indexInformes"),
 
     path('caja/pago-efectivo/', indexPagoEfectivo, name="indexPagoEfectivo"),
+    path('caja/pago-efectivo/detalle/<id>/', detalleMesasCajas, name="detalleMesasCajas"),
+    path('caja/pago-efectivo/ingresar/<id>/', ingresarPagoEfectivo, name="ingresarPagoEfectivo"),
 
     path('cocina/tablero/', indexTablero, name="indexTablero"),
 

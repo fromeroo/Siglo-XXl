@@ -324,6 +324,7 @@ def crearMenus(request):
         messages.success(request, "¡El Menu ha sido registrado exitosamente!")
         return redirect('indexMenus')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMenus')
 
 @login_required
@@ -369,6 +370,7 @@ def editarMenus(request):
         messages.success(request, "¡El Menu ha sido editado exitosamente!")
         return redirect('indexMenus')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMenus')
 
 @login_required
@@ -447,6 +449,7 @@ def crearMenusProductos(request):
         messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
         return redirect('indexMenusProductos', id = str(p_id_menu))
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMenusProductos', id = str(p_id_menu))
 
 @login_required
@@ -497,6 +500,7 @@ def editarMenusProductos(request):
         messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
         return redirect('indexMenusProductos', id = p_id_menu)
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMenusProductos', id = p_id_menu)
 
 @login_required    
@@ -700,6 +704,7 @@ def crearProductos(request):
         messages.success(request, "¡El producto ha sido registrado exitosamente!")
         return redirect('indexProductos')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexProductos')
 
 @login_required
@@ -764,6 +769,7 @@ def editarProductos(request):
         messages.success(request, "¡El Producto ha sido editado exitosamente!")
         return redirect('indexProductos')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexProductos')
 
 @login_required
@@ -801,6 +807,7 @@ def registroRecetas(request):
 
     return render(request, 'app/administrador/recetas/registroRecetas.html')
 
+@login_required
 def crearRecetas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -819,6 +826,7 @@ def crearRecetas(request):
         messages.success(request, "¡La receta ha sido registrada exitosamente!")
         return redirect('indexRecetas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexRecetas')
 
 @login_required
@@ -860,6 +868,7 @@ def editarRecetas(request):
         messages.success(request, "¡La Receta ha sido editada exitosamente!")
         return redirect('indexRecetas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexRecetas')
 
 @login_required
@@ -936,6 +945,7 @@ def crearIngredientesRecetas(request):
         messages.success(request, "¡El Ingrediente de la receta ha sido registrado exitosamente!")
         return redirect('indexIngredientesRecetas', id = str(p_id_receta))
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexIngredientesRecetas', id = str(p_id_receta))
 
 @login_required
@@ -956,6 +966,7 @@ def indexPedidosProveedor(request):
 
     return render(request, 'app/administrador/pedidos-proveedor/indexPedidosProveedor.html', data)
 
+@login_required
 def detallePedidosProveedor(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -974,6 +985,7 @@ def detallePedidosProveedor(request, id):
 
     return render(request, 'app/administrador/pedidos-proveedor/detallePedidosProveedor.html', data)
 
+@login_required
 def autorizarPedidosProveedor(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -986,11 +998,11 @@ def autorizarPedidosProveedor(request):
 
     cursor.callproc("PKG_PEDIDO_INSUMO.autorizarPedidos", [p_id_pedido, p_opcion1, p_opcion2, salida])
     
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    if salida.getvalue() == 1:
+        messages.success(request, "¡Cambio realizado con exito!")
         return redirect('indexPedidosProveedor')
     else:
-        messages.success(request, "¡Cambio realizado con exito!")
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexPedidosProveedor')
 
 @login_required
@@ -1022,6 +1034,7 @@ def crearOrdenCompra(request):
         messages.success(request, "¡Orden de Compra generada exitosamente!")
         return redirect('indexPedidosProveedor')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexPedidosProveedor')
 
 @login_required
@@ -1079,6 +1092,7 @@ def crearMesas(request):
         messages.success(request, "¡La Mesa ha sido registrado exitosamente!")
         return redirect('indexMesas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMesas')
 
 @login_required
@@ -1130,6 +1144,7 @@ def editarMesas(request):
         messages.success(request, "¡La Mesa ha sido editada exitosamente!")
         return redirect('indexMesas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMesas')
 
 @login_required
@@ -1179,6 +1194,7 @@ def registroGestionCajas(request):
         messages.success(request, "¡La Caja ha sido creada exitosamente!")
         return redirect('indexGestionCajas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexGestionCajas')
 
 @login_required
@@ -1196,6 +1212,7 @@ def eliminarGestionCajas(request, id):
         messages.success(request, "¡La Caja ha sido eliminada exitosamente!")
         return redirect(to="indexGestionCajas")    
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to="indexGestionCajas")
 
 
@@ -1235,11 +1252,11 @@ def asignarUsuarioCaja(request):
         messages.success(request, "¡Usuario asignado exitosamente!")
         return redirect('indexGestionCajas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexGestionCajas')
 
 
 # BODEGA
-
 
 @login_required
 def indexStockProductos(request):
@@ -1257,8 +1274,6 @@ def indexStockProductos(request):
         'StockProductos': lista
     }
 
-    print(data)
-    
     return render(request, 'app/bodega/stock-productos/indexStockProductos.html', data)
 
 @login_required
@@ -1278,6 +1293,7 @@ def editarStockProducto(request):
         messages.success(request, "¡El Stock del Insumos ha sido aumentado exitosamente!")
         return redirect(to='indexStockProductos')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to='indexStockProductos')
 
 @login_required
@@ -1295,7 +1311,6 @@ def registroStockProductos(request):
         data["form"] = formulario
 
     return render(request, 'app/bodega/stock-productos/registroStockProductos.html', data)
-
 
 @login_required
 def registroRealizarPedido(request):
@@ -1356,7 +1371,7 @@ def crearRealizarPedido(request):
         messages.success(request, "Seleccione lo que pedira")
         return render(request, 'app/bodega/stock-productos/agregarStockProductos.html', data)
     else:
-        messages.success(request, "Error en el primer IF")
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to='indexStockProductos')
 
 @login_required
@@ -1397,6 +1412,7 @@ def agregarRealizarPedido(request):
         messages.success(request, "¡Insumo Agregado Correctamente al Pedido!")
         return render(request, 'app/bodega/stock-productos/agregarStockProductos.html', data)
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to='indexStockProductos')
 
 @login_required
@@ -1436,6 +1452,7 @@ def indexPedidosBodegas(request):
     
     return render(request, 'app/bodega/pedidos/indexPedidosBodegas.html', data)
 
+@login_required
 def detallePedidosBodegas(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1453,6 +1470,7 @@ def detallePedidosBodegas(request, id):
     }
 
     return render(request, 'app/bodega/pedidos/detallePedidosBodegas.html', data)
+
 
 # FINANZAS
 
@@ -1510,6 +1528,7 @@ def abrirCajasFinanzas(request):
         messages.success(request, "¡Caja abierta exitosamente!")
         return redirect(to='indexGestionCajaFinanzas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to='indexGestionCajaFinanzas')
 
 @login_required
@@ -1589,6 +1608,7 @@ def indexGestionFacturas(request):
      
     return render(request, 'app/finanzas/facturas/indexFacturas.html', data)
 
+@login_required
 def crearFactura(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1615,6 +1635,7 @@ def crearFactura(request):
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexGestionFacturas')
 
+@login_required
 def actualizarFacturas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1705,6 +1726,7 @@ def modificarGestionFacturas(request, id):
 
     return render(request, 'app/finanzas/facturas/editarFacturas.html', data)
 
+@login_required
 def eliminarFacturas(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1723,8 +1745,6 @@ def indexInformes(request):
     return render(request, 'app/finanzas/informes/indexInformes.html')
 
 # CAJA
-
-
 @login_required
 def indexPagoEfectivo(request):
     django_cursor = connection.cursor()
@@ -1743,9 +1763,48 @@ def indexPagoEfectivo(request):
 
     return render(request, 'app/caja/pago-efectivo/indexPagoEfectivo.html', data)
 
+@login_required
+def detalleMesasCajas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_mesa = id
+
+    cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Mesas': lista
+    }
+
+    return render(request, 'app/caja/pago-efectivo/detalleMesasCajas.html', data)
+
+@login_required
+def ingresarPagoEfectivo(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_mesa = id
+
+    cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Mesas': lista,
+        'id': id_mesa
+    }
+
+    return render(request, 'app/caja/pago-efectivo/ingresarPagoEfectivo.html', data)
+
 # COCINA
-
-
 @login_required
 def indexTablero(request):
     django_cursor = connection.cursor()

@@ -285,10 +285,15 @@
   {% if messages %}
   {% for m in messages %}
   <script>
+      let title = 'Felicitaciones'; 
+      if ("{{m.tags}}" == 'error') {
+        title = 'Error'
+      }
     swal.fire({
-      "title": "Felicitaciones",
+      
+      "title": title,
       "text": "{{m}}",
-      "icon": "success",
+      "icon": "{{m.tags}}",
       "showConfirmButton": false,
       "timer": 2500
     })
