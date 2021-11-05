@@ -1868,19 +1868,85 @@ def reservaCliente(request):
 
 #PRINCIPAL
 def principal(request):
+    
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_RESERVA.listarDisponibilidad", [out_cur_two])
+    cursor.callproc("PKG_MESA.listarMesasDisponibles", [out_cur])
+
+    lista_disponibilidad = []
+    for fila in out_cur_two:
+        lista_disponibilidad.append(fila)
+
+    listar_Mesas_Disponibles = []
+    for fila in out_cur:
+        listar_Mesas_Disponibles.append(fila)
+
     data = {
-        'form': CrearReservaForm()
+         'listarDisponibilidad': lista_disponibilidad,
+         'listarMesasDisponibles': listar_Mesas_Disponibles
+    }
+    return render(request, 'app/cliente/principal.html', data)
+
+
+def CrearReserva(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    fecha_reserva = request.GET["p_fecha_reserva"]
+    hora_reserva = str(request.GET["p_hora_reserva"])
+    asistentes = int(request.GET["p_asistentes"])
+    id_mesa = int(request.GET["p_id_mesa"])
+    id_disp = int(request.GET["p_id_disp"])
+    rut = request.GET["p_rut"]
+    nombre = request.GET["p_nombre"]
+    telefono = request.GET["p_telefono"]
+    correo = request.GET["p_correo"]
+    cursor.callproc("PKG_RESERVA.crearReserva", [fecha_reserva, hora_reserva, asistentes, id_mesa, id_disp, rut, nombre, telefono, correo, salida])
+
+    if salida == 1:
+        return redirect('principal')
+    else:
+        messages.success(request, "¡Reserva registrada exitosamente!")
+        return redirect('principal')
+
+
+def buscarReservaRut(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    p_rut = request.GET['p_rut']
+    cursor.callproc("PKG_RESERVA.buscarReservaRut", [p_rut, out_cur])
+
+    buscar_Reserva_Rut= []
+    for fila in out_cur:
+        buscar_Reserva_Rut.append(fila)
+
+    data = {
+         'buscarReservaRut': buscar_Reserva_Rut,
     }
 
-    if request.method == 'POST':
-        formulario = CrearReservaForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "Reserva exitosa!")
-            return redirect()
-        data['form'] = formulario
+    return render(request, 'app/cliente/detalleReserva.html', data)
 
-    return render(request, 'app/cliente/principal.html', data)
+def eliminarReserva(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    p_id_reserva = request.GET['p_id_reserva']
+    # p_id_reserva = int(id)
+
+    cursor.callproc("PKG_RESERVA.eliminarReserva", [p_id_reserva, salida])
+    
+    messages.success(request, "¡Reserva eliminada exitosamente!")
+    return redirect(to="principal")
+
+
+
+ 
 
 
 
