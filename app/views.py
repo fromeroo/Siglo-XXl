@@ -324,6 +324,7 @@ def crearMenus(request):
         messages.success(request, "¡El Menu ha sido registrado exitosamente!")
         return redirect('indexMenus')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMenus')
 
 @login_required
@@ -369,6 +370,7 @@ def editarMenus(request):
         messages.success(request, "¡El Menu ha sido editado exitosamente!")
         return redirect('indexMenus')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMenus')
 
 @login_required
@@ -447,6 +449,7 @@ def crearMenusProductos(request):
         messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
         return redirect('indexMenusProductos', id = str(p_id_menu))
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMenusProductos', id = str(p_id_menu))
 
 @login_required
@@ -497,6 +500,7 @@ def editarMenusProductos(request):
         messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
         return redirect('indexMenusProductos', id = p_id_menu)
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMenusProductos', id = p_id_menu)
 
 @login_required    
@@ -700,6 +704,7 @@ def crearProductos(request):
         messages.success(request, "¡El producto ha sido registrado exitosamente!")
         return redirect('indexProductos')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexProductos')
 
 @login_required
@@ -764,6 +769,7 @@ def editarProductos(request):
         messages.success(request, "¡El Producto ha sido editado exitosamente!")
         return redirect('indexProductos')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexProductos')
 
 @login_required
@@ -801,6 +807,7 @@ def registroRecetas(request):
 
     return render(request, 'app/administrador/recetas/registroRecetas.html')
 
+@login_required
 def crearRecetas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -819,6 +826,7 @@ def crearRecetas(request):
         messages.success(request, "¡La receta ha sido registrada exitosamente!")
         return redirect('indexRecetas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexRecetas')
 
 @login_required
@@ -860,6 +868,7 @@ def editarRecetas(request):
         messages.success(request, "¡La Receta ha sido editada exitosamente!")
         return redirect('indexRecetas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexRecetas')
 
 @login_required
@@ -936,6 +945,7 @@ def crearIngredientesRecetas(request):
         messages.success(request, "¡El Ingrediente de la receta ha sido registrado exitosamente!")
         return redirect('indexIngredientesRecetas', id = str(p_id_receta))
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexIngredientesRecetas', id = str(p_id_receta))
 
 @login_required
@@ -956,6 +966,7 @@ def indexPedidosProveedor(request):
 
     return render(request, 'app/administrador/pedidos-proveedor/indexPedidosProveedor.html', data)
 
+@login_required
 def detallePedidosProveedor(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -974,6 +985,7 @@ def detallePedidosProveedor(request, id):
 
     return render(request, 'app/administrador/pedidos-proveedor/detallePedidosProveedor.html', data)
 
+@login_required
 def autorizarPedidosProveedor(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -986,11 +998,11 @@ def autorizarPedidosProveedor(request):
 
     cursor.callproc("PKG_PEDIDO_INSUMO.autorizarPedidos", [p_id_pedido, p_opcion1, p_opcion2, salida])
     
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    if salida.getvalue() == 1:
+        messages.success(request, "¡Cambio realizado con exito!")
         return redirect('indexPedidosProveedor')
     else:
-        messages.success(request, "¡Cambio realizado con exito!")
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexPedidosProveedor')
 
 @login_required
@@ -1022,6 +1034,7 @@ def crearOrdenCompra(request):
         messages.success(request, "¡Orden de Compra generada exitosamente!")
         return redirect('indexPedidosProveedor')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexPedidosProveedor')
 
 @login_required
@@ -1079,6 +1092,7 @@ def crearMesas(request):
         messages.success(request, "¡La Mesa ha sido registrado exitosamente!")
         return redirect('indexMesas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMesas')
 
 @login_required
@@ -1130,6 +1144,7 @@ def editarMesas(request):
         messages.success(request, "¡La Mesa ha sido editada exitosamente!")
         return redirect('indexMesas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMesas')
 
 @login_required
@@ -1179,6 +1194,7 @@ def registroGestionCajas(request):
         messages.success(request, "¡La Caja ha sido creada exitosamente!")
         return redirect('indexGestionCajas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexGestionCajas')
 
 @login_required
@@ -1196,6 +1212,7 @@ def eliminarGestionCajas(request, id):
         messages.success(request, "¡La Caja ha sido eliminada exitosamente!")
         return redirect(to="indexGestionCajas")    
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to="indexGestionCajas")
 
 
@@ -1235,11 +1252,11 @@ def asignarUsuarioCaja(request):
         messages.success(request, "¡Usuario asignado exitosamente!")
         return redirect('indexGestionCajas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexGestionCajas')
 
 
 # BODEGA
-
 
 @login_required
 def indexStockProductos(request):
@@ -1257,8 +1274,6 @@ def indexStockProductos(request):
         'StockProductos': lista
     }
 
-    print(data)
-    
     return render(request, 'app/bodega/stock-productos/indexStockProductos.html', data)
 
 @login_required
@@ -1278,6 +1293,7 @@ def editarStockProducto(request):
         messages.success(request, "¡El Stock del Insumos ha sido aumentado exitosamente!")
         return redirect(to='indexStockProductos')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to='indexStockProductos')
 
 @login_required
@@ -1295,7 +1311,6 @@ def registroStockProductos(request):
         data["form"] = formulario
 
     return render(request, 'app/bodega/stock-productos/registroStockProductos.html', data)
-
 
 @login_required
 def registroRealizarPedido(request):
@@ -1356,7 +1371,7 @@ def crearRealizarPedido(request):
         messages.success(request, "Seleccione lo que pedira")
         return render(request, 'app/bodega/stock-productos/agregarStockProductos.html', data)
     else:
-        messages.success(request, "Error en el primer IF")
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to='indexStockProductos')
 
 @login_required
@@ -1397,6 +1412,7 @@ def agregarRealizarPedido(request):
         messages.success(request, "¡Insumo Agregado Correctamente al Pedido!")
         return render(request, 'app/bodega/stock-productos/agregarStockProductos.html', data)
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to='indexStockProductos')
 
 @login_required
@@ -1436,6 +1452,7 @@ def indexPedidosBodegas(request):
     
     return render(request, 'app/bodega/pedidos/indexPedidosBodegas.html', data)
 
+@login_required
 def detallePedidosBodegas(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1453,6 +1470,7 @@ def detallePedidosBodegas(request, id):
     }
 
     return render(request, 'app/bodega/pedidos/detallePedidosBodegas.html', data)
+
 
 # FINANZAS
 
@@ -1510,6 +1528,7 @@ def abrirCajasFinanzas(request):
         messages.success(request, "¡Caja abierta exitosamente!")
         return redirect(to='indexGestionCajaFinanzas')
     else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect(to='indexGestionCajaFinanzas')
 
 @login_required
@@ -1532,6 +1551,46 @@ def detalleCajasFinanzas(request, id):
     return render(request, 'app/finanzas/cajas/detalleCajas.html', data)
 
 @login_required
+def cuadrarCajasFinanzas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_caja = id
+
+    cursor.callproc("PKG_CAJA.listarMotivoDescuadre", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+     
+    data = {
+        'id_caja': id_caja,
+        'Motivos': lista
+    }
+
+    return render(request, 'app/finanzas/cajas/cuadrarCajas.html', data)
+
+@login_required
+def crearCuadraturaCajasFinanzas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    id_caja = int(request.GET["p_id_caja"])
+    p_monto_cuadrado = int(request.GET["p_monto_cuadrado"])
+    p_tuvo_descuadre = int(request.GET["p_tuvo_descuadre"])
+    p_id_motivo = int(request.GET["p_id_motivo"])
+    p_monto_descuadre = int(request.GET["p_monto_descuadre"])
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc("PKG_CAJA.cuadrarCaja", [id_caja, p_monto_cuadrado, p_tuvo_descuadre, p_id_motivo, p_monto_descuadre, salida])
+    
+    if salida.getvalue() == 1:
+        messages.success(request, "¡Caja Cuadrada exitosamente!")
+        return redirect('indexGestionCajaFinanzas')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexGestionCajaFinanzas')
+
+@login_required
 def indexGestionFacturas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1549,6 +1608,7 @@ def indexGestionFacturas(request):
      
     return render(request, 'app/finanzas/facturas/indexFacturas.html', data)
 
+@login_required
 def crearFactura(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1575,6 +1635,7 @@ def crearFactura(request):
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexGestionFacturas')
 
+@login_required
 def actualizarFacturas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1665,6 +1726,7 @@ def modificarGestionFacturas(request, id):
 
     return render(request, 'app/finanzas/facturas/editarFacturas.html', data)
 
+@login_required
 def eliminarFacturas(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1683,8 +1745,6 @@ def indexInformes(request):
     return render(request, 'app/finanzas/informes/indexInformes.html')
 
 # CAJA
-
-
 @login_required
 def indexPagoEfectivo(request):
     django_cursor = connection.cursor()
@@ -1703,9 +1763,48 @@ def indexPagoEfectivo(request):
 
     return render(request, 'app/caja/pago-efectivo/indexPagoEfectivo.html', data)
 
+@login_required
+def detalleMesasCajas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_mesa = id
+
+    cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Mesas': lista
+    }
+
+    return render(request, 'app/caja/pago-efectivo/detalleMesasCajas.html', data)
+
+@login_required
+def ingresarPagoEfectivo(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_mesa = id
+
+    cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Mesas': lista,
+        'id': id_mesa
+    }
+
+    return render(request, 'app/caja/pago-efectivo/ingresarPagoEfectivo.html', data)
+
 # COCINA
-
-
 @login_required
 def indexTablero(request):
     django_cursor = connection.cursor()
@@ -1769,19 +1868,85 @@ def reservaCliente(request):
 
 #PRINCIPAL
 def principal(request):
+    
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_RESERVA.listarDisponibilidad", [out_cur_two])
+    cursor.callproc("PKG_MESA.listarMesasDisponibles", [out_cur])
+
+    lista_disponibilidad = []
+    for fila in out_cur_two:
+        lista_disponibilidad.append(fila)
+
+    listar_Mesas_Disponibles = []
+    for fila in out_cur:
+        listar_Mesas_Disponibles.append(fila)
+
     data = {
-        'form': CrearReservaForm()
+         'listarDisponibilidad': lista_disponibilidad,
+         'listarMesasDisponibles': listar_Mesas_Disponibles
+    }
+    return render(request, 'app/cliente/principal.html', data)
+
+
+def CrearReserva(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    fecha_reserva = request.GET["p_fecha_reserva"]
+    hora_reserva = str(request.GET["p_hora_reserva"])
+    asistentes = int(request.GET["p_asistentes"])
+    id_mesa = int(request.GET["p_id_mesa"])
+    id_disp = int(request.GET["p_id_disp"])
+    rut = request.GET["p_rut"]
+    nombre = request.GET["p_nombre"]
+    telefono = request.GET["p_telefono"]
+    correo = request.GET["p_correo"]
+    cursor.callproc("PKG_RESERVA.crearReserva", [fecha_reserva, hora_reserva, asistentes, id_mesa, id_disp, rut, nombre, telefono, correo, salida])
+
+    if salida == 1:
+        return redirect('principal')
+    else:
+        messages.success(request, "¡Reserva registrada exitosamente!")
+        return redirect('principal')
+
+
+def buscarReservaRut(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    p_rut = request.GET['p_rut']
+    cursor.callproc("PKG_RESERVA.buscarReservaRut", [p_rut, out_cur])
+
+    buscar_Reserva_Rut= []
+    for fila in out_cur:
+        buscar_Reserva_Rut.append(fila)
+
+    data = {
+         'buscarReservaRut': buscar_Reserva_Rut,
     }
 
-    if request.method == 'POST':
-        formulario = CrearReservaForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            messages.success(request, "Reserva exitosa!")
-            return redirect()
-        data['form'] = formulario
+    return render(request, 'app/cliente/detalleReserva.html', data)
 
-    return render(request, 'app/cliente/principal.html', data)
+def eliminarReserva(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    p_id_reserva = request.GET['p_id_reserva']
+    # p_id_reserva = int(id)
+
+    cursor.callproc("PKG_RESERVA.eliminarReserva", [p_id_reserva, salida])
+    
+    messages.success(request, "¡Reserva eliminada exitosamente!")
+    return redirect(to="principal")
+
+
+
+ 
 
 
 

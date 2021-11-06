@@ -1,0 +1,83 @@
+{% extends 'app/base.html' %}
+
+
+{% block contenido %}
+{% load static %}
+
+    <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
+      <h2>Cerrar Caja</h2>
+      <hr>
+      <form action="/crear-cuadratura-caja/" method="GET">
+        <div class="col">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <!-- ID -->
+                    <input type="hidden" name="p_id_caja" value="{{id_caja}}">
+                    <label for="p_tuvo_descuadre" >Tuvo Descuadre:</label>
+                    <select name="p_tuvo_descuadre" id="selectDescuadre" class="form-control">
+                      <option value="0">No</option>
+                        <option value="1">Si</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="p_monto_cuadrado" >Monto Cuadrado:</label>
+                    <input type="number" name="p_monto_cuadrado" id="" class="form-control text-center">
+                </div>
+                <div class="form-group col-md-6" id="motivoDescuadre">
+                    <label for="p_id_motivo" >Motivo Descuadre:</label>
+                    <select name="p_id_motivo" id="motivoDescuadre" class="form-control">
+                        {% for m in Motivos %}
+                        <option value="{{m.0}}">{{m.1}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-6" id="montoDescuadre">
+                    <label for="p_monto_descuadre" >Monto Descuadre:</label>
+                    <input type="number" name="p_monto_descuadre" id="montoDescuadreInput" value="0" class="form-control text-center">
+                </div>
+            </div>
+        </div>
+        <div class="col mt-4">
+          <div class="row">
+            <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexGestionCajaFinanzas' %}">
+              Volver
+            </a>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+          </div>  
+        </div>
+    </form>
+  </div>
+
+
+  <style>
+    #user-table{
+      font-size: 14px;
+    }
+  </style>
+  
+  {% endblock %}
+
+  {% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+
+    $(document).ready(function () {
+      $("#motivoDescuadre").hide();
+      $("#montoDescuadre").hide();
+    });
+
+
+    $("#selectDescuadre").change(function() {
+      let $option_selected = $(this).children("option:selected").val();
+      
+      if ($option_selected == "1") {
+        $("#motivoDescuadre").show();
+        $("#montoDescuadre").show();
+      }  else {
+        $("#motivoDescuadre").hide();
+        $("#montoDescuadre").hide();
+      }
+    });
+
+  </script>
+{% endblock %}

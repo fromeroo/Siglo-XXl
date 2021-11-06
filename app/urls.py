@@ -10,18 +10,18 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas,\
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
-    indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, \
-    indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, \
+    indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, \
+    indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, crearCuadraturaCajasFinanzas, \
     indexPedidosBodegas, detallePedidosBodegas, \
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, \
     indexInformes, \
-    indexPagoEfectivo, \
+    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, \
     indexTablero, \
     dashboard, \
     clienteMenu, detalleCliente, pagoCliente, \
     reservaCliente, \
-    principal, \
+    principal, CrearReserva, eliminarReserva, buscarReservaRut, \
     listarRolesUsuario, cambiarRolUsuario
     
 # APIS
@@ -123,14 +123,15 @@ urlpatterns = [
     path('actualizar-factura/', actualizarFacturas, name="actualizarFacturas"),
     path('finanzas/gestion-facturas/registro/', registroFacturas, name="registroFacturas"),
     path('finanzas/gestion-facturas/modificar/<id>/', modificarGestionFacturas, name="modificarGestionFacturas"),
+    path('finanzas/gestion-facturas/cuadrar/<id>/', cuadrarCajasFinanzas, name="cuadrarCajasFinanzas"),
+    path('crear-cuadratura-caja/', crearCuadraturaCajasFinanzas, name="crearCuadraturaCajasFinanzas"),
     path('finanzas/gestion-facturas/eliminar/<id>/', eliminarFacturas, name="eliminarFacturas"),
-
-
-
 
     path('finanzas/informes/', indexInformes, name="indexInformes"),
 
     path('caja/pago-efectivo/', indexPagoEfectivo, name="indexPagoEfectivo"),
+    path('caja/pago-efectivo/detalle/<id>/', detalleMesasCajas, name="detalleMesasCajas"),
+    path('caja/pago-efectivo/ingresar/<id>/', ingresarPagoEfectivo, name="ingresarPagoEfectivo"),
 
     path('cocina/tablero/', indexTablero, name="indexTablero"),
 
@@ -146,6 +147,9 @@ urlpatterns = [
 
     # PRINCIPAL
     path('cliente/principal', principal, name="principal"),
+    path('crear-reserva/', CrearReserva, name="CrearReserva"),
+    path('eliminar-reserva/', eliminarReserva, name="eliminarReserva"),
+    path('buscar-reserva/', buscarReservaRut, name="buscarReservaRut"),
 
     # APIS URL MESAS
     
