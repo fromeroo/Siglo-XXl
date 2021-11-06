@@ -2,6 +2,7 @@ from django.db import connection
 from rest_framework import generics
 from rest_framework.response import Response
 import cx_Oracle
+from django.http.response import JsonResponse
 
 
 # APIS MESAS
@@ -12,20 +13,24 @@ class ListarTodoMesasAPIView(generics.GenericAPIView):
         out_cur = django_cursor.connection.cursor()
 
         cursor.callproc("PKG_MESA.listarTodoMesa", [out_cur])
-
-        lista= []
-        for fila in out_cur:
-            lista.append(fila)
-
-        data = {
-            'MesasTodas': lista
-        }
         
-        return Response({
-            'status': 200,
-            'message': 'Dato recuperado exitosamente',
-            'data': data
-        })
+        data = []       
+
+        mutator= {}
+        for fila in out_cur:
+            mutator = {
+                'id_mesa': fila[0],
+                'nro_mesa': fila[1],
+                'cant_sillas': fila[2],
+                'id_ubicacion': fila[3],
+                'desc_ubicacion': fila[4],
+                'id_est_mesa': fila[5],
+                'desc_est_mesa': fila[6],
+            }
+            data.append(mutator)
+
+        
+        return JsonResponse(data, safe=False)
 
 class ListarMesasDisponiblesAPIView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
@@ -34,20 +39,24 @@ class ListarMesasDisponiblesAPIView(generics.GenericAPIView):
         out_cur = django_cursor.connection.cursor()
 
         cursor.callproc("PKG_MESA.listarMesasDisponibles ", [out_cur])
+        data = []       
 
-        lista= []
+        mutator= {}
         for fila in out_cur:
-            lista.append(fila)
+            mutator = {
+                'id_mesa': fila[0],
+                'nro_mesa': fila[1],
+                'cant_sillas': fila[2],
+                'id_ubicacion': fila[3],
+                'desc_ubicacion': fila[4],
+                'id_est_mesa': fila[5],
+                'desc_est_mesa': fila[6],
+            }
+            data.append(mutator)
 
-        data = {
-            'MesasDisponibles': lista
-        }
         
-        return Response({
-            'status': 200,
-            'message': 'Dato recuperado exitosamente',
-            'data': data
-        })
+        return JsonResponse(data, safe=False)
+        
 
 class ListarMesasReservadasAPIView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
@@ -57,19 +66,27 @@ class ListarMesasReservadasAPIView(generics.GenericAPIView):
 
         cursor.callproc("PKG_MESA.listarMesasReservadas", [out_cur])
 
-        lista= []
-        for fila in out_cur:
-            lista.append(fila)
+        data = []       
 
-        data = {
-            'MesasReservadas': lista
-        }
+        mutator= {}
+        for fila in out_cur:
+            mutator = {
+                'id_mesa': fila[0],
+                'nro_mesa': fila[1],
+                'cant_sillas': fila[2],
+                'id_ubicacion': fila[3],
+                'desc_ubicacion': fila[4],
+                'id_est_mesa': fila[5],
+                'desc_est_mesa': fila[6],
+                'nro_reserva':fila[7],
+                'nom_cliente':fila[8],
+            }
+            data.append(mutator)
+
         
-        return Response({
-            'status': 200,
-            'message': 'Dato recuperado exitosamente',
-            'data': data
-        })
+        return JsonResponse(data, safe=False)
+
+
 class ListarMesasOcupadasAPIView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         django_cursor = connection.cursor()
@@ -78,19 +95,23 @@ class ListarMesasOcupadasAPIView(generics.GenericAPIView):
 
         cursor.callproc("PKG_MESA.listarMesaOcupada", [out_cur])
 
-        lista= []
-        for fila in out_cur:
-            lista.append(fila)
+        data = []       
 
-        data = {
-            'MesasOcupadas': lista
-        }
+        mutator= {}
+        for fila in out_cur:
+            mutator = {
+                'id_mesa': fila[0],
+                'nro_mesa': fila[1],
+                'cant_sillas': fila[2],
+                'id_ubicacion': fila[3],
+                'desc_ubicacion': fila[4],
+                'id_est_mesa': fila[5],
+                'desc_est_mesa': fila[6],
+            }
+            data.append(mutator)
+
         
-        return Response({
-            'status': 200,
-            'message': 'Datos recuperado exitosamente',
-            'data': data
-        })
+        return JsonResponse(data, safe=False)
 
 class ListarUbicacionesAPIView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
@@ -100,19 +121,19 @@ class ListarUbicacionesAPIView(generics.GenericAPIView):
 
         cursor.callproc("PKG_MESA.listarUbicaciones", [out_cur])
 
-        lista= []
-        for fila in out_cur:
-            lista.append(fila)
+        data = []       
 
-        data = {
-            'Ubicaciones': lista
-        }
+        mutator= {}
+        for fila in out_cur:
+            mutator = {
+                'id_ubicacion': fila[0],
+                'desc_ubicacion': fila[1],
+                
+            }
+            data.append(mutator)
+
         
-        return Response({
-            'status': 200,
-            'message': 'Datos recuperado exitosamente',
-            'data': data
-        })
+        return JsonResponse(data, safe=False)
 
 class BuscarMesaAPIView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
@@ -124,21 +145,24 @@ class BuscarMesaAPIView(generics.GenericAPIView):
         
         cursor.callproc("PKG_MESA.buscarMesa", [p_id_mesa, out_cur])
 
-        lista= []
-        for fila in out_cur:
-            lista.append(fila)
-        
-        if not lista:
-            return Response({
-                'status': 400,
-                'message': 'Mesa No Encontrada'
-            })
+        data = []       
 
-        return Response({
-            'status': 200,
-            'message': 'Mesa Encontrada',
-            'data': lista
-        })
+        mutator= {}
+        for fila in out_cur:
+            mutator = {
+                'id_mesa': fila[0],
+                'nro_mesa': fila[1],
+                'cant_sillas': fila[2],
+                'id_ubicacion': fila[3],
+                'desc_ubicacion': fila[4],
+                'id_est_mesa': fila[5],
+                'desc_est_mesa': fila[6],
+            }
+            data.append(mutator)
+
+        
+        return JsonResponse(data, safe=False)
+        
 class BuscarMesaReservaAPIView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         django_cursor = connection.cursor()
@@ -149,21 +173,25 @@ class BuscarMesaReservaAPIView(generics.GenericAPIView):
         
         cursor.callproc("PKG_MESA.buscarMesaReserva", [p_reserva, out_cur])
 
-        lista= []
-        for fila in out_cur:
-            lista.append(fila)
-        
-        if not lista:
-            return Response({
-                'status': 400,
-                'message': 'Mesa Reservada No Encontrada'
-            })
+        data = []       
 
-        return Response({
-            'status': 200,
-            'message': 'Mesa Reservada Encontrada',
-            'data': lista
-        })
+        mutator= {}
+        for fila in out_cur:
+            mutator = {
+                'id_mesa': fila[0],
+                'nro_mesa': fila[1],
+                'cant_sillas': fila[2],
+                'id_ubicacion': fila[3],
+                'desc_ubicacion': fila[4],
+                'id_est_mesa': fila[5],
+                'desc_est_mesa': fila[6],
+                'nro_reserva':fila[7],
+                'nom_cliente':fila[8],
+            }
+            data.append(mutator)
+
+        
+        return JsonResponse(data, safe=False)
 
 class ModificarMesaAPIView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
