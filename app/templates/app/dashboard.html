@@ -26,20 +26,7 @@
 
 <div class="row"> 
     
-    <div class="col-3 col-lg-3 ml-4">
-        <div class="panel media pad-all">
-            <div class="media-left">
-                <span class="icon-wrap icon-wrap-sm icon-circle bg-success">
-                <i class="fa fa-search fa-2x"></i>
-                </span>
-            </div>
-
-            <div class="media-body">
-                <p class="text-2x mar-no text-thin">20</p>
-                <p class="text-muted mar-no">Dato Importante</p>
-            </div>
-        </div>
-    </div>
+    
     <div class="col-3 col-lg-3">
         <div class="panel media pad-all">
             <div class="media-left">
@@ -49,8 +36,22 @@
             </div>
 
             <div class="media-body">
-                <p class="text-2x mar-no text-thin">20</p>
-                <p class="text-muted mar-no">Dato Importante</p>
+                <p class="text-2x mar-no text-thin">{{mesas_totales}}</p>
+                <p class="text-muted mar-no">Mesas Totales</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-3 col-lg-3 ml-4">
+        <div class="panel media pad-all">
+            <div class="media-left">
+                <span class="icon-wrap icon-wrap-sm icon-circle bg-success">
+                <i class="fa fa-search fa-2x"></i>
+                </span>
+            </div>
+
+            <div class="media-body">
+                <p class="text-2x mar-no text-thin">{{mesas_disponibles}}</p>
+                <p class="text-muted mar-no">Mesas Disponibles</p>
             </div>
         </div>
     </div>
@@ -63,8 +64,8 @@
             </div>
 
             <div class="media-body">
-                <p class="text-2x mar-no text-thin">20</p>
-                <p class="text-muted mar-no">Dato Importante</p>
+                <p class="text-2x mar-no text-thin">{{mesas_reservadas}}</p>
+                <p class="text-muted mar-no">Mesas Reservadas</p>
             </div>
         </div>
     </div>
@@ -77,8 +78,8 @@
             </div>
 
             <div class="media-body">
-                <p class="text-2x mar-no text-thin">20</p>
-                <p class="text-muted mar-no">Dato Importante</p>
+                <p class="text-2x mar-no text-thin">{{mesas_ocupadas}}</p>
+                <p class="text-muted mar-no">Mesas Ocupadas</p>
             </div>
         </div>
     </div>

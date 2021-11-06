@@ -1833,9 +1833,42 @@ def indexTablero(request):
 
 @login_required
 def dashboard(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
+    out_cur_four = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_MESA.listarTodoMesa", [out_cur])
+    cursor.callproc("PKG_MESA.listarMesasDisponibles", [out_cur_two])
+    cursor.callproc("PKG_MESA.listarMesasReservadas", [out_cur_three])
+    cursor.callproc("PKG_MESA.listarMesaOcupada", [out_cur_four])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+    
+    lista_disponibles= []
+    for fila in out_cur_two:
+        lista_disponibles.append(fila)
+
+    lista_reservadas= []
+    for fila in out_cur_three:
+        lista_reservadas.append(fila)
+    
+    lista_ocupadas= []
+    for fila in out_cur_four:
+        lista_ocupadas.append(fila)
+
+    data = {
+        'mesas_totales': len(lista),
+        'mesas_disponibles': len(lista_disponibles),
+        'mesas_reservadas': len(lista_reservadas),
+        'mesas_ocupadas': len(lista_ocupadas),
+    }
      
-     
-    return render(request, 'app/dashboard.html')
+    return render(request, 'app/dashboard.html', data)
 
 # TABLET CLIENTE
 def clienteMenu(request):
