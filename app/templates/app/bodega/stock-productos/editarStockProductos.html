@@ -10,16 +10,36 @@
 
   <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
     <form action="/editar-stock-productos/" method="GET">
-      <h2>Aumentar Stock</h2>
+      <h2>Detalle Insumo</h2>
       <hr>
       <div class="col mt-4">
         {% for i in InvetarioStock %}
         <div class="row">
           <!-- id -->
           <input type="hidden" name="p_id_inv" value="{{i.0}}">
-          <div class="form-group col-md-12">
-            <label for="p_add_stock">Cantidad a Sumar:</label>
-            <input type="number" name="p_add_stock" class="form-control text-center" required>
+          <div class="form-group col-md-6">
+            <label for="p_nombre">Nombre Insumo:</label>
+            <input type="text" name="p_nombre" class="form-control text-center" value="{{i.2}}" readonly>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="p_estado">Estado:</label>
+            <input type="text" name="p_estado" class="form-control text-center" value="{{i.7}}" readonly>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="p_add_stock">Stock:</label>
+            <input type="number" name="p_add_stock" class="form-control text-center" value="{{i.3}}" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="p_id_medida">Unidad de Medida:</label>
+            <select class="form-control" name="p_id_medida" id="">
+              {% for u in UnidadesMedidas %}
+              <option value="{{u.0}}"
+                {% if u.0 == i.4 %}
+                  selected
+                {% endif %}
+              >{{u.1}}</option>
+              {% endfor %}
+            </select>
           </div>
         </div>
         {% endfor %}
@@ -29,7 +49,7 @@
           <a href="{% url 'indexStockProductos' %}" class="btn btn-primary d-flex mr-auto">
             Volver
           </a>
-          <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+          <button class="btn btn-primary d-flex ml-auto" type="submit">Editar</button>
         </div>
       </div>
     </form>

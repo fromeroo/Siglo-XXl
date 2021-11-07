@@ -78,9 +78,10 @@
         {{ form | crispy }}
         <div class="col">
           <div class="row">
-            <button class="btn btn-primary d-flex mr-auto">
-              <a href="{% url 'indexUser' %}" style="color: white;">Cancelar</a>
-            </button>
+            <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexUser' %}">
+              Cancelar
+            </a>
+            
             <button class="btn btn-primary d-flex ml-auto" type="submit">Editar</button>
           </div>
         </div>

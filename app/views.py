@@ -1264,7 +1264,7 @@ def indexStockProductos(request):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("PKG_INVENTARIO.listarInsumosStockCritico", [out_cur])
+    cursor.callproc("PKG_INVENTARIO.listarInventario", [out_cur])
 
     lista= []
     for fila in out_cur:
@@ -1284,13 +1284,14 @@ def editarStockProducto(request):
 
     p_id_inv = int(request.GET["p_id_inv"])
     p_add_stock = int(request.GET["p_add_stock"])
+    p_id_medida = int(request.GET["p_id_medida"])
 
-    cursor.callproc("PKG_INVENTARIO.editarStock", [p_id_inv, p_add_stock, salida])
+    cursor.callproc("PKG_INVENTARIO.editarInventario", [p_id_inv, p_add_stock, p_id_medida, salida])
     
     res = salida.getvalue()
 
     if res == 1:
-        messages.success(request, "¡El Stock del Insumos ha sido aumentado exitosamente!")
+        messages.success(request, "¡El Insumos ha sido editado exitosamente!")
         return redirect(to='indexStockProductos')
     else:
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
@@ -1349,7 +1350,7 @@ def crearRealizarPedido(request):
     p_id_pedido = int(salida_id.getvalue())  
     res = salida.getvalue()
 
-    cursor.callproc("PKG_INVENTARIO.listarInsumosStockCritico", [out_cur])    
+    cursor.callproc("PKG_INVENTARIO.listarInventario", [out_cur])    
     cursor.callproc("PKG_PEDIDO_INSUMO.listarMarca ", [out_cur_three])
 
     lista= []
@@ -1391,7 +1392,7 @@ def agregarRealizarPedido(request):
     cursor.callproc("PKG_PEDIDO_INSUMO.crearDetallePedido", [p_id_pedido, p_id_insumo, p_cantidad, p_medida, p_id_marca, salida])
     res = salida.getvalue()
 
-    cursor.callproc("PKG_INVENTARIO.listarInsumosStockCritico", [out_cur])    
+    cursor.callproc("PKG_INVENTARIO.listarInventario", [out_cur])    
     cursor.callproc("PKG_PEDIDO_INSUMO.listarMarca ", [out_cur_three])
 
     lista= []
@@ -1420,17 +1421,25 @@ def modificarStockProductos(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
     id_inventario = id
 
     cursor.callproc("PKG_INVENTARIO.buscarInvInsumo", [id_inventario, out_cur])
+    cursor.callproc("PKG_INVENTARIO.listarUnidadMedida", [out_cur_two])
 
     lista= []
     for fila in out_cur:
         lista.append(fila)
+    
+    lista_medida= []
+    for fila in out_cur_two:
+        lista_medida.append(fila)
 
     data = {
-        'InvetarioStock': lista
+        'InvetarioStock': lista,
+        'UnidadesMedidas': lista_medida
     }
+    print(data)
 
     return render(request, 'app/bodega/stock-productos/editarStockProductos.html', data)
 
@@ -1827,6 +1836,24 @@ def indexTablero(request):
     }
      
     return render(request, 'app/cocina/tablero/indexTablero.html', data)
+
+@login_required
+def entregarPedido(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_comanda = id
+
+    cursor.callproc("PKG_ORDEN_COMANDA.entregarPedido", [id_comanda, salida])
+
+    if salida.getvalue() == 1:
+        messages.success(request, "¡Estado de la comanda cambiado correctamente!")
+        return redirect('indexTablero')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexTablero')
+
 
 # DASHBOARD
 
