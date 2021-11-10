@@ -1,8 +1,6 @@
 from django.urls import path
 from .views import index, administrador, registro, indexUser, eliminar_usuario, modificar_usuario, \
     indexProveedores, crearProveedor, actualizarProveedores, registroProveedores, modificarProveedores, eliminarProveedores, \
-    indexMenus, crearMenus, editarMenus, registroMenus, modificarMenus, eliminarMenus, \
-    indexMenusProductos, registroMenusProductos, modificarMenusProductos, crearMenusProductos, editarMenusProductos, \
     indexInsumos, crearInsumo, actualizarInsumos, registroInsumos, modificarInsumos, eliminarInsumos, \
     indexProductos, crearProductos, editarProductos, registroProductos, modificarProductos, eliminarProductos, \
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
@@ -45,18 +43,18 @@ urlpatterns = [
     path('administracion/proveedores/modificar/<id>/', modificarProveedores, name="modificarProveedores"),
     path('administracion/proveedores/eliminar/<id>/', eliminarProveedores, name="eliminarProveedores"),
 
-    path('administracion/menus/', indexMenus, name="indexMenus"),
-    path('crear-menus/', crearMenus, name="crearMenus"),
-    path('editar-menus/', editarMenus, name="editarMenus"),
-    path('administracion/menus/registro/', registroMenus, name="registroMenus"),
-    path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
-    path('administracion/menus/eliminar/<id>/', eliminarMenus, name="eliminarMenus"),
+    # path('administracion/menus/', indexMenus, name="indexMenus"),
+    # path('crear-menus/', crearMenus, name="crearMenus"),
+    # path('editar-menus/', editarMenus, name="editarMenus"),
+    # path('administracion/menus/registro/', registroMenus, name="registroMenus"),
+    # path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
+    # path('administracion/menus/eliminar/<id>/', eliminarMenus, name="eliminarMenus"),
 
-    path('administracion/menus/index-producto/<id>/', indexMenusProductos, name="indexMenusProductos"),
-    path('administracion/menus/registro-producto/<id>/', registroMenusProductos, name="registroMenusProductos"),
-    path('administracion/menus/modificar-producto/<id>/', modificarMenusProductos, name="modificarMenusProductos"),
-    path('crear-menus-productos/', crearMenusProductos, name="crearMenusProductos"),
-    path('editar-menus-productos/', editarMenusProductos, name="editarMenusProductos"),
+    # path('administracion/menus/index-producto/<id>/', indexMenusProductos, name="indexMenusProductos"),
+    # path('administracion/menus/registro-producto/<id>/', registroMenusProductos, name="registroMenusProductos"),
+    # path('administracion/menus/modificar-producto/<id>/', modificarMenusProductos, name="modificarMenusProductos"),
+    # path('crear-menus-productos/', crearMenusProductos, name="crearMenusProductos"),
+    # path('editar-menus-productos/', editarMenusProductos, name="editarMenusProductos"),
 
     path('administracion/insumos/', indexInsumos, name="indexInsumos"),
     path('crear-insumo/', crearInsumo, name="crearInsumo"),
