@@ -695,8 +695,9 @@ def crearProductos(request):
     p_id_cat = int(request.GET["p_id_cat"])
     p_id_tipo = int(request.GET["p_id_tipo"])
     p_id_receta = int(request.GET["p_id_receta"])
+    link_imagen = request.GET["link_imagen"]
 
-    cursor.callproc("PKG_PRODUCTO.crearProducto", [p_nom_producto, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
+    cursor.callproc("PKG_PRODUCTO.crearProducto", [p_nom_producto, p_precio, p_id_cat, p_id_tipo, p_id_receta, link_imagen, salida])
 
     res = salida.getvalue()
 
@@ -760,8 +761,9 @@ def editarProductos(request):
     p_id_cat = int(request.GET["p_id_cat"])
     p_id_tipo = int(request.GET["p_id_tipo"])
     p_id_receta = int(request.GET["p_id_receta"])
+    link_imagen = request.GET["link_imagen"]
 
-    cursor.callproc("PKG_PRODUCTO.modificarProducto", [p_id_producto, p_nom_prod, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
+    cursor.callproc("PKG_PRODUCTO.modificarProducto", [p_id_producto, p_nom_prod, p_precio, p_id_cat, p_id_tipo, p_id_receta, link_imagen, salida])
     
     res = salida.getvalue()
 
