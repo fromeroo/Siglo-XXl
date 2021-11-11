@@ -198,8 +198,7 @@ def crearProveedor(request):
 
     cursor.callproc("PKG_PROVEEDOR.crearProveedores", [rut, dv, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_dirrecion, numero_casa, tipo_direccion, id_comuna, salida])
     
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    if salida.getvalue() == 1:
         messages.success(request, "¡El Proveedor ha sido registrado exitosamente!")
         return redirect('indexProveedores')
     else:
