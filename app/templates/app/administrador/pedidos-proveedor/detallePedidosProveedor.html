@@ -1,0 +1,73 @@
+{% extends 'app/base.html' %}
+
+{% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block contenido %}
+{% load static %}
+    <!-- /.content-wrapper -->
+    
+
+    <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
+      <h2>Detalle Pedido Proveedor</h2>
+      <hr>
+        {% for d in DetallePedidos %}
+        <div class="col">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="p_nom_receta">Insumo:</label>
+                    <input type="text" name="p_nom_receta" class="form-control" value="{{d.3}}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="p_tiempo_prep">Cantidad:</label>
+                    <input type="number" name="p_tiempo_prep" class="form-control" value="{{d.4}}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="p_temp_ideal">U° de Medida:</label>
+                    <input type="text" name="p_temp_ideal" class="form-control" value="{{d.5}}" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="p_temp_ideal">Marca:</label>
+                    <input type="text" name="p_temp_ideal" class="form-control" value="{{d.7}}" disabled>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% empty %}
+        <div class="alert alert-info mb-5 mt-5" role="alert">
+            Pedido sin insumos creados.
+        </div>
+        {% endfor %}
+        <div class="col mt-4">
+            <div class="row">
+                <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexPedidosProveedor' %}">
+                    Volver
+                </a>
+
+                {% if DetallePedidos.0.1 %}
+                <form action="/autorizar-pedido/" method="GET">
+                    <input type="hidden" name="p_id_pedido" value="{{DetallePedidos.0.1}}">
+                    <input type="hidden" name="p_opcion1" value="1">
+                    <input type="hidden" name="p_opcion2" value="0">
+                    <button class="btn btn-success d-flex ml-auto mr-3" type="submit">Autorizar Pedido</button>
+                </form>
+
+                <form action="/autorizar-pedido/" method="GET">
+                    <input type="hidden" name="p_id_pedido" value="{{DetallePedidos.0.1}}">
+                    <input type="hidden" name="p_opcion1" value="0">
+                    <input type="hidden" name="p_opcion2" value="1">
+                    <button class="btn btn-danger d-flex ml-auto" type="submit">Rechazar Pedido</button>
+                </form>
+                {% endif %}
+            </div>  
+        </div>
+    </div>
+  <!-- /#wrapper -->
+
+  <style>
+    #user-table{
+      font-size: 14px;
+    }
+  </style>
+  {% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'app/base.html' %}
+
+{% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block contenido %}
+{% load static %}
+    <!-- /.content-wrapper -->
+    
+    <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
+      <h2>Registro de Menu</h2>
+      <hr>
+      <form action="/crear-menus/" method="GET">
+        
+        <div class="col mt-4">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="p_nro_menu">Nro° Menu:</label>
+              <input type="number" name="p_nro_menu" class="form-control" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_nom_menu" >Nombre:</label>
+              <input type="text" name="p_nom_menu" id="" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        <div class="col mt-4">
+          <div class="row">
+            <a href="{% url 'indexMenus' %}" class="btn btn-primary d-flex mr-auto">
+              Volver
+            </a>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  <!-- /#wrapper -->
+
+  <style>
+    #user-table{
+      font-size: 14px;
+    }
+  </style>
+  {% endblock %}

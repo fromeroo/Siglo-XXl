@@ -1,0 +1,173 @@
+{% extends 'app/base.html' %}
+
+  
+{% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      let FIRST_NAME = $("#id_first_name").val();
+      let LAST_NAME = $("#id_last_name").val();
+      let EMAIL = $("#id_email").val();
+      
+      $('#id_username').prop('readonly', true);
+      $('#id_first_name').prop('required', true);
+      $('#id_last_name').prop('required', true);
+
+      var minLength = 3;
+
+      $("#id_first_name").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < minLength) {
+          $("#id_first_name").val(FIRST_NAME);
+
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El nombre debe tener mínimo 3 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+
+      $("#id_last_name").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < minLength) {
+          $("#id_last_name").val(LAST_NAME);
+    
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El apellido debe tener mínimo 3 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+
+      $("#id_email").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < (minLength + 5)) {
+          $("#id_email").val(EMAIL);
+    
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El email debe tener mínimo 8 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+    });
+
+    
+  </script>
+{% endblock %}
+
+{% block contenido %}
+{% load static %}
+    <!-- /.content-wrapper -->
+    
+    <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
+      <h2>Actualización de Proveedores</h2>
+      <hr>
+      <form action="/actualizar-proveedor/" method="GET">
+        
+        <!-- INPUT COMBOX CON LA API DE LISTAR -->
+        
+        <div class="col">
+          <div class="row">
+            <div class="form-group d-none" >
+              <input type="hidden" name="p_id" class="form-control" value="{{Proveedor.0.16}}"/>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_rut">Rut:</label>
+              <input type="text" name="p_rut" class="form-control" value="{{Proveedor.0.1}}" required readonly>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_razon_social" >Razon Social:</label>
+              <input type="text" name="p_razon_social" id="" class="form-control" value="{{Proveedor.0.2}}" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_nom_corto" >Nombre:</label>
+              <input type="text" name="p_nom_corto" id="" class="form-control" value="{{Proveedor.0.0}}" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_telefono" >Telefono:</label>
+              <input type="number" name="p_telefono" id="" class="form-control" value="{{Proveedor.0.3}}" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_correo" >Correo:</label>
+              <input type="email" name="p_correo" id="" class="form-control" value="{{Proveedor.0.4}}" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_id_giro">Giro</label>
+              <select class="form-control" name="p_id_giro" id="select-giro" value="" required>
+                {% for lg in ListaGiro %}
+                  {% if Proveedor.0.7 == lg.0 %}
+                    <option value="{{lg.0}}" selected>{{lg.1}}</option>
+                  {% else %}
+                    <option value="{{lg.0}}">{{lg.1}}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_direccion">Dirección</label>
+              <input type="text" name="p_direccion" id="" value="{{ Proveedor.0.9 }}" class="form-control" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_num_dir">N° Dirección</label>
+              <input type="number" name="p_num_dir" id="" value="{{ Proveedor.0.11 }}" class="form-control" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_nro_casa">N° Casa</label>
+              <input type="number" name="p_nro_casa" id="" value="{{ Proveedor.0.12 }}" class="form-control" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_tipo_dir">Tipo Dirección</label>
+              <select class="form-control" name="p_tipo_dir" id="" required>
+                {% for ltd in ListaTipoDireccion %}
+                  {% if Proveedor.0.16 == ltd.0 %}
+                      <option value="{{ltd.0}}" selected>{{ltd.1}}</option>
+                    {% else %}
+                      <option value="{{ltd.0}}">{{ltd.1}}</option>
+                    {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_id_com">Comuna</label>
+              <select class="form-control" name="p_id_com" id="" required>
+                {% for lc in ListaComuna %}
+                  {% if Proveedor.0.14 == lc.0 %}
+                    <option value="{{lc.0}}" selected>{{lc.1}}</option>
+                  {% else %}
+                    <option value="{{lc.0}}">{{lc.1}}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col mt-4">
+          <div class="row">
+            <a href="{% url 'indexProveedores' %}" 
+            class="btn btn-primary d-flex mr-auto"
+            >Volver</a>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+          </div>  
+        </div>
+      </form>
+    </div>
+  <!-- /#wrapper -->
+
+  <style>
+    #user-table{
+      font-size: 14px;
+    }
+  </style>
+  
+  {% endblock %}
+

@@ -1,0 +1,152 @@
+{% extends 'app/base.html' %}
+
+  
+{% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      let FIRST_NAME = $("#id_first_name").val();
+      let LAST_NAME = $("#id_last_name").val();
+      let EMAIL = $("#id_email").val();
+      
+      $('#id_username').prop('readonly', true);
+      $('#id_first_name').prop('required', true);
+      $('#id_last_name').prop('required', true);
+
+      var minLength = 3;
+
+      $("#id_first_name").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < minLength) {
+          $("#id_first_name").val(FIRST_NAME);
+
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El nombre debe tener mínimo 3 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+
+      $("#id_last_name").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < minLength) {
+          $("#id_last_name").val(LAST_NAME);
+    
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El apellido debe tener mínimo 3 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+
+      $("#id_email").on("blur", function(){
+        var value = $(this).val();
+        if (value.length < (minLength + 5)) {
+          $("#id_email").val(EMAIL);
+    
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'El email debe tener mínimo 8 carácteres',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+      });
+    });
+
+    
+  </script>
+{% endblock %}
+
+{% block contenido %}
+{% load static %}
+    <!-- /.content-wrapper -->
+    
+    <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
+      <h2>Actualización de Facturas</h2>
+      <hr>
+      <form action="/actualizar-factura/" method="GET">
+        
+        <!-- INPUT COMBOX CON LA API DE LISTAR -->
+        
+        <div class="col">
+          <div class="row">
+            <div class="form-group d-none">
+              <input type="hidden" name="p_id_factura" class="form-control" value="{{Factura.0.0}}"/>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_nro_factura">N° de Factura:</label>
+              <input type="text" name="p_nro_factura" class="form-control" value="{{Factura.0.1}}" required readonly>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="p_fec_emision">Fecha de emisión:</label>
+              <input type="date" name="p_fec_emision" class="form-control" value="{{FechaEmision}}" required>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="p_fec_pago">Fecha de Pago:</label>
+              <input type="date" name="p_fec_pago" class="form-control" value="{{FechaPago}}" required>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="p_neto">Neto:</label>
+              <input type="text" name="p_neto" class="form-control" value="{{Factura.0.4}}" required>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label for="p_id_oc">Orden de Compra</label>
+              <select class="form-control" name="p_id_oc" id="" value="" required>
+                {% for oc in OrdenCompra %}
+                  {% if Factura.0.7 == oc.0 %}
+                    <option value="{{oc.0}}" selected>{{oc.1}}</option>
+                  {% else %}
+                    <option value="{{oc.0}}">{{oc.1}}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            
+            
+            <div class="form-group col-md-6">
+              <label for="p_id_forma_pago">Forma de Pago</label>
+              <select class="form-control" name="p_id_forma_pago" id="" value="" required>
+                {% for fp in FormaPago %}
+                  {% if Factura.0.9 == fp.0 %}
+                    <option value="{{fp.0}}" selected>{{fp.1}}</option>
+                  {% else %}
+                    <option value="{{fp.0}}">{{fp.1}}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            
+          </div>
+        </div>
+        <div class="col mt-4">
+          <div class="row">
+            <a href="{% url 'indexGestionFacturas' %}" type="button"
+            class="btn btn-primary d-flex mr-auto"
+            >Volver</a>
+            <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+          </div>  
+        </div>
+      </form>
+    </div>
+  <!-- /#wrapper -->
+
+  <style>
+    #user-table{
+      font-size: 14px;
+    }
+  </style>
+  
+  {% endblock %}
+

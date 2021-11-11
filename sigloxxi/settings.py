@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
-LOGIN_REDIRECT_URL = '/indexUser'
+LOGIN_REDIRECT_URL = '/dashboard'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 # Application definition
 
@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.sessions', 
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'api.apps.ApiConfig',
     'crispy_forms',
+    'rest_framework',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -82,17 +84,39 @@ WSGI_APPLICATION = 'sigloxxi.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.oracle',
+    #     'NAME': 'localhost:1521/orcl',
+    #     'USER': 'parce',
+    #     'PASSWORD': 'parce',
+    #     'TEST': {
+    #         'USER': 'default_test',
+    #         'TBLSPACE': 'default_test_tbls',
+    #         'TBLSPACE_TMP': 'default_test_tbls_tmp',
+    #     },
+    # },
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': '127.0.0.1:1521/siglo_xxl',
-        'USER': 'c##franco',
-        'PASSWORD': 'password',
+        'NAME': '127.0.0.1:1521/orcl',
+        'USER': 'siglo',
+        'PASSWORD': 'admin123',
         'TEST': {
             'USER': 'default_test',
             'TBLSPACE': 'default_test_tbls',
             'TBLSPACE_TMP': 'default_test_tbls_tmp',
         },
     },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.oracle',
+    #     'NAME': '127.0.0.1:1521/siglo_xxl',
+    #     'USER': 'c##franco',
+    #     'PASSWORD': 'password',
+    #     'TEST': {
+    #         'USER': 'default_test',
+    #         'TBLSPACE': 'default_test_tbls',
+    #         'TBLSPACE_TMP': 'default_test_tbls_tmp',
+    #     },
+    # },
 }
 
 

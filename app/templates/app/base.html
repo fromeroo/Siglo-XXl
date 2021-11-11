@@ -14,13 +14,28 @@
   <title>Siglo XXI - Dashboard</title>
 
   <!-- Custom fonts for this template-->
+  <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
   <!-- Page level plugin CSS-->
   <link href="{% static 'vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
 
+  <link href="{% static 'css/bootstrap-table.min.css' %}" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+
+  <link href="{% static 'css/nifty.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/themify-icons.min.css' %}" rel="stylesheet">
+
+  <style>
+    .dropdown-container {
+      display: none;
+      background-color: #262626;
+      padding-left: 8px;
+    }
+  </style>
+
 
 </head>
 
@@ -28,7 +43,7 @@
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Siglo XXI</a>
+    <a class="mr-1" style="font-size: 20px;" href="index.html">Siglo XXI</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
@@ -37,19 +52,14 @@
     <!-- Navbar Search -->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Buscar..." aria-label="Search" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
       </div>
     </form>
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto ml-md-0">
       <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-bell fa-fw"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
@@ -60,7 +70,8 @@
         </div>
       </li>
       <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-envelope fa-fw"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
@@ -70,11 +81,11 @@
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
-      <li class="nav-item dropdown no-arrow">
-        <a class="nav-link dropdown-toggle" href="{% url 'logout' %}" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item ">
+        <a class="nav-link " href="{% url 'logout' %}" id="userDropdown" role="button">
           <i class="fas fa-user-circle fa-fw"></i>
           {% if user.is_authenticated %}
-            Cerrar sesión
+          Cerrar sesión
           {% endif %}
         </a>
       </li>
@@ -86,30 +97,136 @@
 
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'indexUser' %}">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Modulo Usuario</span>
-        </a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Modulos</span>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-          <h6 class="dropdown-header">Login Screens:</h6>
-          <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Other Pages:</h6>
-          <a class="dropdown-item" href="404.html">404 Page</a>
-          <a class="dropdown-item" href="blank.html">Blank Page</a>
-        </div>
-      </li>
+
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'dashboard' %}">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Dashboard</span></a>
       </li>
+
+
+      <li class="nav-item dropdown">
+        {% if perms.app.add_estadousuario %}
+        <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Administración</span>
+        </a>
+        <div class="dropdown-container">
+          <a class="nav-link" href="{% url 'indexUser' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Usuarios</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexProveedores' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Proveedores</span>
+          </a>
+
+          <a class="nav-link" href="{% url 'indexInsumos' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Insumos</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexProductos' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Productos</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexRecetas' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Recetas</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexMesas' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Mesas</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexPedidosProveedor' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Pedidos Proveedores</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexGestionCajas' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Cajas</span>
+          </a>
+        </div>
+        {% endif %}
+      </li>
+
+      <li class="nav-item dropdown">
+        {% if perms.app.add_insumo %}
+        <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Bodega</span>
+        </a>
+        <div class="dropdown-container">
+          <a class="nav-link" href="{% url 'indexStockProductos' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Stock de Insumos</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexPedidosBodegas' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Pedidos</span>
+          </a>
+        </div>
+        {% endif %}
+      </li>
+
+      <li class="nav-item dropdown">
+        {% if perms.app.add_caja %}
+        <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Finanzas</span>
+        </a>
+        <div class="dropdown-container">
+          <a class="nav-link" href="{% url 'indexGestionCajaFinanzas' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Gestion de Caja</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexGestionFacturas' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Facturas</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexInformes' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Informes</span>
+          </a>
+        </div>
+        {% endif %}
+      </li>
+
+      <li class="nav-item dropdown">
+        {% if perms.app.add_mesa %}
+        <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Caja</span>
+        </a>
+        <div class="dropdown-container">
+          <a class="nav-link" href="{% url 'indexPagoEfectivo' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Pago Efectivo</span>
+          </a>
+        </div>
+        {% endif %}
+      </li>
+
+      <li class="nav-item dropdown">
+        {% if perms.app.add_detalleorden %}
+        <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Cocina</span>
+        </a>
+        <div class="dropdown-container">
+          <a class="nav-link" href="{% url 'indexTablero' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Tablero</span>
+          </a>
+        </div>
+        {% endif %}
+      </li>
+
+
     </ul>
     <!-- /.content-wrapper -->
     {% block contenido %}
@@ -117,7 +234,7 @@
     <!-- /#wrapper -->
   </div>
 
-  <footer>  
+  <footer>
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
       <a class="navbar-brand mr-1" href="index.html">Siglo XXI</a>
       <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -128,12 +245,15 @@
       </form>
       <ul class="navbar-nav ml-auto ml-md-0">
       </ul>
-      </nav>
+    </nav>
   </footer>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -141,10 +261,11 @@
   <!-- Page level plugin JavaScript-->
   <script src="vendor/chart.js/Chart.min.js"></script>
   <script src="vendor/datatables/jquery.dataTables.js"></script>
-  <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin.min.js"></script>
+  <script src="{% static 'js/sb-admin.min.js' %}"></script>
 
   <!-- Demo scripts for this page-->
   <script src="js/demo/datatables-demo.js"></script>
@@ -152,22 +273,57 @@
 
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  {% if messages %}
-      {% for m in messages %}
-        <script>
-          swal.fire({
-            "title": "Felicitaciones",
-            "text": "{{m}}",
-            "icon": "success",
-            "showConfirmButton": false,
-            "timer": 2500
-          })
-        </script>
-      {% endfor %}
-    {% endif %}
+  <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-es-CL.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/cookie/bootstrap-table-cookie.min.js"></script>
 
-    {% block js %}
-    {% endblock %}
+
+  {% if messages %}
+  {% for m in messages %}
+  <script>
+      let title = 'Felicitaciones'; 
+      if ("{{m.tags}}" == 'error') {
+        title = 'Error'
+      }
+    swal.fire({
+      
+      "title": title,
+      "text": "{{m}}",
+      "icon": "{{m.tags}}",
+      "showConfirmButton": false,
+      "timer": 2500
+    })
+  </script>
+  {% endfor %}
+  {% endif %}
+  <script>
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var dropdownContent = this.nextElementSibling;
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+        } else {
+          dropdownContent.style.display = "block";
+        }
+      });
+    }
+
+
+  </script>
+
+
+
+
+
+
+  {% block js %}
+  {% endblock %}
 
 </body>
 
