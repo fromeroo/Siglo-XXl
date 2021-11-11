@@ -1819,20 +1819,22 @@ def indexTablero(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
 
-    menu = get_object_or_404(Menu, id_menu=id)
+    cursor.callproc("PKG_ORDEN_COMANDA.listarComandaNueva", [out_cur])
+    cursor.callproc("PKG_ORDEN_COMANDA.listarEstadoComanda", [out_cur_two])
 
-    p_id_menu = menu.id_menu
-
-    cursor.callproc("PKG_MENU.listarDetalleMenu", [p_id_menu, out_cur])
-
-    lista= []
+    lista = []
     for fila in out_cur:
         lista.append(fila)
 
+    lista_two = []
+    for fila in out_cur_two:
+        lista_two.append(fila)
+
     data = {
-        'Menus': lista,
-        'id': p_id_menu
+        'OrdenComanda': lista,
+        'EstadoComanda': lista_two
     }
      
     return render(request, 'app/cocina/tablero/indexTablero.html', data)
