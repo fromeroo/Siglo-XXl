@@ -288,220 +288,220 @@ def eliminarProveedores(request, id):
     messages.success(request, "¡El proveedor ha sido eliminado exitosamente!")
     return redirect(to="indexProveedores")
 
-@login_required
-def indexMenus(request):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
+# @login_required
+# def indexMenus(request):
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("PKG_MENU.listarMenu", [out_cur])
+#     cursor.callproc("PKG_MENU.listarMenu", [out_cur])
 
-    lista= []
-    for fila in out_cur:
-        lista.append(fila)
+#     lista= []
+#     for fila in out_cur:
+#         lista.append(fila)
 
-    data = {
-        'Menus': lista
-    }
+#     data = {
+#         'Menus': lista
+#     }
      
-    return render(request, 'app/administrador/menus/indexMenus.html', data)
+#     return render(request, 'app/administrador/menus/indexMenus.html', data)
 
-@login_required
-def crearMenus(request):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    # out_cur = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
+# @login_required
+# def crearMenus(request):
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     # out_cur = django_cursor.connection.cursor()
+#     salida = cursor.var(cx_Oracle.NUMBER)
 
-    nro_menu = int(request.GET["p_nro_menu"])
-    nombre_menu = request.GET["p_nom_menu"]
+#     nro_menu = int(request.GET["p_nro_menu"])
+#     nombre_menu = request.GET["p_nom_menu"]
 
-    cursor.callproc("PKG_MENU.crearMenu", [nro_menu, nombre_menu, salida])
+#     cursor.callproc("PKG_MENU.crearMenu", [nro_menu, nombre_menu, salida])
 
-    res = salida.getvalue()
+#     res = salida.getvalue()
 
-    if res == 1:
-        messages.success(request, "¡El Menu ha sido registrado exitosamente!")
-        return redirect('indexMenus')
-    else:
-        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
-        return redirect('indexMenus')
+#     if res == 1:
+#         messages.success(request, "¡El Menu ha sido registrado exitosamente!")
+#         return redirect('indexMenus')
+#     else:
+#         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+#         return redirect('indexMenus')
 
-@login_required
-def registroMenus(request):
+# @login_required
+# def registroMenus(request):
    
-    return render(request, 'app/administrador/menus/registroMenus.html')
+#     return render(request, 'app/administrador/menus/registroMenus.html')
 
-@login_required
-def modificarMenus(request, id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
-    id_menu = id
+# @login_required
+# def modificarMenus(request, id):
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     out_cur = django_cursor.connection.cursor()
+#     id_menu = id
 
-    cursor.callproc("PKG_MENU.buscarMenu", [id_menu, out_cur])
+#     cursor.callproc("PKG_MENU.buscarMenu", [id_menu, out_cur])
 
-    lista= []
-    for fila in out_cur:
-        lista.append(fila)
+#     lista= []
+#     for fila in out_cur:
+#         lista.append(fila)
 
-    data = {
-        'Menus': lista
-    }
+#     data = {
+#         'Menus': lista
+#     }
 
-    return render(request, 'app/administrador/menus/editarMenus.html', data)
+#     return render(request, 'app/administrador/menus/editarMenus.html', data)
 
-@login_required
-def editarMenus(request):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    # out_cur = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
+# @login_required
+# def editarMenus(request):
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     # out_cur = django_cursor.connection.cursor()
+#     salida = cursor.var(cx_Oracle.NUMBER)
 
-    id_menu = int(request.GET["id"])
-    nro_menu = int(request.GET["p_nro_menu"])
-    nom_menu = request.GET["p_nom_menu"]
+#     id_menu = int(request.GET["id"])
+#     nro_menu = int(request.GET["p_nro_menu"])
+#     nom_menu = request.GET["p_nom_menu"]
 
-    cursor.callproc("PKG_MENU.modificarMenu", [id_menu, nro_menu, nom_menu, salida])
+#     cursor.callproc("PKG_MENU.modificarMenu", [id_menu, nro_menu, nom_menu, salida])
     
-    res = salida.getvalue()
+#     res = salida.getvalue()
 
-    if res == 1:
-        messages.success(request, "¡El Menu ha sido editado exitosamente!")
-        return redirect('indexMenus')
-    else:
-        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
-        return redirect('indexMenus')
+#     if res == 1:
+#         messages.success(request, "¡El Menu ha sido editado exitosamente!")
+#         return redirect('indexMenus')
+#     else:
+#         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+#         return redirect('indexMenus')
 
-@login_required
-def eliminarMenus(request, id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    # out_cur = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
+# @login_required
+# def eliminarMenus(request, id):
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     # out_cur = django_cursor.connection.cursor()
+#     salida = cursor.var(cx_Oracle.NUMBER)
 
-    id_menu = int(id)
+#     id_menu = int(id)
 
-    cursor.callproc("PKG_MENU.eliminarMenu", [id_menu, salida])
+#     cursor.callproc("PKG_MENU.eliminarMenu", [id_menu, salida])
     
-    messages.success(request, "¡El menu ha sido eliminado exitosamente!")
-    return redirect(to="indexMenus")
+#     messages.success(request, "¡El menu ha sido eliminado exitosamente!")
+#     return redirect(to="indexMenus")
 
-@login_required
-def indexMenusProductos(request, id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
+# @login_required
+# def indexMenusProductos(request, id):
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     out_cur = django_cursor.connection.cursor()
 
-    menu = get_object_or_404(Menu, id_menu=id)
+#     menu = get_object_or_404(Menu, id_menu=id)
 
-    p_id_menu = menu.id_menu
+#     p_id_menu = menu.id_menu
 
-    cursor.callproc("PKG_MENU.listarDetalleMenu", [p_id_menu, out_cur])
+#     cursor.callproc("PKG_MENU.listarDetalleMenu", [p_id_menu, out_cur])
 
-    lista= []
-    for fila in out_cur:
-        lista.append(fila)
+#     lista= []
+#     for fila in out_cur:
+#         lista.append(fila)
 
-    data = {
-        'Menus': lista,
-        'id': p_id_menu
-    }
+#     data = {
+#         'Menus': lista,
+#         'id': p_id_menu
+#     }
      
-    return render(request, 'app/administrador/menus/indexMenusProductos.html', data)
+#     return render(request, 'app/administrador/menus/indexMenusProductos.html', data)
 
-@login_required
-def registroMenusProductos(request, id):
-    menu = get_object_or_404(Menu, id_menu=id)
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
+# @login_required
+# def registroMenusProductos(request, id):
+#     menu = get_object_or_404(Menu, id_menu=id)
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur])
+#     cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur])
 
-    lista= []
-    for fila in out_cur:
-        lista.append(fila)
+#     lista= []
+#     for fila in out_cur:
+#         lista.append(fila)
 
-    data = {
-        'id': menu.id_menu,
-        'Productos': lista
-    }
+#     data = {
+#         'id': menu.id_menu,
+#         'Productos': lista
+#     }
 
-    return render(request, 'app/administrador/menus/registroMenusProductos.html', data)
+#     return render(request, 'app/administrador/menus/registroMenusProductos.html', data)
 
-@login_required
-def crearMenusProductos(request):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    # out_cur = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
+# @login_required
+# def crearMenusProductos(request):
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     # out_cur = django_cursor.connection.cursor()
+#     salida = cursor.var(cx_Oracle.NUMBER)
 
-    p_id_menu = int(request.GET["p_id_menu"])
-    p_id_producto = int(request.GET["p_id_producto"])
-    p_descripcion = request.GET["p_descripcion"]
+#     p_id_menu = int(request.GET["p_id_menu"])
+#     p_id_producto = int(request.GET["p_id_producto"])
+#     p_descripcion = request.GET["p_descripcion"]
 
-    cursor.callproc("PKG_MENU.crearDetalleMenu", [p_id_menu, p_id_producto, p_descripcion, salida])
+#     cursor.callproc("PKG_MENU.crearDetalleMenu", [p_id_menu, p_id_producto, p_descripcion, salida])
 
-    res = salida.getvalue()
+#     res = salida.getvalue()
 
-    if res == 1:
-        messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
-        return redirect('indexMenusProductos', id = str(p_id_menu))
-    else:
-        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
-        return redirect('indexMenusProductos', id = str(p_id_menu))
+#     if res == 1:
+#         messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
+#         return redirect('indexMenusProductos', id = str(p_id_menu))
+#     else:
+#         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+#         return redirect('indexMenusProductos', id = str(p_id_menu))
 
-@login_required
-def modificarMenusProductos(request, id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
-    out_cur_two = django_cursor.connection.cursor()
+# @login_required
+# def modificarMenusProductos(request, id):
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     out_cur = django_cursor.connection.cursor()
+#     out_cur_two = django_cursor.connection.cursor()
     
-    id_det_menu = id
+#     id_det_menu = id
 
-    cursor.callproc("PKG_MENU.buscarDetalleMenu", [id_det_menu, out_cur])
-    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur_two])
+#     cursor.callproc("PKG_MENU.buscarDetalleMenu", [id_det_menu, out_cur])
+#     cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur_two])
 
-    lista= []
-    for fila in out_cur:
-        lista.append(fila)
+#     lista= []
+#     for fila in out_cur:
+#         lista.append(fila)
     
-    lista_productos= []
-    for fila in out_cur_two:
-        lista_productos.append(fila)
+#     lista_productos= []
+#     for fila in out_cur_two:
+#         lista_productos.append(fila)
 
-    data = {
-        'MenuProductos': lista,
-        'Productos' : lista_productos
-    }
+#     data = {
+#         'MenuProductos': lista,
+#         'Productos' : lista_productos
+#     }
 
-    return render(request, 'app/administrador/menus/editarMenusProductos.html', data)
+#     return render(request, 'app/administrador/menus/editarMenusProductos.html', data)
 
-@login_required
-def editarMenusProductos(request):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    # out_cur = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
+# @login_required
+# def editarMenusProductos(request):
+#     django_cursor = connection.cursor()
+#     cursor = django_cursor.connection.cursor()
+#     # out_cur = django_cursor.connection.cursor()
+#     salida = cursor.var(cx_Oracle.NUMBER)
 
-    p_id_det_menu = int(request.GET["p_id_det_menu"])
-    p_id_producto = int(request.GET["p_id_producto"])
-    p_descripcion = request.GET["p_descripcion"]
+#     p_id_det_menu = int(request.GET["p_id_det_menu"])
+#     p_id_producto = int(request.GET["p_id_producto"])
+#     p_descripcion = request.GET["p_descripcion"]
 
-    p_id_menu = request.GET["p_id_menu"]
+#     p_id_menu = request.GET["p_id_menu"]
 
-    cursor.callproc("PKG_MENU.modificarDetalleMenu", [p_id_det_menu, p_id_producto, p_descripcion, salida])
+#     cursor.callproc("PKG_MENU.modificarDetalleMenu", [p_id_det_menu, p_id_producto, p_descripcion, salida])
     
-    res = salida.getvalue()
+#     res = salida.getvalue()
 
-    if res == 1:
-        messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
-        return redirect('indexMenusProductos', id = p_id_menu)
-    else:
-        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
-        return redirect('indexMenusProductos', id = p_id_menu)
+#     if res == 1:
+#         messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
+#         return redirect('indexMenusProductos', id = p_id_menu)
+#     else:
+#         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+#         return redirect('indexMenusProductos', id = p_id_menu)
 
 @login_required    
 def indexInsumos(request):
@@ -695,8 +695,9 @@ def crearProductos(request):
     p_id_cat = int(request.GET["p_id_cat"])
     p_id_tipo = int(request.GET["p_id_tipo"])
     p_id_receta = int(request.GET["p_id_receta"])
+    link_imagen = request.GET["link_imagen"]
 
-    cursor.callproc("PKG_PRODUCTO.crearProducto", [p_nom_producto, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
+    cursor.callproc("PKG_PRODUCTO.crearProducto", [p_nom_producto, p_precio, p_id_cat, p_id_tipo, p_id_receta, link_imagen, salida])
 
     res = salida.getvalue()
 
@@ -760,8 +761,9 @@ def editarProductos(request):
     p_id_cat = int(request.GET["p_id_cat"])
     p_id_tipo = int(request.GET["p_id_tipo"])
     p_id_receta = int(request.GET["p_id_receta"])
+    link_imagen = request.GET["link_imagen"]
 
-    cursor.callproc("PKG_PRODUCTO.modificarProducto", [p_id_producto, p_nom_prod, p_precio, p_id_cat, p_id_tipo, p_id_receta, salida])
+    cursor.callproc("PKG_PRODUCTO.modificarProducto", [p_id_producto, p_nom_prod, p_precio, p_id_cat, p_id_tipo, p_id_receta, link_imagen, salida])
     
     res = salida.getvalue()
 
