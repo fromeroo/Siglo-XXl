@@ -20,7 +20,8 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     clienteMenu, detalleCliente, pagoCliente, \
     reservaCliente, \
     principal, CrearReserva, eliminarReserva, buscarReservaRut, \
-    listarRolesUsuario, cambiarRolUsuario
+    listarRolesUsuario, cambiarRolUsuario, \
+    prepararComanda, entregarPedido
     
 # APIS
 from api import views as api_views
@@ -131,7 +132,10 @@ urlpatterns = [
     path('caja/pago-efectivo/detalle/<id>/', detalleMesasCajas, name="detalleMesasCajas"),
     path('caja/pago-efectivo/ingresar/<id>/', ingresarPagoEfectivo, name="ingresarPagoEfectivo"),
 
+    #TABLERO
     path('cocina/tablero/', indexTablero, name="indexTablero"),
+    path('cocina/tablero/preparar-comanda/<id>/', prepararComanda, name="prepararComanda"),
+    path('cocina/tablero/entregar-pedido/<id>/', entregarPedido, name="entregarPedido"),
 
     path('dashboard/', dashboard, name="dashboard"),
 
@@ -148,6 +152,8 @@ urlpatterns = [
     path('crear-reserva/', CrearReserva, name="CrearReserva"),
     path('eliminar-reserva/', eliminarReserva, name="eliminarReserva"),
     path('buscar-reserva/', buscarReservaRut, name="buscarReservaRut"),
+
+
 
     # APIS URL MESAS
     
