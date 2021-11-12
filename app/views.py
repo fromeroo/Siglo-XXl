@@ -1894,6 +1894,23 @@ def entregarPedido(request, id):
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexTablero')
 
+@login_required
+def prepararComanda(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_comanda = id
+
+    cursor.callproc("PKG_ORDEN_COMANDA.prepararComanda", [id_comanda, salida])
+
+    if salida.getvalue() == 1:
+        messages.success(request, "¡Estado de la comanda cambiado correctamente!")
+        return redirect('indexTablero')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexTablero')
+
 
 # DASHBOARD
 
