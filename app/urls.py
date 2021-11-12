@@ -14,7 +14,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, \
     indexInformes, \
-    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, \
+    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
     indexTablero, \
     dashboard, \
     clienteMenu, detalleCliente, pagoCliente, \
@@ -130,6 +130,7 @@ urlpatterns = [
     path('caja/pago-efectivo/', indexPagoEfectivo, name="indexPagoEfectivo"),
     path('caja/pago-efectivo/detalle/<id>/', detalleMesasCajas, name="detalleMesasCajas"),
     path('caja/pago-efectivo/ingresar/<id>/', ingresarPagoEfectivo, name="ingresarPagoEfectivo"),
+    path('ingresar-pago-efectivo/', crearIngresarPagoEfectivo, name="crearIngresarPagoEfectivo"),
 
     path('cocina/tablero/', indexTablero, name="indexTablero"),
 

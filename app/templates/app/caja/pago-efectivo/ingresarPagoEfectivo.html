@@ -9,16 +9,32 @@
 {% load static %}
 
   <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
-    <form action="/editar-mesas/" method="GET">
+    <form action="/ingresar-pago-efectivo/" method="GET">
       <h2>Ingresar Pago en Efectivo</h2>
       <hr>
       <div class="col">
         <div class="row">
           <!-- ID -->
           <input type="hidden" name="id" value="{{m.0}}">
+          <div class="form-group col-md-6">
+            <label for="p_id_caja">Caja Utilizada</label>
+            <select class="form-control" name="p_id_caja" id="select-giro" required>
+              {% for c in Cajas %}
+                <option value="{{c.0}}">NRO-{{c.1}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="p_id_resumen">Atencion a Pagar</label>
+            <select class="form-control" name="p_id_resumen" id="select-giro" required>
+              {% for r in Resumen %}
+                <option value="{{r.0}}">Nro Atencion {{r.0}} ~ Total ${{r.2}}</option>
+              {% endfor %}
+            </select>
+          </div>
           <div class="form-group col-md-12">
-            <label for="amount">Monto:</label>
-            <input type="number" name="amount" class="form-control">
+            <label for="p_monto_venta">Monto:</label>
+            <input type="number" name="p_monto_venta" class="form-control">
           </div>
         </div>
       </div>

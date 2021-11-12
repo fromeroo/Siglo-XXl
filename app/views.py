@@ -1761,7 +1761,7 @@ def indexPagoEfectivo(request):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("PKG_MESA.listarMesaOcupada", [out_cur])
+    cursor.callproc("PKG_PAGOS.listarMesaPagoEfectivo", [out_cur])
 
     lista= []
     for fila in out_cur:
@@ -1798,21 +1798,58 @@ def ingresarPagoEfectivo(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    out_cur_three = django_cursor.connection.cursor()
 
     id_mesa = id
 
     cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
+    cursor.callproc("PKG_CAJA.listarCajasActivas", [out_cur_two])
+    cursor.callproc("PKG_PAGOS.listarResumenNuevo", [out_cur_three])
 
     lista= []
     for fila in out_cur:
         lista.append(fila)
 
+    lista_caja= []
+    for fila in out_cur_two:
+        lista_caja.append(fila)
+
+    lista_resumen= []
+    for fila in out_cur_three:
+        lista_resumen.append(fila)
+
     data = {
         'Mesas': lista,
-        'id': id_mesa
+        'id': id_mesa,
+        'Cajas': lista_caja,
+        'Resumen': lista_resumen
     }
 
     return render(request, 'app/caja/pago-efectivo/ingresarPagoEfectivo.html', data)
+
+
+@login_required
+def crearIngresarPagoEfectivo(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_monto_venta = int(request.GET["p_monto_venta"])
+    p_id_caja = int(request.GET["p_id_caja"])
+    p_id_resumen = int(request.GET["p_id_resumen"])
+    
+    cursor.callproc("PKG_PAGOS.ingresarPagoEfectivo", [p_monto_venta, p_id_caja, p_id_resumen, salida])
+    
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡Pago en Efectivo realizado exitosamente. La boleta ha sido generada!")
+        return redirect('indexPagoEfectivo')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexPagoEfectivo')
 
 # COCINA
 @login_required
