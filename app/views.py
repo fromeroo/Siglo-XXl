@@ -198,8 +198,7 @@ def crearProveedor(request):
 
     cursor.callproc("PKG_PROVEEDOR.crearProveedores", [rut, dv, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_dirrecion, numero_casa, tipo_direccion, id_comuna, salida])
     
-    if salida == 1:
-        # ACA ES EL MENSAJE DE ERROR
+    if salida.getvalue() == 1:
         messages.success(request, "¡El Proveedor ha sido registrado exitosamente!")
         return redirect('indexProveedores')
     else:
@@ -1887,11 +1886,17 @@ def dashboard(request):
     out_cur_two = django_cursor.connection.cursor()
     out_cur_three = django_cursor.connection.cursor()
     out_cur_four = django_cursor.connection.cursor()
+    out_cur_five = django_cursor.connection.cursor()
+    out_cur_six = django_cursor.connection.cursor()
+    out_cur_seven = django_cursor.connection.cursor()
 
     cursor.callproc("PKG_MESA.listarTodoMesa", [out_cur])
     cursor.callproc("PKG_MESA.listarMesasDisponibles", [out_cur_two])
     cursor.callproc("PKG_MESA.listarMesasReservadas", [out_cur_three])
     cursor.callproc("PKG_MESA.listarMesaOcupada", [out_cur_four])
+    cursor.callproc("PKG_GRAFICOS.mostrarVentaDiaria", [out_cur_five])
+    cursor.callproc("PKG_GRAFICOS.mostrarReservasDiarias", [out_cur_six])
+    cursor.callproc("PKG_GRAFICOS.mostrarFacturasDiarias", [out_cur_seven])
 
     lista= []
     for fila in out_cur:
@@ -1909,13 +1914,28 @@ def dashboard(request):
     for fila in out_cur_four:
         lista_ocupadas.append(fila)
 
+    total_venta_diaria= []
+    for fila in out_cur_five:
+        total_venta_diaria.append(fila)
+    
+    total_reserva_diaria= []
+    for fila in out_cur_six:
+        total_reserva_diaria.append(fila)
+    
+    total_factura_diaria= []
+    for fila in out_cur_seven:
+        total_factura_diaria.append(fila)
+
     data = {
         'mesas_totales': len(lista),
         'mesas_disponibles': len(lista_disponibles),
         'mesas_reservadas': len(lista_reservadas),
         'mesas_ocupadas': len(lista_ocupadas),
+        'venta_diaria': total_venta_diaria,
+        'reserva_diaria': total_reserva_diaria,
+        'factura_diaria': total_factura_diaria,
     }
-     
+
     return render(request, 'app/dashboard.html', data)
 
 # TABLET CLIENTE
