@@ -7,12 +7,44 @@
     /* Show in default resolution screen*/
     #graphOrder {
         height: 500px; 
-        width: 100%;
+        width: 90%;
     }
 
     /* If in mobile screen with maximum width 479px. The iPhone screen resolution is 320x480 px (except iPhone4, 640x960) */    
     @media only screen and (max-width: 479px){
         #graphOrder { 
+            margin-top: 25px;
+            height: 300px; 
+            width: 100%; 
+        
+        }
+    }
+
+    /* Show in default resolution screen*/
+    #graphReservas {
+        height: 500px; 
+        width: 50%;
+    }
+
+    /* If in mobile screen with maximum width 479px. The iPhone screen resolution is 320x480 px (except iPhone4, 640x960) */    
+    @media only screen and (max-width: 479px){
+        #graphReservas { 
+            margin-top: 25px;
+            height: 300px; 
+            width: 100%; 
+        
+        }
+    }
+
+    /* Show in default resolution screen*/
+    #graphFacturas {
+        height: 500px; 
+        width: 50%;
+    }
+
+    /* If in mobile screen with maximum width 479px. The iPhone screen resolution is 320x480 px (except iPhone4, 640x960) */    
+    @media only screen and (max-width: 479px){
+        #graphFacturas { 
             margin-top: 25px;
             height: 300px; 
             width: 100%; 
@@ -28,7 +60,7 @@
     
     <div class="col-3 col-lg-3">
         <div class="panel media pad-all">
-            <div class="media-left">
+            <div class="media-left mr-3">
                 <span class="icon-wrap icon-wrap-sm icon-circle bg-info">
                 <i class="fa fa-search fa-2x"></i>
                 </span>
@@ -42,7 +74,7 @@
     </div>
     <div class="col-3 col-lg-3 ml-4">
         <div class="panel media pad-all">
-            <div class="media-left">
+            <div class="media-left mr-3">
                 <span class="icon-wrap icon-wrap-sm icon-circle bg-success">
                 <i class="fa fa-search fa-2x"></i>
                 </span>
@@ -56,7 +88,7 @@
     </div>
     <div class="col-3 col-lg-3">
         <div class="panel media pad-all">
-            <div class="media-left">
+            <div class="media-left mr-3">
                 <span class="icon-wrap icon-wrap-sm icon-circle bg-warning">
                 <i class="fa fa-search fa-2x"></i>
                 </span>
@@ -70,7 +102,7 @@
     </div>
     <div class="col-3 col-lg-3">
         <div class="panel media pad-all">
-            <div class="media-left">
+            <div class="media-left mr-3">
                 <span class="icon-wrap icon-wrap-sm icon-circle bg-danger">
                 <i class="fa fa-search fa-2x"></i>
                 </span>
@@ -82,9 +114,17 @@
             </div>
         </div>
     </div>
+
     <div class="col-sm-12 ">
         <div id="graphOrder" >
-        
+        </div>        
+    </div>
+    <div class="col-sm-12 ">
+        <div id="graphReservas">
+        </div>        
+    </div>
+    <div class="col-sm-12 ">
+        <div id="graphFacturas">
         </div>        
     </div>
 </div>
@@ -95,33 +135,100 @@
 
 {% block js %}
 <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+
 <script type="text/javascript">
+    let myChart = echarts.init(document.getElementById("graphOrder"));
+    
+    let ventasDiarias = "{{venta_diaria.0.0}}";
+    
+    if(ventasDiarias == "None"){
+        totalVentasDiarias = 0;
+    }else{
+        totalVentasDiarias = ventasDiarias;
+    }
 
-  let myChart = echarts.init(document.getElementById("graphOrder"));
 
-  option = {
+    option = {
       title: {
-          text: 'Cantidad de Clientes Anuales '
+          text: 'Total Ventas Diarias'
       },
       tooltip: {},
       legend: {
-          data:['Cantidad']
+          data:['Ventas']
       },
       xAxis: {
-          data: ["ENE","FEB","MAR","ABR","MAY","JUN", "JUL" , "AGO" , "SEP" , "OCT","NOV","DIC"]
+          data: ["VENTAS DIARIAS"]
       },
       yAxis: {},
       series: [{
-          name: 'Cantidad',
+          name: 'Total',
           type: 'bar',
-          data: [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12]
+          data: [totalVentasDiarias]
       }]
-  };
+    };
 
   myChart.setOption(option);
 
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+<script type="text/javascript">
+    let myChartReserva = echarts.init(document.getElementById("graphReservas"));
+    
+    let reservasDiarias = "{{reserva_diaria.0.0}}";
+
+    optionReserva = {
+      title: {
+          text: 'Total Reservas Diarias'
+      },
+      tooltip: {},
+      legend: {
+          data:['Reservas']
+      },
+      xAxis: {
+          data: ["RESERVAS DIARIAS"]
+      },
+      yAxis: {},
+      series: [{
+          name: 'Total',
+          type: 'bar',
+          data: [reservasDiarias],
+          itemStyle: {color: '#009688'},
+      }]
+    };
+
+  myChartReserva.setOption(optionReserva);
+
+</script>
+
+<script type="text/javascript">
+    let myChartFacturas = echarts.init(document.getElementById("graphFacturas"));
+    
+    let facturasDiarias = "{{factura_diaria.0.0}}";
+
+    optionFacturas = {
+      title: {
+          text: 'Total Facturas Diarias'
+      },
+      tooltip: {},
+      legend: {
+          data:['Facturas']
+      },
+      xAxis: {
+          data: ["FACTURAS DIARIAS"]
+      },
+      yAxis: {},
+      series: [{
+          name: 'Total',
+          type: 'bar',
+          data: [facturasDiarias],
+          itemStyle: {color: '#ffc107'},
+      }]
+    };
+
+  myChartFacturas.setOption(optionFacturas);
+
+</script>
+
 
 {% endblock %}
