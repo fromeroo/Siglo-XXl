@@ -6,6 +6,8 @@
 
 <!-- {{message}} -->
 <div id="proveedores-table" class="col-lg-10 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
+  <h1 id="reloj" class="mb-5" style="font-size:100px; border-bottom:5px solid"></h1>
+
   <h2>Tablero ordenes</h2>
 
   
@@ -16,44 +18,34 @@
   
     <thead class="thead-dark">
       <tr>
-        <!-- <th scope="col">#</th> -->
-        <th scope="col">Comanda</th>
         <th scope="col">Mesa</th>
-        <th scope="col">Hora tope</th>
+        <th scope="col">Hora Inicio</th>
         <th scope="col">Estado</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>Rabioles</td>
-        <td>Mesa 1</td>
-        <td>14:35</td>
-        <td>
-            <select name="" id="">
-                <option selected value="En preparación">En preparación</option>
-                <option value="En preparación">Entregar</option>
-            </select>
-        </td>
-        <td class="p-1">
-          <a href="" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Detalle</i></a>
-        </td>
-      </tr>
-      <tr>
-        <!-- <th scope="row">{{ u.id }}</th> -->
-        <td>Sopa</td>
-        <td>Mesa 2</td>
-        <td>14:55</td>
-        <td>
-            <select name="" id="">
-                <option value="En preparación">En preparación</option>
-                <option selected value="En preparación">Entregar</option>
-            </select>
-        </td>
-        <td class="p-1">
-          <a href="" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Detalle</i></a>
-        </td>
+        {% for oc in OrdenComanda %}
+          <tr>
+            <td>{{oc.6}}</td>
+            <td>{{oc.4}}</td>
+            <td>
+              <select class="form-control text-left" name="id_est_comanda" id="id_est_comanda">
+                {% for ec in EstadoComanda %}
+                  {% if ec.0 == oc.0 %}
+                    <option id="{{oc.0}}" value="{{ec.0}}" selected>{{ec.1}}</option>
+                  {% else %}
+                    <option id="{{oc.0}}" value="{{ec.0}}">{{ec.1}}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </td>
+            <td class="p-1">
+              <a href="" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-eye"> Detalle</i></a>
+            </td>
+          </tr>
+        {% endfor %}
       </tr>
     </tbody>
   </table>
@@ -66,5 +58,60 @@
   font-size: 14px;
 }
 </style>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    function muestraReloj() {
+        var fechaHora = new Date();
+        var horas = fechaHora.getHours();
+        var minutos = fechaHora.getMinutes();
+        var segundos = fechaHora.getSeconds();
+
+        if(horas < 10) { horas = '0' + horas; }
+        if(minutos < 10) { minutos = '0' + minutos; }
+        if(segundos < 10) { segundos = '0' + segundos; }
+
+        document.getElementById("reloj").innerHTML = horas+':'+minutos+':'+segundos;
+    }
+
+    window.onload = function() {
+        setInterval(muestraReloj, 1000);
+    }
+</script>
+
+<script>
+
+  $(document).ready(function(){
+    $("#id_est_comanda").change(function() {
+      let id_est_comanda = $(this).children("option:selected").val();
+      let id_comanda = $(this).children("option:selected").attr("id");
+      
+        swal.fire({
+        "title": "¿Estás seguro?",
+        "text": "¡Estás apunto de modificar el estado!",
+        "icon": "question",
+        "showCancelButton": true,
+        "cancelButtonText": "No, cancelar",
+        "confirmButtonText": "Si, Modificar",
+        "reverseButtons": true,
+        "confirmButtonColor": "#dc3545",
+        "cancelButtonColor": "#0069D9"
+        })
+        .then(function(result) {
+          if(result.isConfirmed) {
+            if (id_est_comanda == 2) {
+              window.location.href = "preparar-comanda/"+id_comanda+"/"
+            }
+            else if(id_est_comanda == 3) {
+              window.location.href = "entregar-pedido/"+id_comanda+"/"
+            }
+          }
+        })
+      
+    });
+  });
+</script>
 
 {% endblock %}

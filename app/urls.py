@@ -1,8 +1,6 @@
 from django.urls import path
 from .views import index, administrador, registro, indexUser, eliminar_usuario, modificar_usuario, \
     indexProveedores, crearProveedor, actualizarProveedores, registroProveedores, modificarProveedores, eliminarProveedores, \
-    indexMenus, crearMenus, editarMenus, registroMenus, modificarMenus, eliminarMenus, \
-    indexMenusProductos, registroMenusProductos, modificarMenusProductos, crearMenusProductos, editarMenusProductos, \
     indexInsumos, crearInsumo, actualizarInsumos, registroInsumos, modificarInsumos, eliminarInsumos, \
     indexProductos, crearProductos, editarProductos, registroProductos, modificarProductos, eliminarProductos, \
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
@@ -16,13 +14,14 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, \
     indexInformes, \
-    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, \
+    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
     indexTablero, \
     dashboard, \
     clienteMenu, listarDetalleOrden, pagoCliente,crearOrden, seleccionarMesa, crearDetalleOrden,   \
     reservaCliente, \
     principal, CrearReserva, eliminarReserva, buscarReservaRut, \
-    listarRolesUsuario, cambiarRolUsuario
+    listarRolesUsuario, cambiarRolUsuario, \
+    prepararComanda, entregarPedido
     
 # APIS
 from api import views as api_views
@@ -45,18 +44,18 @@ urlpatterns = [
     path('administracion/proveedores/modificar/<id>/', modificarProveedores, name="modificarProveedores"),
     path('administracion/proveedores/eliminar/<id>/', eliminarProveedores, name="eliminarProveedores"),
 
-    path('administracion/menus/', indexMenus, name="indexMenus"),
-    path('crear-menus/', crearMenus, name="crearMenus"),
-    path('editar-menus/', editarMenus, name="editarMenus"),
-    path('administracion/menus/registro/', registroMenus, name="registroMenus"),
-    path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
-    path('administracion/menus/eliminar/<id>/', eliminarMenus, name="eliminarMenus"),
+    # path('administracion/menus/', indexMenus, name="indexMenus"),
+    # path('crear-menus/', crearMenus, name="crearMenus"),
+    # path('editar-menus/', editarMenus, name="editarMenus"),
+    # path('administracion/menus/registro/', registroMenus, name="registroMenus"),
+    # path('administracion/menus/modificar/<id>/', modificarMenus, name="modificarMenus"),
+    # path('administracion/menus/eliminar/<id>/', eliminarMenus, name="eliminarMenus"),
 
-    path('administracion/menus/index-producto/<id>/', indexMenusProductos, name="indexMenusProductos"),
-    path('administracion/menus/registro-producto/<id>/', registroMenusProductos, name="registroMenusProductos"),
-    path('administracion/menus/modificar-producto/<id>/', modificarMenusProductos, name="modificarMenusProductos"),
-    path('crear-menus-productos/', crearMenusProductos, name="crearMenusProductos"),
-    path('editar-menus-productos/', editarMenusProductos, name="editarMenusProductos"),
+    # path('administracion/menus/index-producto/<id>/', indexMenusProductos, name="indexMenusProductos"),
+    # path('administracion/menus/registro-producto/<id>/', registroMenusProductos, name="registroMenusProductos"),
+    # path('administracion/menus/modificar-producto/<id>/', modificarMenusProductos, name="modificarMenusProductos"),
+    # path('crear-menus-productos/', crearMenusProductos, name="crearMenusProductos"),
+    # path('editar-menus-productos/', editarMenusProductos, name="editarMenusProductos"),
 
     path('administracion/insumos/', indexInsumos, name="indexInsumos"),
     path('crear-insumo/', crearInsumo, name="crearInsumo"),
@@ -132,8 +131,12 @@ urlpatterns = [
     path('caja/pago-efectivo/', indexPagoEfectivo, name="indexPagoEfectivo"),
     path('caja/pago-efectivo/detalle/<id>/', detalleMesasCajas, name="detalleMesasCajas"),
     path('caja/pago-efectivo/ingresar/<id>/', ingresarPagoEfectivo, name="ingresarPagoEfectivo"),
+    path('ingresar-pago-efectivo/', crearIngresarPagoEfectivo, name="crearIngresarPagoEfectivo"),
 
+    #TABLERO
     path('cocina/tablero/', indexTablero, name="indexTablero"),
+    path('cocina/tablero/preparar-comanda/<id>/', prepararComanda, name="prepararComanda"),
+    path('cocina/tablero/entregar-pedido/<id>/', entregarPedido, name="entregarPedido"),
 
     path('dashboard/', dashboard, name="dashboard"),
 
@@ -154,6 +157,8 @@ urlpatterns = [
     path('crear-reserva/', CrearReserva, name="CrearReserva"),
     path('eliminar-reserva/', eliminarReserva, name="eliminarReserva"),
     path('buscar-reserva/', buscarReservaRut, name="buscarReservaRut"),
+
+
 
     # APIS URL MESAS
     
