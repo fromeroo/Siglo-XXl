@@ -14,56 +14,76 @@
             </tr>
         </thead>
         <tbody>
+            {% for i in listarDetalleOrden %}
+            <label for="p_id_reserva"></label>
+            <input type="hidden" name="p_id_reserva" for="p_id_reserva" value="{{i.0}}">
             <tr>
-                <td>Ravioli rellenos de espinaca con salsa boloñesa </td>
-                <td>$ 14.990</td>
+                <td>{{i.4}}</td>
+                <td>$ {{i.5}}</td>
             </tr>
-            <tr>
-                <td>Curanto con chapalele</td>
-                <td>$ 14.990</td>
-            </tr>
-            <tr>
-                <td>Ravioli rellenos de espinaca con salsa boloñesa </td>
-                <td>$ 14.990</td>
-            </tr>
-            <tr>
-                <td>Curanto con chapalele</td>
-                <td>$ 14.990</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
 
-<div class="radioButton">
+<!-- <div class="radioButton">
     <h4 class="form-check form-check-inline">Propina</h4>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="0">
         <label class="form-check-label" for="inlineCheckbox1">0 %</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="5">
         <label class="form-check-label" for="inlineCheckbox1">5 %</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="10">
         <label class="form-check-label" for="inlineCheckbox2">10 %</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="15">
         <label class="form-check-label" for="inlineCheckbox2">15 %</label>
     </div>
-</div>
+</div> -->
 <br>
 <div>
-    <h2 class="total">Total a Pagar:</h2>
+    <h2 class="total">Total a Pagar: $ {{total}}</h2>
 </div>
+<br>
 
+<input type="hidden" name="p_id_orden" value="{{id_orden}}">
 </div>
 <br>
 <div class="d-flex justify-content-center">
-    <button type="button" class="btn btn-primary btn-lg">Confirmar Cobro</button>
+    <a type="button" class="btn btn-primary btn-lg" href="{% url 'pagoCliente' %}">Pago en efectivo</a>
     &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;
-    <button type="button" class="btn btn-primary btn-lg">Soliocitar Revision</button>
+    <button type="button" class="btn btn-primary btn-lg"data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Solicitar Revision</button>
+    &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp;
+    <button type="button" class="btn btn-primary btn-lg"data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Pago con Tarjeta</button>
 </div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Revision de Cuenta</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        
+                                            <div class="form-group col-md-12 center">
+                                                <h2>El Garzon se acercara a su mesa</h2>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" 
+                                        data-bs-dismiss="modal">Volver</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 {% endblock %}
