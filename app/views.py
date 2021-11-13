@@ -1975,20 +1975,101 @@ def dashboard(request):
 
     return render(request, 'app/dashboard.html', data)
 
-# TABLET CLIENTE
-def clienteMenu(request):
-    messages.success(request, "¡!")
-    return render(request, 'app/cliente/clienteMenu.html')
+# --------------------------------TABLET CLIENTE --------------------------------
+def seleccionarMesa(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    cursor.callproc("PKG_MESA.listarTodoMesa", [out_cur_two])
+    listar_mesa = []
+    for fila in out_cur_two:
+        listar_mesa.append(fila)
+    data = {
+         'listarTodoMesa': listar_mesa
+    }
+    return render(request, 'app/cliente/seleccionarMesa.html',data)
 
-def detalleCliente(request):
-    messages.success(request, "¡!")
-    return render(request, 'app/cliente/detalleCliente.html')
+def clienteMenu(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    
+    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur])
+    lista_producto = []
+    for fila in out_cur:
+        lista_producto.append(fila)
+    data = {
+         'listarProducto': lista_producto,
+         'id_orden': id
+    }
+    return render(request, 'app/cliente/clienteMenu.html', data)
+
+def crearOrden(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    v_id_orden = cursor.var(cx_Oracle.NUMBER)
+    id_mesa = request.GET["p_id_mesa"]
+    request.session['id_mesa'] = id_mesa
+    cursor.callproc("PKG_ORDEN_COMANDA.crearOrdenComida", [id_mesa, salida, v_id_orden])
+    variable = v_id_orden.getvalue()
+    if salida == 1:
+        return redirect('seleccionarMesa')
+    else:
+        return redirect('clienteMenu', id = int(variable))
+
+def crearDetalleOrden(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    id_producto = int(request.GET.get('p_id_producto'))
+    cantidad = int(request.GET.get('p_cantidad'))
+    id_orden = int(request.GET.get('p_id_orden'))
+    cursor.callproc("PKG_ORDEN_COMANDA.crearDetOrdenComida", [id_producto, cantidad, id_orden, salida])
+    if salida == 1:
+        return redirect('clienteMenu')
+    else:
+        messages.success(request, "¡producto agregado!")
+        return redirect('clienteMenu',id = id_orden)
+
+
+
+def listarDetalleOrden(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    p_id_orden = id
+    cursor.callproc("PKG_ORDEN_COMANDA.listarDetalleOrden", [p_id_orden, out_cur])
+    listar_Detalle_Orden= []
+    total = 0
+
+    for fila in out_cur:
+        listar_Detalle_Orden.append(fila)
+        total += fila[5]
+    data = {
+         'listarDetalleOrden': listar_Detalle_Orden,
+         'id_orden': p_id_orden,
+         'total' : total
+    }
+    print('listar detalle', data)
+    return render(request, 'app/cliente/detalleCliente.html', data)
 
 def pagoCliente(request):
-    messages.success(request, "¡!")
-    return render(request, 'app/cliente/pagoCliente.html')
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    p_id_mesa = request.session['id_mesa'] 
+    cursor.callproc("PKG_PAGOS.solicitarPagoEfectivo", [p_id_mesa, salida])
 
-# RESERVA CLIENTE
+    if salida == 1:
+        return redirect('clienteMenu')
+    else:
+        del request.session['id_mesa'] 
+        messages.success(request, "¡Se le realizara el cobro!")
+        return redirect('seleccionarMesa')
+    
+
+# ----------------------------------------RESERVA CLIENTE--------------------------------
 def reservaCliente(request):
     data = {
         'form': CrearReservaForm()
@@ -2004,14 +2085,11 @@ def reservaCliente(request):
         
     return render(request, 'app/cliente/reservaCliente.html', data)
 
-#PRINCIPAL
 def principal(request):
-    
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur_two = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
-
     cursor.callproc("PKG_RESERVA.listarDisponibilidad", [out_cur_two])
     cursor.callproc("PKG_MESA.listarMesasDisponibles", [out_cur])
 

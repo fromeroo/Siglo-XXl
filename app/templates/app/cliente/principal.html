@@ -10,7 +10,7 @@
 
 
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="{% static 'img/principal/restaurante.jpg' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'img/principal/Logo.png' %}" />
     <!-- Bootstrap Icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Google fonts-->
@@ -218,9 +218,8 @@
                                     <div class="dropdown ">
                                         <select name="p_id_disp" class="btn btn-secondary dropdown-toggle col-md-12"
                                             type="button" data-bs-toggle="dropdown">
-                                            <option value="">Seleccione una Disponibilidad</option>
                                             {% for ltd in listarDisponibilidad %}
-                                            <option value="{{ltd.0}}">{{ltd.2}} {{ltd.3}} {{ltd.4}}</option>
+                                            <option value="{{ltd.0}}">En la Fecha {{ltd.3}}, a las {{ltd.4}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -230,9 +229,8 @@
                                     <div class="dropdown ">
                                         <select name="p_id_mesa" class="btn btn-secondary dropdown-toggle col-md-12"
                                             type="button" data-bs-toggle="dropdown">
-                                            <option value="">Seleccione una Mesa</option>
                                             {% for ltd in listarMesasDisponibles %}
-                                            <option value="{{ltd.0}}">{{ltd.1}} Personas en {{ltd.4}}</option>
+                                            <option value="{{ltd.0}}"> En {{ltd.4}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>

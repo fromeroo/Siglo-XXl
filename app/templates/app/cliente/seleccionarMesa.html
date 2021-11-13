@@ -1,0 +1,29 @@
+{% extends 'app/cliente/baseCliente.html' %}
+
+{% block contenido %}
+{% load static %}
+<br>
+<h2 class="titulo_menu">Nuestro Menú</h2>
+<form action="/crear-orden/" method="GET">
+    {% csrf_token %}
+
+            <label for="p_id_mesa">Mesa</label>
+            <div class="dropdown ">
+                <select name="p_id_mesa" class="btn btn-secondary dropdown-toggle col-md-12" type="button"
+                    data-bs-toggle="dropdown">
+                    {% for ltd in listarTodoMesa %}
+                    <option value="{{ltd.0}}">Mesa numero {{ltd.1}},  en  {{ltd.4}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    <hr>
+    </tbody>
+    <br><br>
+    <br>
+    <br>
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary btn-lg btn-xl"  >Revisar Carta</button>
+    </div>
+
+</form>
+{% endblock %}

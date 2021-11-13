@@ -17,7 +17,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
     indexTablero, \
     dashboard, \
-    clienteMenu, detalleCliente, pagoCliente, \
+    clienteMenu, listarDetalleOrden, pagoCliente,crearOrden, seleccionarMesa, crearDetalleOrden,   \
     reservaCliente, \
     principal, CrearReserva, eliminarReserva, buscarReservaRut, \
     listarRolesUsuario, cambiarRolUsuario, \
@@ -141,9 +141,13 @@ urlpatterns = [
     path('dashboard/', dashboard, name="dashboard"),
 
     # TABLET CLIENTE
-    path('cliente/clienteMenu/', clienteMenu, name="clienteMenu"),
-    path('cliente/detalleCliente/', detalleCliente, name="detalleCliente"),
+    path('cliente/seleccionarMesa/', seleccionarMesa, name="seleccionarMesa"),
+    path('cliente/clienteMenu/<id>/', clienteMenu, name="clienteMenu"),
+    path('listarDetalleOrden/<id>/', listarDetalleOrden, name="listarDetalleOrden"),
     path('cliente/pagoCliente/', pagoCliente, name="pagoCliente"),
+    path('crear-orden/', crearOrden, name="crearOrden"),
+    path('detalle-orden/', crearDetalleOrden, name="crearDetalleOrden"),
+
 
     #RESERVA CLIENTE
     path('cliente/reservaCliente', reservaCliente, name="reservaCliente"),

@@ -15,7 +15,7 @@
 
     <title>Siglo XXI - Menu</title>
 
-
+    <link rel="icon" type="image/x-icon" href="{% static 'img/principal/Logo.png' %}" />
     <link href="{% static 'css/menu.css' %}" rel="stylesheet">
     <!-- Custom fonts for this template-->
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
@@ -29,9 +29,15 @@
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
 
-    <link href="{% static 'css/nifty.min.css' %}" rel="stylesheet">
+    
     <link href="{% static 'css/themify-icons.min.css' %}" rel="stylesheet">
 
+
+    <!-- AGREGADOS DESPUES -->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic"
+        rel="stylesheet" type="text/css" />
 
     <style>
         .dropdown-container {
@@ -46,7 +52,7 @@
 <body>
     <header>
 
-        <img src="{% static 'img/logo.png' %}" alt="Logo" class="logo">
+        <img src="{% static 'img/principal/logo.png' %}" alt="Logo" class="logo">
 
     </header>
 
@@ -63,9 +69,13 @@
     </div>
     <footer class="hide_on_mobile">
         <div>
-            <img src="{% static 'img/logo.png' %}" alt="logo" class="logo_footer">
+            <img src="{% static 'img/principal/logo.png' %}" alt="logo" class="logo_footer">
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {% if messages %}
     {% for m in messages %}
