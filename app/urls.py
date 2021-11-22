@@ -21,7 +21,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     reservaCliente, \
     principal, CrearReserva, eliminarReserva, buscarReservaRut, \
     listarRolesUsuario, cambiarRolUsuario, \
-    prepararComanda, entregarPedido
+    prepararComanda, entregarPedido, detalleComanda
     
 # APIS
 from api import views as api_views
@@ -137,6 +137,7 @@ urlpatterns = [
     path('cocina/tablero/', indexTablero, name="indexTablero"),
     path('cocina/tablero/preparar-comanda/<id>/', prepararComanda, name="prepararComanda"),
     path('cocina/tablero/entregar-pedido/<id>/', entregarPedido, name="entregarPedido"),
+    path('cocina/tablero/detalle/<id>/', detalleComanda, name="detalleComanda"),
 
     path('dashboard/', dashboard, name="dashboard"),
 
