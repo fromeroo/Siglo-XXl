@@ -11,7 +11,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, \
     indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, crearCuadraturaCajasFinanzas, \
     indexPedidosBodegas, detallePedidosBodegas, \
-    indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, \
+    indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, indexAperturaCajasFinanzas, detalleCajasFinanzasAperturas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, \
     indexInformes, \
     indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
@@ -112,10 +112,12 @@ urlpatterns = [
     path('bodega/pedidos/', indexPedidosBodegas, name="indexPedidosBodegas"),
     path('bodega/pedidos/detalle/<id>/', detallePedidosBodegas, name="detallePedidosBodegas"),
 
+    path('finanzas/apertura-caja/', indexAperturaCajasFinanzas, name="indexAperturaCajasFinanzas"),
     path('finanzas/gestion-caja/', indexGestionCajaFinanzas, name="indexGestionCajaFinanzas"),
     path('abrir-cajas/', abrirCajasFinanzas, name="abrirCajasFinanzas"),
     path('finanzas/gestion-caja/apertura/<id>/', buscarCajasFinanzas, name="buscarCajasFinanzas"),
     path('finanzas/gestion-caja/detalle/<id>/', detalleCajasFinanzas, name="detalleCajasFinanzas"),
+    path('finanzas/gestion-caja-apertura/detalle/<id>/', detalleCajasFinanzasAperturas, name="detalleCajasFinanzasAperturas"),
 
     path('finanzas/gestion-facturas/', indexGestionFacturas, name="indexGestionFacturas"),
     path('crear-factura/', crearFactura, name="crearFactura"),

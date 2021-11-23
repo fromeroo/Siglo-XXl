@@ -1485,12 +1485,30 @@ def detallePedidosBodegas(request, id):
 # FINANZAS
 
 @login_required
+def indexAperturaCajasFinanzas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_CAJA.listarCajasSinApertura", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Cajas': lista
+    }
+     
+    return render(request, 'app/finanzas/cajas/indexAperturaCajasFinanzas.html', data)
+
+@login_required
 def indexGestionCajaFinanzas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("PKG_CAJA.listarCajasActivas", [out_cur])
+    cursor.callproc("PKG_CAJA.listarAperturasCaja", [out_cur])
 
     lista= []
     for fila in out_cur:
@@ -1559,6 +1577,25 @@ def detalleCajasFinanzas(request, id):
     }
 
     return render(request, 'app/finanzas/cajas/detalleCajas.html', data)
+
+@login_required
+def detalleCajasFinanzasAperturas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_caja = id
+
+    cursor.callproc("PKG_CAJA.buscarCajasActivas", [id_caja, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+     
+    data = {
+        'Cajas': lista
+    }
+
+    return render(request, 'app/finanzas/cajas/detalleCajasAperturas.html', data)
 
 @login_required
 def cuadrarCajasFinanzas(request, id):
