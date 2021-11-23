@@ -1911,6 +1911,25 @@ def prepararComanda(request, id):
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexTablero')
 
+@login_required
+def detalleComanda(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_comanda = id
+
+    cursor.callproc("PKG_ORDEN_COMANDA.verDetalleComanda", [id_comanda, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Comandas': lista
+    }
+
+    return render(request, 'app/cocina/tablero/detalleComanda.html', data)
 
 # DASHBOARD
 
