@@ -20,7 +20,7 @@
             <label for="p_id_caja">Caja Utilizada</label>
             <select class="form-control" name="p_id_caja" id="select-giro" required>
               {% for c in Cajas %}
-                <option value="{{c.0}}">NRO-{{c.1}}</option>
+                <option value="{{c.1}}">NRO-{{c.2}}</option>
               {% endfor %}
             </select>
           </div>

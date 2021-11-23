@@ -1804,7 +1804,7 @@ def ingresarPagoEfectivo(request, id):
     id_mesa = id
 
     cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
-    cursor.callproc("PKG_CAJA.listarCajasActivas", [out_cur_two])
+    cursor.callproc("PKG_CAJA.listarAperturasCaja", [out_cur_two])
     cursor.callproc("PKG_PAGOS.listarResumenNuevo", [out_cur_three])
 
     lista= []
