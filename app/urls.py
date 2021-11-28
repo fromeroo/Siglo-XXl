@@ -4,6 +4,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexInsumos, crearInsumo, actualizarInsumos, registroInsumos, modificarInsumos, eliminarInsumos, \
     indexProductos, crearProductos, editarProductos, registroProductos, modificarProductos, eliminarProductos, \
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
+    indexDisponibilidades, registroDisponibilidades, crearDisponibilidades, modificarDisponibilidades, editarDisponibilidades, eliminarDisponibilidades, \
     indexRecetas, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
     indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas,\
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
@@ -78,6 +79,13 @@ urlpatterns = [
     path('administracion/mesas/registro/', registroMesas, name="registroMesas"),
     path('administracion/mesas/modificar/<id>/', modificarMesas, name="modificarMesas"),
     
+    path('administracion/disponibilidad/', indexDisponibilidades, name="indexDisponibilidades"),
+    path('crear-disponibilidades/', crearDisponibilidades, name="crearDisponibilidades"),
+    path('editar-disponibilidad/', editarDisponibilidades, name="editarDisponibilidades"),
+    path('administracion/disponibilidad/eliminar/<id>/', eliminarDisponibilidades, name="eliminarDisponibilidades"),
+    path('administracion/disponibilidad/registro/', registroDisponibilidades, name="registroDisponibilidades"),
+    path('administracion/disponibilidad/modificar/<id>/', modificarDisponibilidades, name="modificarDisponibilidades"),
+
     path('administracion/recetas/', indexRecetas, name="indexRecetas"),
     path('crear-recetas/', crearRecetas, name="crearRecetas"),
     path('editar-recetas/', editarRecetas, name="editarRecetas"),

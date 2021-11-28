@@ -970,6 +970,110 @@ def eliminarMesas(request, id):
     return redirect(to="indexMesas")
 
 @login_required
+def indexDisponibilidades(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_RESERVA.listarDisponibilidad", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Disponibilidades': lista
+    }
+
+    return render(request, 'app/administrador/disponibilidad/indexDisponibilidad.html', data)
+
+@login_required
+def registroDisponibilidades(request):
+    
+    return render(request, 'app/administrador/disponibilidad/registroDisponibilidad.html')
+
+@login_required
+def crearDisponibilidades(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_fec_disp = request.GET["p_fec_disp"]
+    formated_fec_disp = datetime.strftime(datetime.strptime(p_fec_disp, "%Y-%m-%d"), "%Y-%m-%d")
+    p_hora_disp = int(request.GET["p_hora_disp"])
+    p_personas = int(request.GET["p_personas"])
+    
+    cursor.callproc("PKG_RESERVA.crearDisponibilidad", [formated_fec_disp, p_hora_disp, p_personas, salida])
+    
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡La Disponibilidad ha sido registrado exitosamente!")
+        return redirect('indexDisponibilidades')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexDisponibilidades')
+
+@login_required
+def modificarDisponibilidades(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_disponibilidad = id
+
+    cursor.callproc("PKG_RESERVA.buscarDisponibilidad", [id_disponibilidad, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Disponibilidades': lista,
+    }
+
+    return render(request, 'app/administrador/disponibilidad/editarDisponibilidad.html', data)
+
+@login_required
+def editarDisponibilidades(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_disponibilidad = int(request.GET["id"])
+    p_fec_disp = request.GET["p_fec_disp"]
+    formated_fec_disp = datetime.strftime(datetime.strptime(p_fec_disp, "%Y-%m-%d"), "%Y-%m-%d")
+    p_hora_disp = int(request.GET["p_hora_disp"])
+    p_personas = int(request.GET["p_personas"])
+
+    cursor.callproc("PKG_RESERVA.modificarDisponibilidad", [id_disponibilidad, formated_fec_disp, p_hora_disp, p_personas, salida])
+    
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡La Disponibilidad ha sido editada exitosamente!")
+        return redirect('indexDisponibilidades')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexDisponibilidades')
+
+@login_required
+def eliminarDisponibilidades(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_disponibilidad = int(id)
+
+    cursor.callproc("PKG_RESERVA.eliminarDisponibilidad", [id_disponibilidad, salida])
+    
+    messages.success(request, "¡La Disponibilidad ha sido eliminada exitosamente!")
+    return redirect(to="indexDisponibilidades")
+
+@login_required
 def indexGestionCajas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
