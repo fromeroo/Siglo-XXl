@@ -180,31 +180,31 @@
             <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
                 <div class="col-lg-6">
                     <!-- Form para agregar -->
-                    <form action="/crear-reserva/" method="GET">
+                    <form action="/crear-reserva/" method="GET" id="formulario">
                         {% csrf_token %}
                         <div class="col">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="p_rut">Rut</label>
-                                    <input type="text" name="p_rut" class="form-control" required>
+                                    <input type="text" name="p_rut" class="form-control"  placeholder="123456789" title="ingrese el rut sin puntos ni guion" pattern="^\d{9,10}$" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="p_nombre">Nombre</label>
-                                    <input type="text" name="p_nombre" class="form-control" required>
+                                    <input type="text" name="p_nombre" class="form-control"  pattern="^[a-zA-ZÀ-ÿ\s]{5,40}$" required>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label for="p_correo">Correo</label>
-                                    <input type="text" name="p_correo" class="form-control" required>
+                                    <input type="email" name="p_correo" class="form-control"  placeholder="correo@dominio.com"required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="p_telefono">Telefono</label>
-                                    <input type="text" name="p_telefono" class="form-control" required>
+                                    <input type="tel" name="p_telefono" class="form-control"  placeholder="87654321" pattern="^\d{7,14}$" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="p_asistentes">Cantidad de asistentes</label>
-                                    <input type="text" name="p_asistentes" class="form-control" required>
+                                    <input type="number" name="p_asistentes" class="form-control" min="1" max="99"required>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <!-- <div class="form-group col-md-6">
                                     <label for="p_fecha_reserva">Fecha</label>
                                     <input type="date" name="p_fecha_reserva" class="form-control" required>
                                 </div>
@@ -212,12 +212,12 @@
                                     <label for="p_hora_reserva">Horario</label>
                                     <input type="time" name="p_hora_reserva" class="form-control"
                                         format="datetime-local" required>
-                                </div>
+                                </div> -->
                                 <div class="form-group col-md-6">
                                     <label for="p_id_disp">disponibilidad</label>
                                     <div class="dropdown ">
                                         <select name="p_id_disp" class="btn btn-secondary dropdown-toggle col-md-12"
-                                            type="button" data-bs-toggle="dropdown">
+                                            type="button" data-bs-toggle="dropdown" required>
                                             {% for ltd in listarDisponibilidad %}
                                             <option value="{{ltd.0}}">En la Fecha {{ltd.3}}, a las {{ltd.4}}</option>
                                             {% endfor %}
@@ -228,7 +228,7 @@
                                     <label for="p_id_mesa">Mesa</label>
                                     <div class="dropdown ">
                                         <select name="p_id_mesa" class="btn btn-secondary dropdown-toggle col-md-12"
-                                            type="button" data-bs-toggle="dropdown">
+                                            type="button" data-bs-toggle="dropdown" required>
                                             {% for ltd in listarMesasDisponibles %}
                                             <option value="{{ltd.0}}"> En {{ltd.4}}</option>
                                             {% endfor %}
@@ -318,4 +318,5 @@
     </script>
     {% endfor %}
     {% endif %}
+    
 </body>

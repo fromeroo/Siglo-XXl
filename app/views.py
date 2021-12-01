@@ -2011,6 +2011,7 @@ def crearOrden(request):
     v_id_orden = cursor.var(cx_Oracle.NUMBER)
     id_mesa = request.GET["p_id_mesa"]
     request.session['id_mesa'] = id_mesa
+    print ("wenaaa ",request.GET["p_id_mesa"] )
     cursor.callproc("PKG_ORDEN_COMANDA.crearOrdenComida", [id_mesa, salida, v_id_orden])
     variable = v_id_orden.getvalue()
     if salida == 1:
@@ -2038,14 +2039,16 @@ def listarDetalleOrden(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
+    p_id_mesa = request.session['id_mesa']
+    print("wena peggo", p_id_mesa )
     p_id_orden = id
-    cursor.callproc("PKG_ORDEN_COMANDA.listarDetalleOrden", [p_id_orden, out_cur])
+    cursor.callproc("PKG_PAGOS.listarDetalleAtencionMesa", [p_id_mesa, out_cur])
     listar_Detalle_Orden= []
     total = 0
 
     for fila in out_cur:
         listar_Detalle_Orden.append(fila)
-        total += fila[5]
+        total += fila[2]
     data = {
          'listarDetalleOrden': listar_Detalle_Orden,
          'id_orden': p_id_orden,
@@ -2112,12 +2115,18 @@ def CrearReserva(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     salida = cursor.var(cx_Oracle.NUMBER)
-
-    fecha_reserva = request.GET["p_fecha_reserva"]
-    hora_reserva = str(request.GET["p_hora_reserva"])
+    out_cur = django_cursor.connection.cursor()
     asistentes = int(request.GET["p_asistentes"])
     id_mesa = int(request.GET["p_id_mesa"])
     id_disp = int(request.GET["p_id_disp"])
+    cursor.callproc("PKG_RESERVA.buscarDisponibilidad", [id_disp, out_cur])
+    
+    data= []
+    for fila in out_cur:
+        data.append(fila)
+        
+    fecha_reserva = data[0][3]
+    hora_reserva = data[0][4]
     rut = request.GET["p_rut"]
     nombre = request.GET["p_nombre"]
     telefono = request.GET["p_telefono"]
@@ -2148,14 +2157,14 @@ def buscarReservaRut(request):
 
     return render(request, 'app/cliente/detalleReserva.html', data)
 
-def eliminarReserva(request):
+def eliminarReserva(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     salida = cursor.var(cx_Oracle.NUMBER)
-    p_id_reserva = request.GET['p_id_reserva']
+    #p_id_reserva = request.GET['p_id_reserva']
     # p_id_reserva = int(id)
 
-    cursor.callproc("PKG_RESERVA.eliminarReserva", [p_id_reserva, salida])
+    cursor.callproc("PKG_RESERVA.eliminarReserva", [id, salida])
     
     messages.success(request, "¡Reserva eliminada exitosamente!")
     return redirect(to="principal")

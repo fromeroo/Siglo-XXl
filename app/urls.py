@@ -155,7 +155,7 @@ urlpatterns = [
     # PRINCIPAL
     path('cliente/principal', principal, name="principal"),
     path('crear-reserva/', CrearReserva, name="CrearReserva"),
-    path('eliminar-reserva/', eliminarReserva, name="eliminarReserva"),
+    path('buscar-reserva/eliminar-reserva/<id>/', eliminarReserva, name="eliminarReserva"),
     path('buscar-reserva/', buscarReservaRut, name="buscarReservaRut"),
 
 
