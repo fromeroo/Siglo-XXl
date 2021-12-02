@@ -84,11 +84,22 @@ WSGI_APPLICATION = 'sigloxxi.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.oracle',
+    #     'NAME': 'localhost:1521/orcl',
+    #     'USER': 'parce',
+    #     'PASSWORD': 'parce',
+    #     'TEST': {
+    #         'USER': 'default_test',
+    #         'TBLSPACE': 'default_test_tbls',
+    #         'TBLSPACE_TMP': 'default_test_tbls_tmp',
+    #     },
+    # },
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'localhost:1521/orcl',
-        'USER': 'parce',
-        'PASSWORD': 'parce',
+        'NAME': '127.0.0.1:1521/orcl',
+        'USER': 'siglo',
+        'PASSWORD': 'admin123',
         'TEST': {
             'USER': 'default_test',
             'TBLSPACE': 'default_test_tbls',
@@ -97,9 +108,9 @@ DATABASES = {
     },
     # 'default': {
     #     'ENGINE': 'django.db.backends.oracle',
-    #     'NAME': '127.0.0.1:1521/orcl',
-    #     'USER': 'siglo',
-    #     'PASSWORD': 'admin123',
+    #     'NAME': '127.0.0.1:1521/siglo_xxl',
+    #     'USER': 'c##franco',
+    #     'PASSWORD': 'password',
     #     'TEST': {
     #         'USER': 'default_test',
     #         'TBLSPACE': 'default_test_tbls',
@@ -117,17 +128,6 @@ DATABASES = {
     #         'TBLSPACE_TMP': 'default_test_tbls_tmp',
     #     },
     # },
-    'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': '127.0.0.1:1521/siglo_xxl',
-        'USER': 'c##franco',
-        'PASSWORD': 'password',
-        'TEST': {
-            'USER': 'default_test',
-            'TBLSPACE': 'default_test_tbls',
-            'TBLSPACE_TMP': 'default_test_tbls_tmp',
-        },
-    },
 }
 
 
@@ -181,3 +181,10 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'f.castelli1999@gmail.com'
+EMAIL_HOST_PASSWORD = 'sshzmjvmpjokxitx'
+EMAIL_USE_TLS = True
