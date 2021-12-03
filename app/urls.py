@@ -9,7 +9,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas,\
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
-    indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, \
+    indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, crearGestionCajas, \
     indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, crearCuadraturaCajasFinanzas, \
     indexPedidosBodegas, detallePedidosBodegas, \
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, indexAperturaCajasFinanzas, detalleCajasFinanzasAperturas, \
@@ -105,6 +105,7 @@ urlpatterns = [
     path('administracion/gestion-cajas/registro/', registroGestionCajas, name="registroGestionCajas"),
     path('administracion/gestion-cajas/modificar/<id>/', modificarGestionCajas, name="modificarGestionCajas"),
     path('administracion/gestion-cajas/eliminar/<id>/', eliminarGestionCajas, name="eliminarGestionCajas"),
+    path('crear-gestion-caja/', crearGestionCajas, name="crearGestionCajas"),
     path('asignar-usuario-caja/', asignarUsuarioCaja, name="asignarUsuarioCaja"),
 
     path('bodega/stock-productos/', indexStockProductos, name="indexStockProductos"),

@@ -1097,7 +1097,25 @@ def indexGestionCajas(request):
 def registroGestionCajas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
-    id_usr = request.user.id
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_USUARIO.listarUsuarios", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+     
+    data = {
+        'Usuarios': lista,
+    }
+
+    return render(request, 'app/administrador/gestion-cajas/registroCajas.html', data)
+
+@login_required
+def crearGestionCajas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    id_usr = int(request.GET["p_usr"])
     salida = cursor.var(cx_Oracle.NUMBER)
     
     cursor.callproc("PKG_CAJA.crearCaja", [id_usr, salida])
