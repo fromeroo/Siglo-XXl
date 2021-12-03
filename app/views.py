@@ -53,7 +53,6 @@ def listarRolesUsuario(request, id):
         'UserGroup': lista_user_group
     }
 
-    print(lista_user_group)
      
     return render(request, 'app/administrador/usuarios/listarRolesUsuario.html', data)
 
