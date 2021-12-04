@@ -1,4 +1,5 @@
 from django.urls import path
+from . import views
 from .views import index, administrador, registro, indexUser, eliminar_usuario, modificar_usuario, \
     indexProveedores, crearProveedor, actualizarProveedores, registroProveedores, modificarProveedores, eliminarProveedores, \
     indexInsumos, crearInsumo, actualizarInsumos, registroInsumos, modificarInsumos, eliminarInsumos, \
@@ -12,7 +13,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, crearCuadraturaCajasFinanzas, \
     indexPedidosBodegas, detallePedidosBodegas, \
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, \
-    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, \
+    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, \
     indexInformes, \
     indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
     indexTablero, \
@@ -29,6 +30,12 @@ from api import views as api_views
 urlpatterns = [
     path('', index, name="index"),
     path('administrador/', administrador, name="administrador"),
+
+    path('lista/facturas', views.ListaFacturaListView.as_view(), name='lista_facturas'),
+    # path('lista-facturas', views.ListFacturasPasadasPdf.as_view(), name='facturas_all'),
+    path('finanzas/informes/lista-facturas-pasadas', views.ListFacturasPasadasPdf.as_view(), name='facturas_all_pasadas'),
+    path('finanzas/informes/lista-facturas-pagadas', views.ListFacturasPagadasPdf.as_view(), name='facturas_all_pagadas'),
+    path('finanzas/informes/lista-facturas-vencidas', views.ListFacturasVencidasPdf.as_view(), name='facturas_all_vencidas'),
 
     path('administracion/usuario/registro/', registro, name="registro"),
     path('administracion/usuario/', indexUser, name="indexUser"),
@@ -122,9 +129,11 @@ urlpatterns = [
     path('actualizar-factura/', actualizarFacturas, name="actualizarFacturas"),
     path('finanzas/gestion-facturas/registro/', registroFacturas, name="registroFacturas"),
     path('finanzas/gestion-facturas/modificar/<id>/', modificarGestionFacturas, name="modificarGestionFacturas"),
+    path('finanzas/gestion-facturas/detalle/<id>/', verGestionFactura, name="verGestionFactura"),
     path('finanzas/gestion-facturas/cuadrar/<id>/', cuadrarCajasFinanzas, name="cuadrarCajasFinanzas"),
     path('crear-cuadratura-caja/', crearCuadraturaCajasFinanzas, name="crearCuadraturaCajasFinanzas"),
     path('finanzas/gestion-facturas/eliminar/<id>/', eliminarFacturas, name="eliminarFacturas"),
+    path('finanzas/gestion-facturas/descargar-factura-por-id/<int:id>/', views.ListFacturaById.as_view(), name="listarFacturasPorId"),
 
     path('finanzas/informes/', indexInformes, name="indexInformes"),
 

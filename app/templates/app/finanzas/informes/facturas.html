@@ -1,0 +1,32 @@
+<h1>
+    {% if estado == 3 %}
+        Lista de Facturas Pasadas
+    {% elif estado == 4 %}
+        Lista de Facturas Pagadas
+    {% elif estado == 5 %}
+        Lista de Facturas Vencidas
+    {% endif %}
+</h1>
+
+<table border="1">
+    <thead>
+        <th style="padding-top:5px;">N° Boleta</th>
+        <th style="padding-top:5px;">Fecha Emisión</th>
+        <th style="padding-top:5px;">Fecha Pago</th>
+        <th style="padding-top:5px;">Total Neto</th>
+        <th style="padding-top:5px;">IVA</th>
+        <th style="padding-top:5px;">Total</th>
+    </thead>
+    <tbody>
+        {% for factura in facturas %}
+        <tr style="padding-top:5px;">
+            <td><center>{{ factura.nro_factura }}</center></td>
+            <td><center>{{ factura.fec_emision }}</center></td>
+            <td><center>{{ factura.fec_pago }}</center></td>
+            <td><center>{{ factura.total_neto }}</center></td>
+            <td><center>{{ factura.iva }}</center></td>
+            <td><center>{{ factura.total }}</center></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
