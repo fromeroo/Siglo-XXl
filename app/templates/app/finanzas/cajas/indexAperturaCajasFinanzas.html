@@ -6,7 +6,7 @@
 
 <!-- {{message}} -->
 <div id="proveedores-table" class="col-lg-10 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
-  <h2>Gestion Caja Finanzas</h2>
+  <h2>Apertura de Cajas</h2>
 
   <div id="toolbar">
   </div>
@@ -21,20 +21,20 @@
         <th scope="col">N° de Caja</th>
         <th scope="col">Fecha de Creacion</th>
         <th scope="col">Estado de Caja</th>
-        <th scope="col">Monto Apertura</th>
+        <th scope="col">Usuario Asignado</th>
         <th scope="col">Acciónes</th>
       </tr>
     </thead>
     <tbody>
       {% for c in Cajas %}
       <tr>
+        <td>{{c.1}}</td>
         <td>{{c.2}}</td>
-        <td>{{c.3}}</td>
-        <td>{{c.9}}</td>
-        <td>{{c.5}}</td>
+        <td>{{c.4}}</td>
+        <td>{{c.6}}</td>
         <td class="p-1">
-          <a class="btn btn-danger" href="{% url 'cuadrarCajasFinanzas' c.1 %}" type="submit">Cerrar Caja</a>
-          <a href="{% url 'detalleCajasFinanzas' c.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-eye"> Detalle</i></a>
+          <a href="{% url 'buscarCajasFinanzas' c.0 %}" class="btn btn-success" style="font-size: 14px;"> Abrir Caja</i></a>
+          <a href="{% url 'detalleCajasFinanzasAperturas' c.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-eye"> Detalle</i></a>
         </td>
       </tr>
       {% endfor %}

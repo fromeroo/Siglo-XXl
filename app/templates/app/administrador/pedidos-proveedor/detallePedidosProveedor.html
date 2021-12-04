@@ -6,39 +6,42 @@
 
 {% block contenido %}
 {% load static %}
-    <!-- /.content-wrapper -->
-    
 
     <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
       <h2>Detalle Pedido Proveedor</h2>
       <hr>
-        {% for d in DetallePedidos %}
-        <div class="col">
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="p_nom_receta">Insumo:</label>
-                    <input type="text" name="p_nom_receta" class="form-control" value="{{d.3}}" disabled>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="p_tiempo_prep">Cantidad:</label>
-                    <input type="number" name="p_tiempo_prep" class="form-control" value="{{d.4}}" disabled>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="p_temp_ideal">U° de Medida:</label>
-                    <input type="text" name="p_temp_ideal" class="form-control" value="{{d.5}}" disabled>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="p_temp_ideal">Marca:</label>
-                    <input type="text" name="p_temp_ideal" class="form-control" value="{{d.7}}" disabled>
-                </div>
-            </div>
+        <div id="toolbar">
         </div>
-        <hr>
+        <table id="table" class="table table-striped table-bordered" style="width: 100%;"
+        data-toggle="table"
+        data-toolbar="#toolbar"
+        data-search="true">
+        
+        <thead class="thead-dark">
+            <tr>
+            <!-- <th scope="col">#</th> -->
+            <th scope="col">Insumo</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">U° de Medida</th>
+            <th scope="col">Marca</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for d in DetallePedidos %}
+        <tr>
+            <td>{{d.3}}</td>
+            <td>{{d.4}}</td>
+            <td>{{d.5}}</td>
+            <td>{{d.7}}</td>
+        </tr>
         {% empty %}
         <div class="alert alert-info mb-5 mt-5" role="alert">
             Pedido sin insumos creados.
         </div>
         {% endfor %}
+            </tbody>
+        </table>
         <div class="col mt-4">
             <div class="row">
                 <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexPedidosProveedor' %}">

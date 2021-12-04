@@ -21,7 +21,7 @@
               <input type="text" name="p_user_name" class="form-control" value="{{UserGroup.0.2}}" required readonly>
             </div>
             <div class="form-group col-md-6">
-              <label for="p_id_oc">Orden de Compra</label>
+              <label for="p_id_oc">Rol:</label>
               <select class="form-control" name="p_id_oc" id="" value="" required>
                 {% for gr in Grupos %}
                   {% if gr.0 == UserGroup.0.3 %}

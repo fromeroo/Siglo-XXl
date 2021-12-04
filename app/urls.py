@@ -5,14 +5,15 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexInsumos, crearInsumo, actualizarInsumos, registroInsumos, modificarInsumos, eliminarInsumos, \
     indexProductos, crearProductos, editarProductos, registroProductos, modificarProductos, eliminarProductos, \
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
-    indexRecetas, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
-    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas,\
+    indexDisponibilidades, registroDisponibilidades, crearDisponibilidades, modificarDisponibilidades, editarDisponibilidades, eliminarDisponibilidades, \
+    indexRecetas, indexRecetasTwo, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
+    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, \
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
-    indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, \
+    indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, crearGestionCajas, \
     indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, crearCuadraturaCajasFinanzas, \
     indexPedidosBodegas, detallePedidosBodegas, \
-    indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, \
+    indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, indexAperturaCajasFinanzas, detalleCajasFinanzasAperturas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, \
     indexInformes, \
     indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
@@ -28,7 +29,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
 from api import views as api_views
 
 urlpatterns = [
-    path('', index, name="index"),
+    path('', dashboard, name="dashboard"),
     path('administrador/', administrador, name="administrador"),
 
     path('lista/facturas', views.ListaFacturaListView.as_view(), name='lista_facturas'),
@@ -85,7 +86,15 @@ urlpatterns = [
     path('administracion/mesas/registro/', registroMesas, name="registroMesas"),
     path('administracion/mesas/modificar/<id>/', modificarMesas, name="modificarMesas"),
     
+    path('administracion/disponibilidad/', indexDisponibilidades, name="indexDisponibilidades"),
+    path('crear-disponibilidades/', crearDisponibilidades, name="crearDisponibilidades"),
+    path('editar-disponibilidad/', editarDisponibilidades, name="editarDisponibilidades"),
+    path('administracion/disponibilidad/eliminar/<id>/', eliminarDisponibilidades, name="eliminarDisponibilidades"),
+    path('administracion/disponibilidad/registro/', registroDisponibilidades, name="registroDisponibilidades"),
+    path('administracion/disponibilidad/modificar/<id>/', modificarDisponibilidades, name="modificarDisponibilidades"),
+
     path('administracion/recetas/', indexRecetas, name="indexRecetas"),
+    path('administracion/recetas-dos/', indexRecetasTwo, name="indexRecetasTwo"),
     path('crear-recetas/', crearRecetas, name="crearRecetas"),
     path('editar-recetas/', editarRecetas, name="editarRecetas"),
     path('administracion/recetas/eliminar/<id>/', eliminarRecetas, name="eliminarRecetas"),
@@ -93,6 +102,7 @@ urlpatterns = [
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
 
     path('administracion/recetas/index-ingredientes-recetas/<id>/', indexIngredientesRecetas, name="indexIngredientesRecetas"),
+    path('administracion/recetas/index-ingredientes-recetas-two/<id>/', indexIngredientesRecetasTwo, name="indexIngredientesRecetasTwo"),
     path('administracion/recetas/registro-ingredientes-recetas/<id>/', registroIngredientesRecetas, name="registroIngredientesRecetas"),
     path('crear-ingredientes-recetas/', crearIngredientesRecetas, name="crearIngredientesRecetas"),
 
@@ -104,6 +114,7 @@ urlpatterns = [
     path('administracion/gestion-cajas/registro/', registroGestionCajas, name="registroGestionCajas"),
     path('administracion/gestion-cajas/modificar/<id>/', modificarGestionCajas, name="modificarGestionCajas"),
     path('administracion/gestion-cajas/eliminar/<id>/', eliminarGestionCajas, name="eliminarGestionCajas"),
+    path('crear-gestion-caja/', crearGestionCajas, name="crearGestionCajas"),
     path('asignar-usuario-caja/', asignarUsuarioCaja, name="asignarUsuarioCaja"),
 
     path('bodega/stock-productos/', indexStockProductos, name="indexStockProductos"),
@@ -119,10 +130,12 @@ urlpatterns = [
     path('bodega/pedidos/', indexPedidosBodegas, name="indexPedidosBodegas"),
     path('bodega/pedidos/detalle/<id>/', detallePedidosBodegas, name="detallePedidosBodegas"),
 
+    path('finanzas/apertura-caja/', indexAperturaCajasFinanzas, name="indexAperturaCajasFinanzas"),
     path('finanzas/gestion-caja/', indexGestionCajaFinanzas, name="indexGestionCajaFinanzas"),
     path('abrir-cajas/', abrirCajasFinanzas, name="abrirCajasFinanzas"),
     path('finanzas/gestion-caja/apertura/<id>/', buscarCajasFinanzas, name="buscarCajasFinanzas"),
     path('finanzas/gestion-caja/detalle/<id>/', detalleCajasFinanzas, name="detalleCajasFinanzas"),
+    path('finanzas/gestion-caja-apertura/detalle/<id>/', detalleCajasFinanzasAperturas, name="detalleCajasFinanzasAperturas"),
 
     path('finanzas/gestion-facturas/', indexGestionFacturas, name="indexGestionFacturas"),
     path('crear-factura/', crearFactura, name="crearFactura"),
@@ -165,7 +178,7 @@ urlpatterns = [
     # PRINCIPAL
     path('cliente/principal', principal, name="principal"),
     path('crear-reserva/', CrearReserva, name="CrearReserva"),
-    path('eliminar-reserva/', eliminarReserva, name="eliminarReserva"),
+    path('buscar-reserva/eliminar-reserva/<id>/', eliminarReserva, name="eliminarReserva"),
     path('buscar-reserva/', buscarReservaRut, name="buscarReservaRut"),
 
 

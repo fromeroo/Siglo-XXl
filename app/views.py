@@ -21,7 +21,8 @@ import cx_Oracle
 from datetime import datetime
 
 
-@login_required
+@login_required #Etiqueta para que solo pueda ingresar a la def si esta logeado
+# Obtiene lista de usuarios mediante models.py
 def indexUser(request):
     usuarios = User.objects.all()
     data = {
@@ -29,6 +30,7 @@ def indexUser(request):
     }
     return render(request, 'app/administrador/usuarios/indexUser.html', data)
 
+# Lista los roles de usuario mediante procedimientos almacenados
 def listarRolesUsuario(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -56,6 +58,7 @@ def listarRolesUsuario(request, id):
      
     return render(request, 'app/administrador/usuarios/listarRolesUsuario.html', data)
 
+# Cambia el rol de usuario utilizando el procedure actualizarUserGroup
 def cambiarRolUsuario(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -82,6 +85,7 @@ def index(request):
     return render(request, 'app/index.html')
 
 @login_required
+# Renderea la vista de usuarios para el administrador
 def administrador(request):
     usuario = Usuario.objects.all()
     data = {
@@ -90,6 +94,7 @@ def administrador(request):
     return render(request, 'app/administrador.html', data)
 
 @login_required
+# Permite a la registrar al usuario enviando una peticion post
 def registro(request):
     data = {
         'form': CustomUserCreationForm()
@@ -106,6 +111,7 @@ def registro(request):
     return render(request, 'app/administrador/usuarios/registroUser.html', data)
 
 @login_required
+# Obtiene el id por parametro y modifica el usuario por metodo POST
 def modificar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
 
@@ -123,6 +129,7 @@ def modificar_usuario(request, id):
     return render(request, 'app/administrador/usuarios/editarUser.html', data)
 
 @login_required
+# Permite eliminar el usuario utilizando la funcion DELETE de Django
 def eliminar_usuario(request, id):
     usuario = get_object_or_404(User, id=id)
     usuario.delete()
@@ -130,6 +137,7 @@ def eliminar_usuario(request, id):
     return redirect(to="indexUser")
 
 @login_required
+# Renderea la vista de proveedores y ejecuta el procedure listaProveedor para poblarla
 def indexProveedores(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -148,6 +156,7 @@ def indexProveedores(request):
     return render(request, 'app/administrador/proveedores/indexProveedores.html', data)
 
 @login_required
+# Renderea el formulario de registro de proveedores poblando los datos para crearlo
 def registroProveedores(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -180,6 +189,7 @@ def registroProveedores(request):
     return render(request, 'app/administrador/proveedores/registroProveedores.html', data)
 
 @login_required
+# Permite crear al proveedor con el procedure crearProveedores al cual le entregan parametros GET
 def crearProveedor(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -199,7 +209,6 @@ def crearProveedor(request):
     tipo_direccion = int(request.GET["p_tipo_dir"])
     id_comuna= int(request.GET["p_id_com"])
     
-
     cursor.callproc("PKG_PROVEEDOR.crearProveedores", [rut, dv, razon_social, nombre_corto, telefono, correo, id_giro, direccion, numero_dirrecion, numero_casa, tipo_direccion, id_comuna, salida])
     
     if salida.getvalue() == 1:
@@ -210,6 +219,7 @@ def crearProveedor(request):
         return redirect('indexProveedores')
 
 @login_required
+# Permite modificar al proveedor con el procedure modificarProveedores al cual le entregan parametros GET
 def actualizarProveedores(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -239,6 +249,7 @@ def actualizarProveedores(request):
         return redirect('indexProveedores')
 
 @login_required
+# Envia al formulario de proveedores con los datos precargados para su modificacion
 def modificarProveedores(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -278,6 +289,7 @@ def modificarProveedores(request, id):
     return render(request, 'app/administrador/proveedores/editarProveedores.html', data)
 
 @login_required
+# Permite eliminar el proveedor pasando el id al procedure eliminarProveedor
 def eliminarProveedores(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -291,222 +303,17 @@ def eliminarProveedores(request, id):
     messages.success(request, "¡El proveedor ha sido eliminado exitosamente!")
     return redirect(to="indexProveedores")
 
-# @login_required
-# def indexMenus(request):
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     out_cur = django_cursor.connection.cursor()
+# +++++++ NOMENCLATURAS -> ********** ++++++++
+# INDEX********* -> renderea la pagina principal de la nomenclatura
+# REGISTER********* -> renderea el formulario de registro de la nomenclatura
+# CREAR********* -> crea la nomenclatura con el procedure crearNomenclatura
+# MODIFICAR********* -> rendera el formulario para modificar la nomenclatura
+# ACTUALIZAR********* -> actualiza la nomenclatura con el procedure actualizarNomenclatura
+# ELIMINAR********* -> elimina la nomenclatura con el procedure eliminarNomenclatura
 
-#     cursor.callproc("PKG_MENU.listarMenu", [out_cur])
 
-#     lista= []
-#     for fila in out_cur:
-#         lista.append(fila)
 
-#     data = {
-#         'Menus': lista
-#     }
-     
-#     return render(request, 'app/administrador/menus/indexMenus.html', data)
-
-# @login_required
-# def crearMenus(request):
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     # out_cur = django_cursor.connection.cursor()
-#     salida = cursor.var(cx_Oracle.NUMBER)
-
-#     nro_menu = int(request.GET["p_nro_menu"])
-#     nombre_menu = request.GET["p_nom_menu"]
-
-#     cursor.callproc("PKG_MENU.crearMenu", [nro_menu, nombre_menu, salida])
-
-#     res = salida.getvalue()
-
-#     if res == 1:
-#         messages.success(request, "¡El Menu ha sido registrado exitosamente!")
-#         return redirect('indexMenus')
-#     else:
-#         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
-#         return redirect('indexMenus')
-
-# @login_required
-# def registroMenus(request):
-   
-#     return render(request, 'app/administrador/menus/registroMenus.html')
-
-# @login_required
-# def modificarMenus(request, id):
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     out_cur = django_cursor.connection.cursor()
-#     id_menu = id
-
-#     cursor.callproc("PKG_MENU.buscarMenu", [id_menu, out_cur])
-
-#     lista= []
-#     for fila in out_cur:
-#         lista.append(fila)
-
-#     data = {
-#         'Menus': lista
-#     }
-
-#     return render(request, 'app/administrador/menus/editarMenus.html', data)
-
-# @login_required
-# def editarMenus(request):
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     # out_cur = django_cursor.connection.cursor()
-#     salida = cursor.var(cx_Oracle.NUMBER)
-
-#     id_menu = int(request.GET["id"])
-#     nro_menu = int(request.GET["p_nro_menu"])
-#     nom_menu = request.GET["p_nom_menu"]
-
-#     cursor.callproc("PKG_MENU.modificarMenu", [id_menu, nro_menu, nom_menu, salida])
-    
-#     res = salida.getvalue()
-
-#     if res == 1:
-#         messages.success(request, "¡El Menu ha sido editado exitosamente!")
-#         return redirect('indexMenus')
-#     else:
-#         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
-#         return redirect('indexMenus')
-
-# @login_required
-# def eliminarMenus(request, id):
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     # out_cur = django_cursor.connection.cursor()
-#     salida = cursor.var(cx_Oracle.NUMBER)
-
-#     id_menu = int(id)
-
-#     cursor.callproc("PKG_MENU.eliminarMenu", [id_menu, salida])
-    
-#     messages.success(request, "¡El menu ha sido eliminado exitosamente!")
-#     return redirect(to="indexMenus")
-
-# @login_required
-# def indexMenusProductos(request, id):
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     out_cur = django_cursor.connection.cursor()
-
-#     menu = get_object_or_404(Menu, id_menu=id)
-
-#     p_id_menu = menu.id_menu
-
-#     cursor.callproc("PKG_MENU.listarDetalleMenu", [p_id_menu, out_cur])
-
-#     lista= []
-#     for fila in out_cur:
-#         lista.append(fila)
-
-#     data = {
-#         'Menus': lista,
-#         'id': p_id_menu
-#     }
-     
-#     return render(request, 'app/administrador/menus/indexMenusProductos.html', data)
-
-# @login_required
-# def registroMenusProductos(request, id):
-#     menu = get_object_or_404(Menu, id_menu=id)
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     out_cur = django_cursor.connection.cursor()
-
-#     cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur])
-
-#     lista= []
-#     for fila in out_cur:
-#         lista.append(fila)
-
-#     data = {
-#         'id': menu.id_menu,
-#         'Productos': lista
-#     }
-
-#     return render(request, 'app/administrador/menus/registroMenusProductos.html', data)
-
-# @login_required
-# def crearMenusProductos(request):
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     # out_cur = django_cursor.connection.cursor()
-#     salida = cursor.var(cx_Oracle.NUMBER)
-
-#     p_id_menu = int(request.GET["p_id_menu"])
-#     p_id_producto = int(request.GET["p_id_producto"])
-#     p_descripcion = request.GET["p_descripcion"]
-
-#     cursor.callproc("PKG_MENU.crearDetalleMenu", [p_id_menu, p_id_producto, p_descripcion, salida])
-
-#     res = salida.getvalue()
-
-#     if res == 1:
-#         messages.success(request, "¡El detalle del menu ha sido registrado exitosamente!")
-#         return redirect('indexMenusProductos', id = str(p_id_menu))
-#     else:
-#         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
-#         return redirect('indexMenusProductos', id = str(p_id_menu))
-
-# @login_required
-# def modificarMenusProductos(request, id):
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     out_cur = django_cursor.connection.cursor()
-#     out_cur_two = django_cursor.connection.cursor()
-    
-#     id_det_menu = id
-
-#     cursor.callproc("PKG_MENU.buscarDetalleMenu", [id_det_menu, out_cur])
-#     cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur_two])
-
-#     lista= []
-#     for fila in out_cur:
-#         lista.append(fila)
-    
-#     lista_productos= []
-#     for fila in out_cur_two:
-#         lista_productos.append(fila)
-
-#     data = {
-#         'MenuProductos': lista,
-#         'Productos' : lista_productos
-#     }
-
-#     return render(request, 'app/administrador/menus/editarMenusProductos.html', data)
-
-# @login_required
-# def editarMenusProductos(request):
-#     django_cursor = connection.cursor()
-#     cursor = django_cursor.connection.cursor()
-#     # out_cur = django_cursor.connection.cursor()
-#     salida = cursor.var(cx_Oracle.NUMBER)
-
-#     p_id_det_menu = int(request.GET["p_id_det_menu"])
-#     p_id_producto = int(request.GET["p_id_producto"])
-#     p_descripcion = request.GET["p_descripcion"]
-
-#     p_id_menu = request.GET["p_id_menu"]
-
-#     cursor.callproc("PKG_MENU.modificarDetalleMenu", [p_id_det_menu, p_id_producto, p_descripcion, salida])
-    
-#     res = salida.getvalue()
-
-#     if res == 1:
-#         messages.success(request, "¡El detalle del menu ha sido editado exitosamente!")
-#         return redirect('indexMenusProductos', id = p_id_menu)
-#     else:
-#         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
-#         return redirect('indexMenusProductos', id = p_id_menu)
-
-@login_required    
+@login_required   
 def indexInsumos(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -808,6 +615,24 @@ def indexRecetas(request):
     return render(request, 'app/administrador/recetas/indexRecetas.html', data)
 
 @login_required
+def indexRecetasTwo(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_RECETA.listarReceta", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Recetas': lista
+    }
+     
+    return render(request, 'app/administrador/recetas/indexRecetasTwo.html', data)
+
+@login_required
 def registroRecetas(request):
 
     return render(request, 'app/administrador/recetas/registroRecetas.html')
@@ -910,6 +735,29 @@ def indexIngredientesRecetas(request, id):
     }
 
     return render(request, 'app/administrador/recetas/indexIngredientesRecetas.html', data)
+
+@login_required
+def indexIngredientesRecetasTwo(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    receta = get_object_or_404(Receta, id_receta=id)
+
+    p_id_receta = receta.id_receta
+
+    cursor.callproc("PKG_RECETA.listarIngredientesReceta", [p_id_receta, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'id': p_id_receta,
+        'IngredientesRecetas': lista
+    }
+
+    return render(request, 'app/administrador/recetas/indexIngredientesRecetasTwo.html', data)
 
 @login_required
 def registroIngredientesRecetas(request, id):
@@ -1167,6 +1015,111 @@ def eliminarMesas(request, id):
     return redirect(to="indexMesas")
 
 @login_required
+def indexDisponibilidades(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_RESERVA.listarDisponibilidad", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Disponibilidades': lista
+    }
+
+    return render(request, 'app/administrador/disponibilidad/indexDisponibilidad.html', data)
+
+@login_required
+def registroDisponibilidades(request):
+    
+    return render(request, 'app/administrador/disponibilidad/registroDisponibilidad.html')
+
+@login_required
+def crearDisponibilidades(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    p_fec_disp = request.GET["p_fec_disp"]
+    formated_fec_disp = datetime.strftime(datetime.strptime(p_fec_disp, "%Y-%m-%d"), "%Y-%m-%d")
+    p_hora_disp = request.GET["p_hora_disp"]
+    formated_hora_disp = datetime.strftime(datetime.strptime(p_hora_disp, "%H:%M"),"%H:%M")
+    p_personas = int(request.GET["p_personas"])
+    
+    cursor.callproc("PKG_RESERVA.crearDisponibilidad", [formated_fec_disp, formated_hora_disp, p_personas, salida])
+    
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡La Disponibilidad ha sido registrado exitosamente!")
+        return redirect('indexDisponibilidades')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexDisponibilidades')
+
+@login_required
+def modificarDisponibilidades(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_disponibilidad = id
+
+    cursor.callproc("PKG_RESERVA.buscarDisponibilidad", [id_disponibilidad, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Disponibilidades': lista,
+    }
+
+    return render(request, 'app/administrador/disponibilidad/editarDisponibilidad.html', data)
+
+@login_required
+def editarDisponibilidades(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_disponibilidad = int(request.GET["id"])
+    p_fec_disp = request.GET["p_fec_disp"]
+    formated_fec_disp = datetime.strftime(datetime.strptime(p_fec_disp, "%Y-%m-%d"), "%Y-%m-%d")
+    p_hora_disp = int(request.GET["p_hora_disp"])
+    p_personas = int(request.GET["p_personas"])
+
+    cursor.callproc("PKG_RESERVA.modificarDisponibilidad", [id_disponibilidad, formated_fec_disp, p_hora_disp, p_personas, salida])
+    
+    res = salida.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡La Disponibilidad ha sido editada exitosamente!")
+        return redirect('indexDisponibilidades')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexDisponibilidades')
+
+@login_required
+def eliminarDisponibilidades(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    id_disponibilidad = int(id)
+
+    cursor.callproc("PKG_RESERVA.eliminarDisponibilidad", [id_disponibilidad, salida])
+    
+    messages.success(request, "¡La Disponibilidad ha sido eliminada exitosamente!")
+    return redirect(to="indexDisponibilidades")
+
+@login_required
 def indexGestionCajas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -1188,7 +1141,25 @@ def indexGestionCajas(request):
 def registroGestionCajas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
-    id_usr = request.user.id
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_USUARIO.listarUsuarios", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+     
+    data = {
+        'Usuarios': lista,
+    }
+
+    return render(request, 'app/administrador/gestion-cajas/registroCajas.html', data)
+
+@login_required
+def crearGestionCajas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    id_usr = int(request.GET["p_usr"])
     salida = cursor.var(cx_Oracle.NUMBER)
     
     cursor.callproc("PKG_CAJA.crearCaja", [id_usr, salida])
@@ -1344,6 +1315,7 @@ def crearRealizarPedido(request):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
     out_cur_three = django_cursor.connection.cursor()
+    out_cur_four = django_cursor.connection.cursor()
     
     salida = cursor.var(cx_Oracle.NUMBER)
     salida_id = cursor.var(cx_Oracle.NUMBER)
@@ -1358,6 +1330,8 @@ def crearRealizarPedido(request):
     cursor.callproc("PKG_INVENTARIO.listarInventario", [out_cur])    
     cursor.callproc("PKG_PEDIDO_INSUMO.listarMarca ", [out_cur_three])
 
+    cursor.callproc("PKG_PEDIDO_INSUMO.buscarDetPedido", [p_id_pedido, out_cur_four])
+
     lista= []
     for fila in out_cur:
         lista.append(fila)
@@ -1366,12 +1340,16 @@ def crearRealizarPedido(request):
     for fila in out_cur_three:
         lista_marca.append(fila)
 
+    lista_detalle_pedido= []
+    for fila in out_cur_four:
+        lista_detalle_pedido.append(fila)
+
     data = {
         'id_pedido': p_id_pedido,
         'Inventarios': lista,
         'Marcas': lista_marca,
+        'DetallePedido': lista_detalle_pedido,
     }
-
 
     if res == 1:
         messages.success(request, "Seleccione lo que pedira")
@@ -1393,12 +1371,14 @@ def agregarRealizarPedido(request):
 
     out_cur = django_cursor.connection.cursor()
     out_cur_three = django_cursor.connection.cursor()
+    out_cur_four = django_cursor.connection.cursor()
     
     cursor.callproc("PKG_PEDIDO_INSUMO.crearDetallePedido", [p_id_pedido, p_id_insumo, p_cantidad, p_medida, p_id_marca, salida])
     res = salida.getvalue()
 
     cursor.callproc("PKG_INVENTARIO.listarInventario", [out_cur])    
     cursor.callproc("PKG_PEDIDO_INSUMO.listarMarca ", [out_cur_three])
+    cursor.callproc("PKG_PEDIDO_INSUMO.buscarDetPedido", [p_id_pedido, out_cur_four])
 
     lista= []
     for fila in out_cur:
@@ -1408,10 +1388,15 @@ def agregarRealizarPedido(request):
     for fila in out_cur_three:
         lista_marca.append(fila)
 
+    lista_detalle_pedido= []
+    for fila in out_cur_four:
+        lista_detalle_pedido.append(fila)
+
     data = {
         'id_pedido': p_id_pedido,
         'Inventarios': lista,
         'Marcas': lista_marca,
+        'DetallePedido': lista_detalle_pedido,
     }
 
     if res == 1:
@@ -1489,12 +1474,30 @@ def detallePedidosBodegas(request, id):
 # FINANZAS
 
 @login_required
+def indexAperturaCajasFinanzas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_CAJA.listarCajasSinApertura", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Cajas': lista
+    }
+     
+    return render(request, 'app/finanzas/cajas/indexAperturaCajasFinanzas.html', data)
+
+@login_required
 def indexGestionCajaFinanzas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("PKG_CAJA.listarCajasActivas", [out_cur])
+    cursor.callproc("PKG_CAJA.listarAperturasCaja", [out_cur])
 
     lista= []
     for fila in out_cur:
@@ -1563,6 +1566,25 @@ def detalleCajasFinanzas(request, id):
     }
 
     return render(request, 'app/finanzas/cajas/detalleCajas.html', data)
+
+@login_required
+def detalleCajasFinanzasAperturas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_caja = id
+
+    cursor.callproc("PKG_CAJA.buscarCajasActivas", [id_caja, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+     
+    data = {
+        'Cajas': lista
+    }
+
+    return render(request, 'app/finanzas/cajas/detalleCajasAperturas.html', data)
 
 @login_required
 def cuadrarCajasFinanzas(request, id):
@@ -1829,7 +1851,7 @@ def ingresarPagoEfectivo(request, id):
     id_mesa = id
 
     cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
-    cursor.callproc("PKG_CAJA.listarCajasActivas", [out_cur_two])
+    cursor.callproc("PKG_CAJA.listarAperturasCaja", [out_cur_two])
     cursor.callproc("PKG_PAGOS.listarResumenNuevo", [out_cur_three])
 
     lista= []
@@ -2055,6 +2077,7 @@ def crearOrden(request):
     v_id_orden = cursor.var(cx_Oracle.NUMBER)
     id_mesa = request.GET["p_id_mesa"]
     request.session['id_mesa'] = id_mesa
+    print ("wenaaa ",request.GET["p_id_mesa"] )
     cursor.callproc("PKG_ORDEN_COMANDA.crearOrdenComida", [id_mesa, salida, v_id_orden])
     variable = v_id_orden.getvalue()
     if salida == 1:
@@ -2082,14 +2105,16 @@ def listarDetalleOrden(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
+    p_id_mesa = request.session['id_mesa']
+    print("wena peggo", p_id_mesa )
     p_id_orden = id
-    cursor.callproc("PKG_ORDEN_COMANDA.listarDetalleOrden", [p_id_orden, out_cur])
+    cursor.callproc("PKG_PAGOS.listarDetalleOrdenMesa", [p_id_mesa, out_cur])
     listar_Detalle_Orden= []
     total = 0
 
     for fila in out_cur:
         listar_Detalle_Orden.append(fila)
-        total += fila[5]
+        total += fila[2]
     data = {
          'listarDetalleOrden': listar_Detalle_Orden,
          'id_orden': p_id_orden,
@@ -2156,12 +2181,18 @@ def CrearReserva(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     salida = cursor.var(cx_Oracle.NUMBER)
-
-    fecha_reserva = request.GET["p_fecha_reserva"]
-    hora_reserva = str(request.GET["p_hora_reserva"])
+    out_cur = django_cursor.connection.cursor()
     asistentes = int(request.GET["p_asistentes"])
     id_mesa = int(request.GET["p_id_mesa"])
     id_disp = int(request.GET["p_id_disp"])
+    cursor.callproc("PKG_RESERVA.buscarDisponibilidad", [id_disp, out_cur])
+    
+    data= []
+    for fila in out_cur:
+        data.append(fila)
+        
+    fecha_reserva = data[0][3]
+    hora_reserva = data[0][4]
     rut = request.GET["p_rut"]
     nombre = request.GET["p_nombre"]
     telefono = request.GET["p_telefono"]
@@ -2192,14 +2223,14 @@ def buscarReservaRut(request):
 
     return render(request, 'app/cliente/detalleReserva.html', data)
 
-def eliminarReserva(request):
+def eliminarReserva(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     salida = cursor.var(cx_Oracle.NUMBER)
-    p_id_reserva = request.GET['p_id_reserva']
+    #p_id_reserva = request.GET['p_id_reserva']
     # p_id_reserva = int(id)
 
-    cursor.callproc("PKG_RESERVA.eliminarReserva", [p_id_reserva, salida])
+    cursor.callproc("PKG_RESERVA.eliminarReserva", [id, salida])
     
     messages.success(request, "¡Reserva eliminada exitosamente!")
     return redirect(to="principal")

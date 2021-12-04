@@ -92,21 +92,22 @@
                                 </div>
                                 {% endfor %}
                                 <br>
-
+                            </form>
                                 <div class="d-flex justify-content-center">
                                     <div class="form-group col-md-6  align-self-end">
                                         <br>
-                                        <button class="btn btn-primary btn-s enable form-group " id="submitButton"
-                                            type="submit">Eliminar</button>
+                                        <button class="btn btn-primary btn-s enable form-group " id="submitButton" onclick="deleteReserva({{buscarReservaRut.0.0}})"
+                                            type="button">Eliminar</button>
                                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                         &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
-                                        <a class="btn btn-secondary btn-s enable  " href="{% url 'principal' %}">Volver</a> 
+                                        <a class="btn btn-secondary btn-s enable  "
+                                            href="{% url 'principal' %}">Volver</a>
                                     </div>
                                     <!-- <button type="reset" class="btn btn-primary btn-xl enable"
                                     href="{% url 'principal' %}"></button> -->
                                     <!-- &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -->
                                 </div>
-                            </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -137,9 +138,30 @@
             "icon": "success",
         })
     </script>
+
     {% endfor %}
     {% endif %}
+    <script>
+        function deleteReserva(id) {
+            swal.fire({
+                "title": "¿Estás seguro?",
+                "text": "Estas seguro de eliminar la reserva?",
+                "icon": "question",
+                "showCancelButton": true,
+                "cancelButtonText": "No",
+                "confirmButtonText": "Si",
+                "reverseButtons": true,
+                "confirmButtonColor": "#5cb85c",
+                "cancelButtonColor": "#f15a25"
+            })
+                .then(function (result) {
+                    if (result.isConfirmed) {
+                        window.location.href = "eliminar-reserva/" + id + "/"
+                    }
+                })
+        }
 
+    </script>
 
 
 </body>
