@@ -1271,6 +1271,7 @@ def crearRealizarPedido(request):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
     out_cur_three = django_cursor.connection.cursor()
+    out_cur_four = django_cursor.connection.cursor()
     
     salida = cursor.var(cx_Oracle.NUMBER)
     salida_id = cursor.var(cx_Oracle.NUMBER)
@@ -1285,6 +1286,8 @@ def crearRealizarPedido(request):
     cursor.callproc("PKG_INVENTARIO.listarInventario", [out_cur])    
     cursor.callproc("PKG_PEDIDO_INSUMO.listarMarca ", [out_cur_three])
 
+    cursor.callproc("PKG_PEDIDO_INSUMO.buscarDetPedido", [p_id_pedido, out_cur_four])
+
     lista= []
     for fila in out_cur:
         lista.append(fila)
@@ -1293,12 +1296,16 @@ def crearRealizarPedido(request):
     for fila in out_cur_three:
         lista_marca.append(fila)
 
+    lista_detalle_pedido= []
+    for fila in out_cur_four:
+        lista_detalle_pedido.append(fila)
+
     data = {
         'id_pedido': p_id_pedido,
         'Inventarios': lista,
         'Marcas': lista_marca,
+        'DetallePedido': lista_detalle_pedido,
     }
-
 
     if res == 1:
         messages.success(request, "Seleccione lo que pedira")
@@ -1320,12 +1327,14 @@ def agregarRealizarPedido(request):
 
     out_cur = django_cursor.connection.cursor()
     out_cur_three = django_cursor.connection.cursor()
+    out_cur_four = django_cursor.connection.cursor()
     
     cursor.callproc("PKG_PEDIDO_INSUMO.crearDetallePedido", [p_id_pedido, p_id_insumo, p_cantidad, p_medida, p_id_marca, salida])
     res = salida.getvalue()
 
     cursor.callproc("PKG_INVENTARIO.listarInventario", [out_cur])    
     cursor.callproc("PKG_PEDIDO_INSUMO.listarMarca ", [out_cur_three])
+    cursor.callproc("PKG_PEDIDO_INSUMO.buscarDetPedido", [p_id_pedido, out_cur_four])
 
     lista= []
     for fila in out_cur:
@@ -1335,10 +1344,15 @@ def agregarRealizarPedido(request):
     for fila in out_cur_three:
         lista_marca.append(fila)
 
+    lista_detalle_pedido= []
+    for fila in out_cur_four:
+        lista_detalle_pedido.append(fila)
+
     data = {
         'id_pedido': p_id_pedido,
         'Inventarios': lista,
         'Marcas': lista_marca,
+        'DetallePedido': lista_detalle_pedido,
     }
 
     if res == 1:
