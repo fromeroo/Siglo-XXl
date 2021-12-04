@@ -15,9 +15,6 @@ from django.db import connection
 
 import cx_Oracle
 from datetime import datetime
-from django.core.mail import EmailMessage
-from django.template.loader import render_to_string
-from django.conf import settings
 
 
 @login_required #Etiqueta para que solo pueda ingresar a la def si esta logeado
@@ -53,6 +50,7 @@ def listarRolesUsuario(request, id):
         'UserGroup': lista_user_group
     }
 
+    print(lista_user_group)
      
     return render(request, 'app/administrador/usuarios/listarRolesUsuario.html', data)
 
@@ -1003,10 +1001,11 @@ def crearDisponibilidades(request):
 
     p_fec_disp = request.GET["p_fec_disp"]
     formated_fec_disp = datetime.strftime(datetime.strptime(p_fec_disp, "%Y-%m-%d"), "%Y-%m-%d")
-    p_hora_disp = int(request.GET["p_hora_disp"])
+    p_hora_disp = request.GET["p_hora_disp"]
+    formated_hora_disp = datetime.strftime(datetime.strptime(p_hora_disp, "%H:%M"),"%H:%M")
     p_personas = int(request.GET["p_personas"])
     
-    cursor.callproc("PKG_RESERVA.crearDisponibilidad", [formated_fec_disp, p_hora_disp, p_personas, salida])
+    cursor.callproc("PKG_RESERVA.crearDisponibilidad", [formated_fec_disp, formated_hora_disp, p_personas, salida])
     
     res = salida.getvalue()
 
@@ -2043,7 +2042,7 @@ def listarDetalleOrden(request, id):
     p_id_mesa = request.session['id_mesa']
     print("wena peggo", p_id_mesa )
     p_id_orden = id
-    cursor.callproc("PKG_PAGOS.listarDetalleAtencionMesa", [p_id_mesa, out_cur])
+    cursor.callproc("PKG_PAGOS.listarDetalleOrdenMesa", [p_id_mesa, out_cur])
     listar_Detalle_Orden= []
     total = 0
 
@@ -2137,25 +2136,6 @@ def CrearReserva(request):
     if salida == 1:
         return redirect('principal')
     else:
-        subject = 'Reserva Realizada'
-
-        template = render_to_string('email_template.html', {
-            'nombre': nombre,
-            'fecha': fecha_reserva,
-            'hora': hora_reserva,
-            'asistentes': asistentes
-        })
-
-        email = EmailMessage(
-            subject,
-            template,
-            settings.EMAIL_HOST_USER,
-            [correo]
-        )
-        
-        email.fail_silently = False
-        email.send()
-        
         messages.success(request, "¡Reserva registrada exitosamente!")
         return redirect('principal')
 
