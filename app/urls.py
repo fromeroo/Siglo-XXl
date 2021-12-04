@@ -28,7 +28,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
 from api import views as api_views
 
 urlpatterns = [
-    path('', index, name="index"),
+    path('', dashboard, name="dashboard"),
     path('administrador/', administrador, name="administrador"),
 
     path('administracion/usuario/registro/', registro, name="registro"),
