@@ -77,17 +77,22 @@
 
 {% block contenido %}
 {% load static %}
-    <!-- /.content-wrapper -->
-    
-    {% load crispy_forms_tags %}
+
     <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
-      <h2>Registro de Menu</h2>
+      <h2>Registro de Caja</h2>
       <hr>
-      <form action="" method="post">
-        {% csrf_token %}
-        {{ form | crispy }}
+      <form action="/crear-gestion-caja/" method="GET">
         <div class="col">
           <div class="row">
+            <div class="form-group col-md-12">
+              <label for="p_usr">Usuarios</label>
+              <select class="form-control" name="p_usr" id="" required>
+                {% for u in Usuarios %}
+                  <option value="{{u.0}}">{{u.1}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
             <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexGestionCajas' %}">
               Volver
             </a>
@@ -96,7 +101,6 @@
         </div>
       </form>
     </div>
-  <!-- /#wrapper -->
 
   <style>
     #user-table{
