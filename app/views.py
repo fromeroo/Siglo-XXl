@@ -611,6 +611,24 @@ def indexRecetas(request):
     return render(request, 'app/administrador/recetas/indexRecetas.html', data)
 
 @login_required
+def indexRecetasTwo(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_RECETA.listarReceta", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Recetas': lista
+    }
+     
+    return render(request, 'app/administrador/recetas/indexRecetasTwo.html', data)
+
+@login_required
 def registroRecetas(request):
 
     return render(request, 'app/administrador/recetas/registroRecetas.html')
@@ -713,6 +731,29 @@ def indexIngredientesRecetas(request, id):
     }
 
     return render(request, 'app/administrador/recetas/indexIngredientesRecetas.html', data)
+
+@login_required
+def indexIngredientesRecetasTwo(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    receta = get_object_or_404(Receta, id_receta=id)
+
+    p_id_receta = receta.id_receta
+
+    cursor.callproc("PKG_RECETA.listarIngredientesReceta", [p_id_receta, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'id': p_id_receta,
+        'IngredientesRecetas': lista
+    }
+
+    return render(request, 'app/administrador/recetas/indexIngredientesRecetasTwo.html', data)
 
 @login_required
 def registroIngredientesRecetas(request, id):

@@ -5,8 +5,8 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexProductos, crearProductos, editarProductos, registroProductos, modificarProductos, eliminarProductos, \
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
     indexDisponibilidades, registroDisponibilidades, crearDisponibilidades, modificarDisponibilidades, editarDisponibilidades, eliminarDisponibilidades, \
-    indexRecetas, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
-    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas,\
+    indexRecetas, indexRecetasTwo, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
+    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, \
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, crearGestionCajas, \
@@ -87,6 +87,7 @@ urlpatterns = [
     path('administracion/disponibilidad/modificar/<id>/', modificarDisponibilidades, name="modificarDisponibilidades"),
 
     path('administracion/recetas/', indexRecetas, name="indexRecetas"),
+    path('administracion/recetas-dos/', indexRecetasTwo, name="indexRecetasTwo"),
     path('crear-recetas/', crearRecetas, name="crearRecetas"),
     path('editar-recetas/', editarRecetas, name="editarRecetas"),
     path('administracion/recetas/eliminar/<id>/', eliminarRecetas, name="eliminarRecetas"),
@@ -94,6 +95,7 @@ urlpatterns = [
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
 
     path('administracion/recetas/index-ingredientes-recetas/<id>/', indexIngredientesRecetas, name="indexIngredientesRecetas"),
+    path('administracion/recetas/index-ingredientes-recetas-two/<id>/', indexIngredientesRecetasTwo, name="indexIngredientesRecetasTwo"),
     path('administracion/recetas/registro-ingredientes-recetas/<id>/', registroIngredientesRecetas, name="registroIngredientesRecetas"),
     path('crear-ingredientes-recetas/', crearIngredientesRecetas, name="crearIngredientesRecetas"),
 
