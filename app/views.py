@@ -1,5 +1,9 @@
-from django.http.response import HttpResponse
+import types
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, View
+
+from app.utils import render_to_pdf
 from .models import Usuario, Proveedor, Receta, Menu, Caja, Mesa, InventarioInsumo, Insumo, Factura, OrdenComida
 from .forms import CustomUserCreationForm, CustomProveedorCreationForm, CustomInsumoCreationForm, CustomRecetaCreationForm, \
     CustomMenusCreationForm, CustomCajasCreationForm, CustomMesasCreationForm, CustomInventarioInsumoCreationForm, \
@@ -1668,6 +1672,27 @@ def crearFactura(request):
         return redirect('indexGestionFacturas')
 
 @login_required
+def verGestionFactura(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_factura = id
+
+    cursor.callproc("PKG_FACTURA.buscarFactura", [id_factura, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Factura': lista
+    }
+
+    return render(request, 'app/finanzas/facturas/verFacturas.html', data)
+
+
+@login_required
 def actualizarFacturas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -2210,11 +2235,60 @@ def eliminarReserva(request, id):
     messages.success(request, "¡Reserva eliminada exitosamente!")
     return redirect(to="principal")
 
+class ListaFacturaListView(ListView):
+    model = Factura
+    template_name = "app/finanzas/informes/facturas.html"    
+    context_object_name = 'facturas'
 
+# class ListEmpleadosPdf(View):
 
- 
+#     def get(self, request, *args, **kwargs):
+#         facturas = Factura.objects.all().filter()
+#         data = {
+#             'facturas': facturas
+#         }
+#         pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
+#         return HttpResponse(pdf, content_type='application/pdf')
 
+class ListFacturasPasadasPdf(View):
 
+    def get(self, request, *args, **kwargs):
+        facturas = Factura.objects.all().filter(id_est_factura=3)
+        data = {
+            'facturas': facturas,
+            'estado': 3
+        }
+        pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
 
+class ListFacturasPagadasPdf(View):
 
-    
+    def get(self, request, *args, **kwargs):
+        facturas = Factura.objects.all().filter(id_est_factura=4)
+        data = {
+            'facturas': facturas,
+            'estado': 4
+        }
+        pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+class ListFacturasVencidasPdf(View):
+
+    def get(self, request, *args, **kwargs):
+        facturas = Factura.objects.all().filter(id_est_factura=5)
+        data = {
+            'facturas': facturas,
+            'estado': 5
+        }
+        pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+class ListFacturaById(View):
+    def get(self, request, *args, **kwargs):
+        context = Factura.objects.get(id_factura=self.kwargs['id'])
+        data = {
+            'factura': context,
+        }
+        
+        pdf = render_to_pdf('app/finanzas/informes/listafacturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
