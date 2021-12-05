@@ -807,7 +807,7 @@ def indexPedidosProveedor(request):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("PKG_PEDIDO_INSUMO.listarPedidosNuevos", [out_cur])
+    cursor.callproc("PKG_PEDIDO_INSUMO.listarTodoPedidos", [out_cur])
 
     lista= []
     for fila in out_cur:
@@ -824,16 +824,23 @@ def detallePedidosProveedor(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
     id_pedido = id
 
     cursor.callproc("PKG_PEDIDO_INSUMO.buscarDetPedido", [id_pedido, out_cur])
+    cursor.callproc("PKG_PEDIDO_INSUMO.buscarPedido", [id_pedido, out_cur_two])
 
     lista= []
     for fila in out_cur:
         lista.append(fila)
 
+    lista_pedido= []
+    for fila in out_cur_two:
+        lista_pedido.append(fila)
+
     data = {
-        'DetallePedidos': lista
+        'DetallePedidos': lista,
+        'Pedido': lista_pedido
     }
 
     return render(request, 'app/administrador/pedidos-proveedor/detallePedidosProveedor.html', data)
