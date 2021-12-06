@@ -1,5 +1,9 @@
-from django.http.response import HttpResponse
+import types
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, View
+
+from app.utils import render_to_pdf
 from .models import Usuario, Proveedor, Receta, Menu, Caja, Mesa, InventarioInsumo, Insumo, Factura, OrdenComida
 from .forms import CustomUserCreationForm, CustomProveedorCreationForm, CustomInsumoCreationForm, CustomRecetaCreationForm, \
     CustomMenusCreationForm, CustomCajasCreationForm, CustomMesasCreationForm, CustomInventarioInsumoCreationForm, \
@@ -606,6 +610,24 @@ def indexRecetas(request):
     return render(request, 'app/administrador/recetas/indexRecetas.html', data)
 
 @login_required
+def indexRecetasTwo(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("PKG_RECETA.listarReceta", [out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Recetas': lista
+    }
+     
+    return render(request, 'app/administrador/recetas/indexRecetasTwo.html', data)
+
+@login_required
 def registroRecetas(request):
 
     return render(request, 'app/administrador/recetas/registroRecetas.html')
@@ -710,6 +732,29 @@ def indexIngredientesRecetas(request, id):
     return render(request, 'app/administrador/recetas/indexIngredientesRecetas.html', data)
 
 @login_required
+def indexIngredientesRecetasTwo(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    receta = get_object_or_404(Receta, id_receta=id)
+
+    p_id_receta = receta.id_receta
+
+    cursor.callproc("PKG_RECETA.listarIngredientesReceta", [p_id_receta, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'id': p_id_receta,
+        'IngredientesRecetas': lista
+    }
+
+    return render(request, 'app/administrador/recetas/indexIngredientesRecetasTwo.html', data)
+
+@login_required
 def registroIngredientesRecetas(request, id):
     receta = get_object_or_404(Receta, id_receta=id)
     django_cursor = connection.cursor()
@@ -757,7 +802,7 @@ def indexPedidosProveedor(request):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("PKG_PEDIDO_INSUMO.listarPedidosNuevos", [out_cur])
+    cursor.callproc("PKG_PEDIDO_INSUMO.listarTodoPedidos", [out_cur])
 
     lista= []
     for fila in out_cur:
@@ -774,16 +819,23 @@ def detallePedidosProveedor(request, id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
     id_pedido = id
 
     cursor.callproc("PKG_PEDIDO_INSUMO.buscarDetPedido", [id_pedido, out_cur])
+    cursor.callproc("PKG_PEDIDO_INSUMO.buscarPedido", [id_pedido, out_cur_two])
 
     lista= []
     for fila in out_cur:
         lista.append(fila)
 
+    lista_pedido= []
+    for fila in out_cur_two:
+        lista_pedido.append(fila)
+
     data = {
-        'DetallePedidos': lista
+        'DetallePedidos': lista,
+        'Pedido': lista_pedido
     }
 
     return render(request, 'app/administrador/pedidos-proveedor/detallePedidosProveedor.html', data)
@@ -1622,6 +1674,27 @@ def crearFactura(request):
         return redirect('indexGestionFacturas')
 
 @login_required
+def verGestionFactura(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_factura = id
+
+    cursor.callproc("PKG_FACTURA.buscarFactura", [id_factura, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Factura': lista
+    }
+
+    return render(request, 'app/finanzas/facturas/verFacturas.html', data)
+
+
+@login_required
 def actualizarFacturas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -2164,11 +2237,60 @@ def eliminarReserva(request, id):
     messages.success(request, "¡Reserva eliminada exitosamente!")
     return redirect(to="principal")
 
+class ListaFacturaListView(ListView):
+    model = Factura
+    template_name = "app/finanzas/informes/facturas.html"    
+    context_object_name = 'facturas'
 
+# class ListEmpleadosPdf(View):
 
- 
+#     def get(self, request, *args, **kwargs):
+#         facturas = Factura.objects.all().filter()
+#         data = {
+#             'facturas': facturas
+#         }
+#         pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
+#         return HttpResponse(pdf, content_type='application/pdf')
 
+class ListFacturasPasadasPdf(View):
 
+    def get(self, request, *args, **kwargs):
+        facturas = Factura.objects.all().filter(id_est_factura=3)
+        data = {
+            'facturas': facturas,
+            'estado': 3
+        }
+        pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
 
+class ListFacturasPagadasPdf(View):
 
-    
+    def get(self, request, *args, **kwargs):
+        facturas = Factura.objects.all().filter(id_est_factura=4)
+        data = {
+            'facturas': facturas,
+            'estado': 4
+        }
+        pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+class ListFacturasVencidasPdf(View):
+
+    def get(self, request, *args, **kwargs):
+        facturas = Factura.objects.all().filter(id_est_factura=5)
+        data = {
+            'facturas': facturas,
+            'estado': 5
+        }
+        pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+class ListFacturaById(View):
+    def get(self, request, *args, **kwargs):
+        context = Factura.objects.get(id_factura=self.kwargs['id'])
+        data = {
+            'factura': context,
+        }
+        
+        pdf = render_to_pdf('app/finanzas/informes/listafacturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')

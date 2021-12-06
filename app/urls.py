@@ -1,19 +1,20 @@
 from django.urls import path
+from . import views
 from .views import index, administrador, registro, indexUser, eliminar_usuario, modificar_usuario, \
     indexProveedores, crearProveedor, actualizarProveedores, registroProveedores, modificarProveedores, eliminarProveedores, \
     indexInsumos, crearInsumo, actualizarInsumos, registroInsumos, modificarInsumos, eliminarInsumos, \
     indexProductos, crearProductos, editarProductos, registroProductos, modificarProductos, eliminarProductos, \
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
     indexDisponibilidades, registroDisponibilidades, crearDisponibilidades, modificarDisponibilidades, editarDisponibilidades, eliminarDisponibilidades, \
-    indexRecetas, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
-    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas,\
+    indexRecetas, indexRecetasTwo, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
+    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, \
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, crearGestionCajas, \
     indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, crearCuadraturaCajasFinanzas, \
     indexPedidosBodegas, detallePedidosBodegas, \
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, indexAperturaCajasFinanzas, detalleCajasFinanzasAperturas, \
-    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, \
+    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, \
     indexInformes, \
     indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
     indexTablero, \
@@ -28,8 +29,14 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
 from api import views as api_views
 
 urlpatterns = [
-    path('', index, name="index"),
+    path('', dashboard, name="dashboard"),
     path('administrador/', administrador, name="administrador"),
+
+    path('lista/facturas', views.ListaFacturaListView.as_view(), name='lista_facturas'),
+    # path('lista-facturas', views.ListFacturasPasadasPdf.as_view(), name='facturas_all'),
+    path('finanzas/informes/lista-facturas-pasadas', views.ListFacturasPasadasPdf.as_view(), name='facturas_all_pasadas'),
+    path('finanzas/informes/lista-facturas-pagadas', views.ListFacturasPagadasPdf.as_view(), name='facturas_all_pagadas'),
+    path('finanzas/informes/lista-facturas-vencidas', views.ListFacturasVencidasPdf.as_view(), name='facturas_all_vencidas'),
 
     path('administracion/usuario/registro/', registro, name="registro"),
     path('administracion/usuario/', indexUser, name="indexUser"),
@@ -87,6 +94,7 @@ urlpatterns = [
     path('administracion/disponibilidad/modificar/<id>/', modificarDisponibilidades, name="modificarDisponibilidades"),
 
     path('administracion/recetas/', indexRecetas, name="indexRecetas"),
+    path('administracion/recetas-dos/', indexRecetasTwo, name="indexRecetasTwo"),
     path('crear-recetas/', crearRecetas, name="crearRecetas"),
     path('editar-recetas/', editarRecetas, name="editarRecetas"),
     path('administracion/recetas/eliminar/<id>/', eliminarRecetas, name="eliminarRecetas"),
@@ -94,6 +102,7 @@ urlpatterns = [
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
 
     path('administracion/recetas/index-ingredientes-recetas/<id>/', indexIngredientesRecetas, name="indexIngredientesRecetas"),
+    path('administracion/recetas/index-ingredientes-recetas-two/<id>/', indexIngredientesRecetasTwo, name="indexIngredientesRecetasTwo"),
     path('administracion/recetas/registro-ingredientes-recetas/<id>/', registroIngredientesRecetas, name="registroIngredientesRecetas"),
     path('crear-ingredientes-recetas/', crearIngredientesRecetas, name="crearIngredientesRecetas"),
 
@@ -133,9 +142,11 @@ urlpatterns = [
     path('actualizar-factura/', actualizarFacturas, name="actualizarFacturas"),
     path('finanzas/gestion-facturas/registro/', registroFacturas, name="registroFacturas"),
     path('finanzas/gestion-facturas/modificar/<id>/', modificarGestionFacturas, name="modificarGestionFacturas"),
+    path('finanzas/gestion-facturas/detalle/<id>/', verGestionFactura, name="verGestionFactura"),
     path('finanzas/gestion-facturas/cuadrar/<id>/', cuadrarCajasFinanzas, name="cuadrarCajasFinanzas"),
     path('crear-cuadratura-caja/', crearCuadraturaCajasFinanzas, name="crearCuadraturaCajasFinanzas"),
     path('finanzas/gestion-facturas/eliminar/<id>/', eliminarFacturas, name="eliminarFacturas"),
+    path('finanzas/gestion-facturas/descargar-factura-por-id/<int:id>/', views.ListFacturaById.as_view(), name="listarFacturasPorId"),
 
     path('finanzas/informes/', indexInformes, name="indexInformes"),
 
