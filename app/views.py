@@ -332,22 +332,19 @@ def registroInsumos(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
-    out_cur_two = django_cursor.connection.cursor()
+    #out_cur_two = django_cursor.connection.cursor()
 
     cursor.callproc("PKG_INSUMO.listarTipoInsumo", [out_cur])
-    cursor.callproc("PKG_INSUMO.listarCategoriaInsumo", [out_cur_two])
+    #cursor.callproc("PKG_INSUMO.listarCategoriaInsumo", [out_cur_two])
 
     lista_tipo_insumo= []
     for fila in out_cur:
         lista_tipo_insumo.append(fila)
 
-    lista_categoria_insumo = []
-    for fila in out_cur_two:
-        lista_categoria_insumo.append(fila)
+    
 
     data = {
         'TipoInsumos': lista_tipo_insumo,
-        'CategoriasInsumo': lista_categoria_insumo,
     }
      
     return render(request, 'app/administrador/insumos/registroInsumos.html', data)
@@ -360,9 +357,9 @@ def crearInsumo(request):
 
     nombre_insumo = request.GET["p_nom_insumo"]
     tipo_insumo = int(request.GET["p_id_tipo_insumo"])
-    categoria_insumo = int(request.GET["p_id_cat_insumo"])
+    #categoria_insumo = int(request.GET["p_id_cat_insumo"])
 
-    cursor.callproc("PKG_INSUMO.crearInsumo", [nombre_insumo, tipo_insumo, categoria_insumo, salida])
+    cursor.callproc("PKG_INSUMO.crearInsumo", [nombre_insumo, tipo_insumo,  salida])
     
     if salida.getvalue() == 1:
         messages.success(request, "¡El Insumo ha sido creado exitosamente!")
@@ -399,12 +396,12 @@ def modificarInsumos(request, id):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
     out_cur_two = django_cursor.connection.cursor()
-    out_cur_three = django_cursor.connection.cursor()
+    #out_cur_three = django_cursor.connection.cursor()
     id_insumo = id
 
     cursor.callproc("PKG_INSUMO.buscarInsumo", [id_insumo, out_cur])
     cursor.callproc("PKG_INSUMO.listarTipoInsumo", [out_cur_two])
-    cursor.callproc("PKG_INSUMO.listarCategoriaInsumo", [out_cur_three])
+    #cursor.callproc("PKG_INSUMO.listarCategoriaInsumo", [out_cur_three])
 
     lista = []
     for fila in out_cur:
@@ -414,14 +411,12 @@ def modificarInsumos(request, id):
     for fila in out_cur_two:
         lista_tipo_insumo.append(fila)
 
-    lista_categoria_insumo = []
-    for fila in out_cur_three:
-        lista_categoria_insumo.append(fila)
+    
 
     data = {
         'Insumo': lista,
         'TipoInsumo': lista_tipo_insumo,
-        'CategoriaInsumo': lista_categoria_insumo
+        #'CategoriaInsumo': lista_categoria_insumo
     }
 
     return render(request, 'app/administrador/insumos/editarInsumos.html', data)
