@@ -1,0 +1,20 @@
+<h1>
+    Boleta Nro: {{boletas.0.0}}
+</h1>
+
+<table border="1">
+    <thead>
+        <th style="padding-top:5px;">Fecha Emisión</th>
+        <th style="padding-top:5px;">Total</th>
+        <th style="padding-top:5px;">Detalle</th>
+    </thead>
+    <tbody>
+        {% for boleta in boletas %}
+        <tr style="padding-top:5px;">
+            <td><center>{{ boleta.1 }}</center></td>
+            <td><center>{{ boleta.2 }}</center></td>
+            <td><center>{{ boleta.3 }}</center></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

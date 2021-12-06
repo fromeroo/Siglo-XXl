@@ -3,39 +3,69 @@
   
 {% block js %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script>
+    function ejecutar(){
+      let monto_pagar = document.getElementById("monto_pagar").value;
+      let monto_ingresado = document.getElementById("monto_ingresado").value;
+      
+      if (monto_ingresado < monto_pagar) {
+        Swal.fire({
+            title: "El valor ingresado es menor al monto a pagar",
+            text: "Para realizar el descuento, ingrese la clave de administradores",
+            input: 'password',
+            showCancelButton: true,
+            inputPlaceholder: "Ingrese la clave"        
+        }).then((result) => {
+          if (result.value && result.value == "admin123") {
+            document.theForm.submit();
+          }else{
+            Swal.fire({
+              title: "Clave incorrecta",}
+            );
+          }
+        });
+      }else{
+        document.theForm.submit();
+      }
+    }
+
+  </script>
+
+
 {% endblock %}
 
 {% block contenido %}
 {% load static %}
 
   <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
-    <form action="/ingresar-pago-efectivo/" method="GET">
+    <form action="/ingresar-pago-efectivo/" method="GET" name="theForm">
       <h2>Ingresar Pago en Efectivo</h2>
       <hr>
       <div class="col">
         <div class="row">
-          <!-- ID -->
-          <input type="hidden" name="id" value="{{m.0}}">
-          <div class="form-group col-md-6">
-            <label for="p_id_caja">Caja Utilizada</label>
-            <select class="form-control" name="p_id_caja" id="select-giro" required>
-              {% for c in Cajas %}
-                <option value="{{c.1}}">NRO-{{c.2}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="p_id_resumen">Atencion a Pagar</label>
-            <select class="form-control" name="p_id_resumen" id="select-giro" required>
-              {% for r in Resumen %}
-                <option value="{{r.0}}">Nro Atencion {{r.0}} ~ Total ${{r.2}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="form-group col-md-12">
-            <label for="p_monto_venta">Monto:</label>
-            <input type="number" name="p_monto_venta" class="form-control">
-          </div>
+
+          {% for m in Mesas %}
+            <input type="hidden" name="p_id_mesa" value="{{m.0}}">
+            <input type="hidden" name="p_id_orden" value="{{m.0}}">
+            <input type="hidden" id="monto_pagar" name="p_monto_venta" value="{{m.6}}">
+            <div class="form-group col-md-6">
+              <label for="p_id_caja">Caja Utilizada</label>
+              <select class="form-control" name="p_id_caja" id="select-giro" required>
+                {% for c in Cajas %}
+                  <option value="{{c.1}}">NRO-{{c.2}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="p_monto_venta">Monto a Pagar:</label>
+              <input type="text" name="p_monto_venta" class="form-control" value="${{m.6}}" disabled>
+            </div>
+            <div class="form-group col-md-12">
+              <label for="p_monto_venta">Monto Pagado:</label>
+              <input type="number" min="0" id="monto_ingresado" name="p_monto2" class="form-control">
+            </div>
+          {% endfor %}
         </div>
       </div>
       <div class="col mt-4">
@@ -43,7 +73,7 @@
           <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexPagoEfectivo' %}">
             Volver
           </a>
-          <button class="btn btn-primary d-flex ml-auto mr-3" type="submit">Ingresar</button>
+          <button class="btn btn-primary d-flex ml-auto mr-3" type="button" onclick="ejecutar()">Ingresar</button>
         </div>  
       </div>
     </form>

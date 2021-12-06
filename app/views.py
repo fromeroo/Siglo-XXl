@@ -1835,7 +1835,7 @@ def detalleMesasCajas(request, id):
 
     id_mesa = id
 
-    cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
+    cursor.callproc("PKG_PAGOS.buscarMesaEfectivo", [id_mesa, out_cur])
 
     lista= []
     for fila in out_cur:
@@ -1853,13 +1853,11 @@ def ingresarPagoEfectivo(request, id):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
     out_cur_two = django_cursor.connection.cursor()
-    out_cur_three = django_cursor.connection.cursor()
 
     id_mesa = id
 
-    cursor.callproc("PKG_MESA.buscarMesa", [id_mesa, out_cur])
+    cursor.callproc("PKG_PAGOS.buscarMesaEfectivo", [id_mesa, out_cur])
     cursor.callproc("PKG_CAJA.listarAperturasCaja", [out_cur_two])
-    cursor.callproc("PKG_PAGOS.listarResumenNuevo", [out_cur_three])
 
     lista= []
     for fila in out_cur:
@@ -1869,16 +1867,12 @@ def ingresarPagoEfectivo(request, id):
     for fila in out_cur_two:
         lista_caja.append(fila)
 
-    lista_resumen= []
-    for fila in out_cur_three:
-        lista_resumen.append(fila)
-
     data = {
         'Mesas': lista,
         'id': id_mesa,
-        'Cajas': lista_caja,
-        'Resumen': lista_resumen
+        'Cajas': lista_caja
     }
+    
 
     return render(request, 'app/caja/pago-efectivo/ingresarPagoEfectivo.html', data)
 
@@ -1889,21 +1883,70 @@ def crearIngresarPagoEfectivo(request):
     cursor = django_cursor.connection.cursor()
     # out_cur = django_cursor.connection.cursor()
     salida = cursor.var(cx_Oracle.NUMBER)
+    salida_venta = cursor.var(cx_Oracle.NUMBER)
+    salida_monto = cursor.var(cx_Oracle.NUMBER)
+    salida_dos = cursor.var(cx_Oracle.NUMBER)
+    salida_id_boleta = cursor.var(cx_Oracle.NUMBER)
 
+    p_id_mesa = int(request.GET["p_id_mesa"])
+    p_id_orden = int(request.GET["p_id_orden"])
     p_monto_venta = int(request.GET["p_monto_venta"])
+    p_monto2 = int(request.GET["p_monto2"])
     p_id_caja = int(request.GET["p_id_caja"])
-    p_id_resumen = int(request.GET["p_id_resumen"])
     
-    cursor.callproc("PKG_PAGOS.ingresarPagoEfectivo", [p_monto_venta, p_id_caja, p_id_resumen, salida])
+    cursor.callproc("PKG_PAGOS.ingresarPagoEfectivo", [p_id_mesa, p_id_orden, p_monto_venta, p_monto2, p_id_caja, salida, salida_venta, salida_monto])
     
     res = salida.getvalue()
+    res_salida_venta = salida_venta.getvalue()
+
+
 
     if res == 1:
-        messages.success(request, "¡Pago en Efectivo realizado exitosamente. La boleta ha sido generada!")
+        cursor.callproc("PKG_PAGOS.generarBoleta", [p_monto2, res_salida_venta, salida_dos, salida_id_boleta])
+        
+        res_salida_dos = salida_dos.getvalue()
+        res_salida_id_boleta = salida_id_boleta.getvalue()
+
+        data = {
+            'id_boleta': int(res_salida_id_boleta), 
+        }
+
+        if res_salida_dos == 1:
+            messages.success(request, "¡Pago en Efectivo realizado exitosamente!")
+            return render(request, 'app/caja/pago-efectivo/generarBoleta.html', data)
+        else:
+            messages.error(request, "¡Error al generar la boleta!")
+            return redirect('indexPagoEfectivo')
+
+    elif res == 2:
+        messages.error(request, "¡El valor ingresado es mayor al monto a pagar!")
         return redirect('indexPagoEfectivo')
     else:
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexPagoEfectivo')
+
+def imprimirBoleta(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    id_boleta = id
+
+    cursor.callproc("PKG_PAGOS.imprimirBoleta", [id_boleta, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'boletas': lista,
+    }
+    print(data)
+
+    pdf = render_to_pdf('app/caja/informes/boletaEfectivo.html', data)
+
+    return HttpResponse(pdf, content_type='application/pdf')
+
 
 # COCINA
 @login_required
