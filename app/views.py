@@ -1093,10 +1093,11 @@ def editarDisponibilidades(request):
     id_disponibilidad = int(request.GET["id"])
     p_fec_disp = request.GET["p_fec_disp"]
     formated_fec_disp = datetime.strftime(datetime.strptime(p_fec_disp, "%Y-%m-%d"), "%Y-%m-%d")
-    p_hora_disp = int(request.GET["p_hora_disp"])
+    p_hora_disp = request.GET["p_hora_disp"]
+    formated_hora_disp = datetime.strftime(datetime.strptime(p_hora_disp, "%H:%M"),"%H:%M")
     p_personas = int(request.GET["p_personas"])
 
-    cursor.callproc("PKG_RESERVA.modificarDisponibilidad", [id_disponibilidad, formated_fec_disp, p_hora_disp, p_personas, salida])
+    cursor.callproc("PKG_RESERVA.modificarDisponibilidad", [id_disponibilidad, formated_fec_disp, formated_hora_disp, p_personas, salida])
     
     res = salida.getvalue()
 
