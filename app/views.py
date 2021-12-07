@@ -847,6 +847,18 @@ def editarIngredientesRecetas(request):
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexRecetas')
 
+@login_required
+def eliminarIngredientesRecetas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    salida_dos = cursor.var(cx_Oracle.NUMBER)
+    id_receta = id
+
+    cursor.callproc("PKG_RECETA.eliminarIngrediente", [id_receta, salida, salida_dos])
+    
+    messages.success(request, "¡El Ingrediente ha sido eliminado exitosamente!")
+    return redirect(to="indexRecetas")
 
 @login_required
 def indexPedidosProveedor(request):
