@@ -30,29 +30,30 @@
       {% for sp in StockProductos %}
       <tr>
         <!-- <th scope="row">{{ u.id }}</th> -->
-        <td
-          style="color:  
-        {% if 'sp.4==Crítico' %}
-            'red'
-        {% elif 'sp.4==Bajo' %}
-            'yellow'
-        {% elif 'sp.4==Bueno' %}
-            'green'
-          {% endif %} ;"
         
-        >{{sp.2}}</td>
-
-        <td
+        {% if sp.4 == 'Crítico' %}
+          <td class="text-danger">{{sp.2}}</td>
+          <td class="text-danger">{{sp.3}}</td>
+          <td class="text-danger">{{sp.4}}</td>
+          <td class="text-danger">{{sp.6}}</td>
+        {% elif sp.4 == 'Bajo' %}
+          <td class="text-warning">{{sp.2}}</td>
+          <td class="text-warning">{{sp.3}}</td>
+          <td class="text-warning">{{sp.4}}</td>
+          <td class="text-warning">{{sp.6}}</td>
+        {% elif sp.4 == 'Bueno' %}
+          <td class="text-success">{{sp.2}}</td>
+          <td class="text-success">{{sp.3}}</td>
+          <td class="text-success">{{sp.4}}</td>
+          <td class="text-success">{{sp.6}}</td>
+        {% else %}
+          <td>{{sp.2}}</td>
+          <td>{{sp.3}}</td>
+          <td>{{sp.4}}</td>
+          <td>{{sp.6}}</td>
+        {% endif %}
         
-        >{{sp.3}}</td>
-        <td
-          
         
-        >{{sp.4}}</td>
-        <td
-          
-        
-        >{{sp.6}}</td>
         <td class="p-1">
           <a href="{% url 'modificarStockProductos' sp.0 %}" class="btn btn-primary" style="font-size: 14px;"><i class="fa fa-edit"> Detalle</i></a>
           <!-- <a onclick="" class="btn btn-primary" style="font-size: 14px; color: white; cursor: pointer;"><i class="fa fa-minus-square"> Desactivar</i></a> -->
