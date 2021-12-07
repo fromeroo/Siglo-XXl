@@ -91,7 +91,7 @@
       
         swal.fire({
         "title": "¿Estás seguro?",
-        "text": "¡Estás apunto de modificar el estado!",
+        "text": "¡Se modificará el estado de la comanda!",
         "icon": "question",
         "showCancelButton": true,
         "cancelButtonText": "No, cancelar",
@@ -113,6 +113,12 @@
       
     });
   });
+</script>
+
+<script type="text/javascript">
+  function actualizar(){location.reload(true);}
+//Función para actualizar cada 1 minuto(60000 milisegundos)
+  setInterval("actualizar()",60000);
 </script>
 
 {% endblock %}
