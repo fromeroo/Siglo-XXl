@@ -2175,7 +2175,6 @@ def crearOrden(request):
     v_id_orden = cursor.var(cx_Oracle.NUMBER)
     id_mesa = request.GET["p_id_mesa"]
     request.session['id_mesa'] = id_mesa
-    print ("wenaaa ",request.GET["p_id_mesa"] )
     cursor.callproc("PKG_ORDEN_COMANDA.crearOrdenComida", [id_mesa, salida, v_id_orden])
     variable = v_id_orden.getvalue()
     if salida == 1:
@@ -2187,15 +2186,37 @@ def crearDetalleOrden(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     salida = cursor.var(cx_Oracle.NUMBER)
+    # ------------------------------------------
+    out_cur = django_cursor.connection.cursor()
+    out_cur2 = django_cursor.connection.cursor()
+    p_id_mesa = request.session['id_mesa']
+    cursor.callproc("PKG_PRODUCTO.listarProducto", [out_cur2])
+    lista_producto = []
+    for fila in out_cur2:
+        lista_producto.append(fila)
+    # ------------------------------------------
     id_producto = int(request.GET.get('p_id_producto'))
     cantidad = int(request.GET.get('p_cantidad'))
     id_orden = int(request.GET.get('p_id_orden'))
     cursor.callproc("PKG_ORDEN_COMANDA.crearDetOrdenComida", [id_producto, cantidad, id_orden, salida])
+    cursor.callproc("PKG_PAGOS.listarDetalleOrdenMesa", [p_id_mesa, out_cur])
+    listar_Detalle_Orden= []
+    total = 0
+    for fila in out_cur:
+        listar_Detalle_Orden.append(fila)
+        total += fila[2]
+    # ------------------------------------------
+    data = {
+         'listarDetalleOrden': listar_Detalle_Orden,
+         'total' : total,
+         'id_orden' : id_orden,
+         'listarProducto': lista_producto
+    } 
     if salida == 1:
-        return redirect('clienteMenu')
+        return render(request, 'app/cliente/clienteMenu.html', data)
     else:
         messages.success(request, "¡producto agregado!")
-        return redirect('clienteMenu',id = id_orden)
+        return render(request, 'app/cliente/clienteMenu.html', data)
 
 
 
@@ -2204,7 +2225,6 @@ def listarDetalleOrden(request, id):
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
     p_id_mesa = request.session['id_mesa']
-    print("wena peggo", p_id_mesa )
     p_id_orden = id
     cursor.callproc("PKG_PAGOS.listarDetalleOrdenMesa", [p_id_mesa, out_cur])
     listar_Detalle_Orden= []

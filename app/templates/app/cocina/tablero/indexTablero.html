@@ -20,6 +20,7 @@
       <tr>
         <th scope="col">Mesa</th>
         <th scope="col">Hora Inicio</th>
+        <th scope="col">Tiempo de espera</th>
         <th scope="col">Estado</th>
         <th scope="col">Acciones</th>
         <!-- <th scope="col">Acciones</th> -->
@@ -31,6 +32,7 @@
           <tr>
             <td>{{oc.6}}</td>
             <td>{{oc.4}}</td>
+            <td>{{oc.7}} minutos</td>
             <td>
               <select class="form-control text-left" name="id_est_comanda" id="id_est_comanda">
                 {% for ec in EstadoComanda %}
@@ -91,7 +93,7 @@
       
         swal.fire({
         "title": "¿Estás seguro?",
-        "text": "¡Estás apunto de modificar el estado!",
+        "text": "¡Se modificará el estado de la comanda!",
         "icon": "question",
         "showCancelButton": true,
         "cancelButtonText": "No, cancelar",
@@ -113,6 +115,12 @@
       
     });
   });
+</script>
+
+<script type="text/javascript">
+  function actualizar(){location.reload(true);}
+//Función para actualizar cada 1 minuto(60000 milisegundos)
+  setInterval("actualizar()",60000);
 </script>
 
 {% endblock %}
