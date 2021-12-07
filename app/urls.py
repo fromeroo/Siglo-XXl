@@ -16,7 +16,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, indexAperturaCajasFinanzas, detalleCajasFinanzasAperturas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, \
     indexInformes, \
-    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
+    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, imprimirBoleta, \
     indexTablero, \
     dashboard, \
     clienteMenu, listarDetalleOrden, pagoCliente,crearOrden, seleccionarMesa, crearDetalleOrden,   \
@@ -154,6 +154,7 @@ urlpatterns = [
     path('caja/pago-efectivo/detalle/<id>/', detalleMesasCajas, name="detalleMesasCajas"),
     path('caja/pago-efectivo/ingresar/<id>/', ingresarPagoEfectivo, name="ingresarPagoEfectivo"),
     path('ingresar-pago-efectivo/', crearIngresarPagoEfectivo, name="crearIngresarPagoEfectivo"),
+    path('ingresar-pago-efectivo/imprimir-boleta/<id>/', imprimirBoleta, name="imprimirBoleta"),
 
     #TABLERO
     path('cocina/tablero/', indexTablero, name="indexTablero"),
