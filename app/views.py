@@ -796,70 +796,6 @@ def crearIngredientesRecetas(request):
         return redirect('indexIngredientesRecetas', id = str(p_id_receta))
 
 @login_required
-def modificarIngredientesRecetas(request, id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
-    out_cur_two = django_cursor.connection.cursor()
-
-    id_receta = id
-
-    cursor.callproc("PKG_RECETA.buscarIngrediente", [id_receta, out_cur])
-    
-    cursor.callproc("PKG_INSUMO.listarInsumo", [out_cur_two])
-
-    lista= []
-    for fila in out_cur:
-        lista.append(fila)
-
-    lista_insumo = []
-    for fila in out_cur_two:
-        lista_insumo.append(fila)
-
-    data = {
-        'Ingredientes': lista,
-        'Insumos': lista_insumo,
-        'id': id_receta
-    }
-
-    return render(request, 'app/administrador/recetas/editarIngredientes.html', data)
-
-@login_required
-def editarIngredientesRecetas(request):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
-    salida_id_receta = cursor.var(cx_Oracle.NUMBER)
-
-    p_id_receta = int(request.GET["p_id_receta"])
-    p_cantidad_nueva = int(request.GET["p_cantidad_nueva"])
-
-    cursor.callproc("PKG_RECETA.modificarIngrediente", [p_id_receta, p_cantidad_nueva, salida, salida_id_receta])
-    
-    res = salida.getvalue()
-    res_dos = salida_id_receta.getvalue()
-
-    if res == 1:
-        messages.success(request, "¡El Ingrediente ha sido editado exitosamente!")
-        return redirect('indexRecetas')
-    else:
-        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
-        return redirect('indexRecetas')
-
-@login_required
-def eliminarIngredientesRecetas(request, id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
-    salida_dos = cursor.var(cx_Oracle.NUMBER)
-    id_receta = id
-
-    cursor.callproc("PKG_RECETA.eliminarIngrediente", [id_receta, salida, salida_dos])
-    
-    messages.success(request, "¡El Ingrediente ha sido eliminado exitosamente!")
-    return redirect(to="indexRecetas")
-
-@login_required
 def indexPedidosProveedor(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -2265,7 +2201,34 @@ def pagoCliente(request):
         del request.session['id_mesa'] 
         messages.success(request, "¡Se le realizara el cobro!")
         return redirect('seleccionarMesa')
-    
+
+def ingresarPagotarjeta(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    salida_dos = cursor.var(cx_Oracle.NUMBER)
+    salida_tres = cursor.var(cx_Oracle.NUMBER)
+    salida_cuatro = cursor.var(cx_Oracle.DATETIME)
+    p_id_mesa = int(request.session['id_mesa'])
+    p_id_orden = int(request.GET.get('p_id_orden'))
+    p_monto_venta = int(request.GET.get('p_monto_venta'))
+    print("id_mesa",p_id_mesa,"id_orden",p_id_orden,"monto_venta",p_monto_venta)
+    cursor.callproc("PKG_PAGOS.ingresarPagotarjeta", [p_id_mesa, p_id_orden, p_monto_venta, salida,salida_dos,salida_tres,salida_cuatro])
+    salida_boleta = salida_dos.getvalue()
+    salida_monto = salida_tres.getvalue()
+    salida_fecha = salida_cuatro.getvalue()
+    print(salida_boleta,' ',salida_monto,' ',salida_fecha )
+    # data = {
+    #     'id_boleta': int(salida_boleta),
+    #     'monto_boleta':  int(salida_monto),
+    #     'fecha_boleta': salida_fecha
+    # }
+    if salida == 1:
+        return redirect('clienteMenu')
+    else:
+        del request.session['id_mesa'] 
+        messages.success(request, "redirigiendo a webpay")
+        return redirect('seleccionarMesa')
 
 # ----------------------------------------RESERVA CLIENTE--------------------------------
 def reservaCliente(request):
