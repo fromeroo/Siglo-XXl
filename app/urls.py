@@ -7,14 +7,14 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
     indexDisponibilidades, registroDisponibilidades, crearDisponibilidades, modificarDisponibilidades, editarDisponibilidades, eliminarDisponibilidades, \
     indexRecetas, indexRecetasTwo, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
-    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, \
+    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, modificarIngredientesRecetas, editarIngredientesRecetas, eliminarIngredientesRecetas, \
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, crearGestionCajas, \
     indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, crearCuadraturaCajasFinanzas, \
     indexPedidosBodegas, detallePedidosBodegas, \
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, indexAperturaCajasFinanzas, detalleCajasFinanzasAperturas, \
-    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, \
+    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, indexReporteUtilidad, \
     indexInformes, \
     indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, imprimirBoleta, \
     indexTablero, \
@@ -100,6 +100,9 @@ urlpatterns = [
     path('administracion/recetas/eliminar/<id>/', eliminarRecetas, name="eliminarRecetas"),
     path('administracion/recetas/registro/', registroRecetas, name="registroRecetas"),
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
+    path('administracion/ingredientes/modificar/<id>/', modificarIngredientesRecetas, name="modificarIngredientesRecetas"),
+    path('administracion/ingredientes/eliminar/<id>/', eliminarIngredientesRecetas, name="eliminarIngredientesRecetas"),
+    path('editar-ingredientes-recetas/', editarIngredientesRecetas, name="editarIngredientesRecetas"),
 
     path('administracion/recetas/index-ingredientes-recetas/<id>/', indexIngredientesRecetas, name="indexIngredientesRecetas"),
     path('administracion/recetas/index-ingredientes-recetas-two/<id>/', indexIngredientesRecetasTwo, name="indexIngredientesRecetasTwo"),
@@ -149,6 +152,8 @@ urlpatterns = [
     path('finanzas/gestion-facturas/descargar-factura-por-id/<int:id>/', views.ListFacturaById.as_view(), name="listarFacturasPorId"),
 
     path('finanzas/informes/', indexInformes, name="indexInformes"),
+    path('finanzas/reporte-utilidad/', indexReporteUtilidad, name="indexReporteUtilidad"),
+    path('finanzas/reporte-utilidad/generar-pdf/', views.ListReporteUtilidadDiaria.as_view(), name="listaReporteUtilidadDiaria"),
 
     path('caja/pago-efectivo/', indexPagoEfectivo, name="indexPagoEfectivo"),
     path('caja/pago-efectivo/detalle/<id>/', detalleMesasCajas, name="detalleMesasCajas"),

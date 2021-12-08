@@ -797,6 +797,70 @@ def crearIngredientesRecetas(request):
         return redirect('indexIngredientesRecetas', id = str(p_id_receta))
 
 @login_required
+def modificarIngredientesRecetas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+
+    id_receta = id
+
+    cursor.callproc("PKG_RECETA.buscarIngrediente", [id_receta, out_cur])
+    
+    cursor.callproc("PKG_INSUMO.listarInsumo", [out_cur_two])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_insumo = []
+    for fila in out_cur_two:
+        lista_insumo.append(fila)
+
+    data = {
+        'Ingredientes': lista,
+        'Insumos': lista_insumo,
+        'id': id_receta
+    }
+
+    return render(request, 'app/administrador/recetas/editarIngredientes.html', data)
+
+@login_required
+def editarIngredientesRecetas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    salida_id_receta = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_receta = int(request.GET["p_id_receta"])
+    p_cantidad_nueva = int(request.GET["p_cantidad_nueva"])
+
+    cursor.callproc("PKG_RECETA.modificarIngrediente", [p_id_receta, p_cantidad_nueva, salida, salida_id_receta])
+    
+    res = salida.getvalue()
+    res_dos = salida_id_receta.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El Ingrediente ha sido editado exitosamente!")
+        return redirect('indexRecetas')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexRecetas')
+
+@login_required
+def eliminarIngredientesRecetas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    salida_dos = cursor.var(cx_Oracle.NUMBER)
+    id_receta = id
+
+    cursor.callproc("PKG_RECETA.eliminarIngrediente", [id_receta, salida, salida_dos])
+    
+    messages.success(request, "¡El Ingrediente ha sido eliminado exitosamente!")
+    return redirect(to="indexRecetas")
+
+@login_required
 def indexPedidosProveedor(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -2357,4 +2421,32 @@ class ListFacturaById(View):
         }
         
         pdf = render_to_pdf('app/finanzas/informes/listafacturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+def indexReporteUtilidad(request):
+    return render(request, 'app/finanzas/reporte/utilidad.html')
+
+class ListReporteUtilidadDiaria(View):
+
+    def get(self, request, *args, **kwargs):
+        
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()
+        salida_two = cursor.var(cx_Oracle.NUMBER)
+        salida_three = cursor.var(cx_Oracle.NUMBER)
+
+        cursor.callproc("PKG_REPORTES.generarTotalVentaDiaria", [out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        print(lista)
+
+        data = {
+            'salida_one': lista
+        }
+        
+        pdf = render_to_pdf('app/finanzas/reporte/utilidad-mensual-pdf.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
