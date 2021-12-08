@@ -218,5 +218,7 @@ urlpatterns = [
     path('api/asignar-mesa/', api_views.AsignarMesaAPIView.as_view() , name="asignarMesa"),
     
     path('api/eliminar-asignacion/', api_views.EliminarAsignacionMesaAPIView.as_view() , name="eliminarAsignacion"),
+    
+    path('api/ingresar-notificacion/', api_views.IngresarNotificacionAPIView.as_view() , name="ingresarNotificacion"),
 
 ]

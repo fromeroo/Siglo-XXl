@@ -60,8 +60,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <input type="hidden" name="p_id_orden" for="p_id_orden" value="{{id_orden}}">
-                        <input type="hidden" name="p_monto_venta" for="p_monto_venta" value="{{total}}">
+                        <input type="hidden" name="p_id_orden" id="p_id_orden" value="{{id_orden}}">
+                        <input type="hidden" name="p_monto_venta" id="p_monto_venta" value="{{total}}">
                         <div class="form-group col-md-12 center">
                             <label>Ingrese Correo Electronico:</label>
                             <input class="form-control" type="email" name="p_correo" id="p_correo" required>
@@ -92,7 +92,7 @@
         <a type="button" class="btn btn-primary btn-lg" href="{% url 'pagoCliente' %}">Pago en efectivo</a>
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
         <a type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
-            data-bs-target="#staticBackdrop">Solicitar Revision</a>
+            data-bs-target="#staticBackdrop" onclick="ingresarNotificacion({{id_orden}})">Solicitar Revision</a>
         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
         <a type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
             data-bs-target="#staticBackdropTwo">Pago con Tarjeta</a>
@@ -120,6 +120,30 @@
         </div>
     </div>
 </div>
+
+{% csrf_token %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    function ingresarNotificacion(id) {
+                          
+        $.ajax({
+            type: "POST",
+            headers: {'X-CSRFToken': csrftoken},
+            mode: 'same-origin',
+            url: 'http://127.0.0.1:8000/api/ingresar-notificacion/',
+            data: {
+                'p_id_orden': id 
+            },
+            success: function () {
+                console.log('Funcionamos');
+            }
+        });
+    }
+        
+
+</script>
 
 
 
