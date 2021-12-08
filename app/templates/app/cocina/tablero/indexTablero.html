@@ -34,9 +34,9 @@
             <td>{{oc.4}}</td>
             <td>{{oc.7}} minutos</td>
             <td>
-              <select class="form-control text-left" name="id_est_comanda" id="id_est_comanda">
+              <select class="form-control text-left" name="id_est_comanda" id="id_est_comanda_{{oc.0}}">
                 {% for ec in EstadoComanda %}
-                  {% if ec.0 == oc.0 %}
+                  {% if ec.0 == oc.2 %}
                     <option id="{{oc.0}}" value="{{ec.0}}" selected>{{ec.1}}</option>
                   {% else %}
                     <option id="{{oc.0}}" value="{{ec.0}}">{{ec.1}}</option>
