@@ -380,11 +380,10 @@ def actualizarInsumos(request):
     id_insumo = int(request.GET["p_id_insumo"])
     nombre_insumo = request.GET["p_nom_insumo"]
     tipo_insumo = int(request.GET["p_id_tipo_insumo"])
-    categoria_insumo = int(request.GET["p_id_cat_insumo"])
 
     salida = cursor.var(cx_Oracle.NUMBER)
 
-    cursor.callproc("PKG_INSUMO.modificarInsumo", [id_insumo, nombre_insumo, tipo_insumo, categoria_insumo, salida])
+    cursor.callproc("PKG_INSUMO.modificarInsumo", [id_insumo, nombre_insumo, tipo_insumo, salida])
     
     if salida.getvalue() == 1:
         # ACA ES EL MENSAJE DE ERROR
