@@ -48,27 +48,30 @@
     </div>
 </div> -->
 <br>
-<div>
-    <h2 class="total">Total a Pagar: $ {{total}}</h2>
-</div>
-<br>
+<form action="/ingresar-Pago-tarjeta/" method="GET">
+    <div>
+        <h2 class="total" name="p_monto_venta" for="p_monto_venta">Total a Pagar: $ {{total}}</h2>
+    </div>
+    <br>
 
-<input type="hidden" name="p_id_orden" value="{{id_orden}}">
-<div class="d-flex justify-content-center">
-    <a type="button" class="btn btn-primary btn-xl btn-lg" href="{% url 'clienteMenu' id_orden %}">Volver a Pedir</a>
-</div>
-<br>
-</div>
-<br>
-<div class="d-flex justify-content-center">
-    <a type="button" class="btn btn-primary btn-lg" href="{% url 'pagoCliente' %}">Pago en efectivo</a>
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop">Solicitar Revision</button>
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Pago
-        con Tarjeta</button>
-</div>
+    <input type="hidden" name="p_id_orden" for="p_id_orden" value="{{id_orden}}">
+    <input type="hidden" name="p_monto_venta" for="p_monto_venta" value="{{total}}">
+    <div class="d-flex justify-content-center">
+        <a type="button" class="btn btn-primary btn-xl btn-lg" href="{% url 'clienteMenu' id_orden %}">Volver a
+            Pedir</a>
+    </div>
+    <br>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a type="button" class="btn btn-primary btn-lg" href="{% url 'pagoCliente' %}">Pago en efectivo</a>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <a type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop">Solicitar Revision</a>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <button type="submit" class="btn btn-primary btn-lg" href="{% url 'ingresarPagotarjeta'  %}">Pago con Tarjeta</button>
+    </div>
+</form>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -91,5 +94,7 @@
         </div>
     </div>
 </div>
+
+
 
 {% endblock %}
