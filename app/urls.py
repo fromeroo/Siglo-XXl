@@ -7,7 +7,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
     indexDisponibilidades, registroDisponibilidades, crearDisponibilidades, modificarDisponibilidades, editarDisponibilidades, eliminarDisponibilidades, \
     indexRecetas, indexRecetasTwo, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
-    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, \
+    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, modificarIngredientesRecetas, editarIngredientesRecetas, eliminarIngredientesRecetas, \
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, crearGestionCajas, \
@@ -16,7 +16,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, indexAperturaCajasFinanzas, detalleCajasFinanzasAperturas, \
     indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, indexReporteUtilidad, \
     indexInformes, \
-    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
+    indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, imprimirBoleta, \
     indexTablero, \
     dashboard, \
     clienteMenu, listarDetalleOrden, pagoCliente,crearOrden, seleccionarMesa, crearDetalleOrden,   \
@@ -100,6 +100,9 @@ urlpatterns = [
     path('administracion/recetas/eliminar/<id>/', eliminarRecetas, name="eliminarRecetas"),
     path('administracion/recetas/registro/', registroRecetas, name="registroRecetas"),
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
+    path('administracion/ingredientes/modificar/<id>/', modificarIngredientesRecetas, name="modificarIngredientesRecetas"),
+    path('administracion/ingredientes/eliminar/<id>/', eliminarIngredientesRecetas, name="eliminarIngredientesRecetas"),
+    path('editar-ingredientes-recetas/', editarIngredientesRecetas, name="editarIngredientesRecetas"),
 
     path('administracion/recetas/index-ingredientes-recetas/<id>/', indexIngredientesRecetas, name="indexIngredientesRecetas"),
     path('administracion/recetas/index-ingredientes-recetas-two/<id>/', indexIngredientesRecetasTwo, name="indexIngredientesRecetasTwo"),
@@ -156,6 +159,7 @@ urlpatterns = [
     path('caja/pago-efectivo/detalle/<id>/', detalleMesasCajas, name="detalleMesasCajas"),
     path('caja/pago-efectivo/ingresar/<id>/', ingresarPagoEfectivo, name="ingresarPagoEfectivo"),
     path('ingresar-pago-efectivo/', crearIngresarPagoEfectivo, name="crearIngresarPagoEfectivo"),
+    path('ingresar-pago-efectivo/imprimir-boleta/<id>/', imprimirBoleta, name="imprimirBoleta"),
 
     #TABLERO
     path('cocina/tablero/', indexTablero, name="indexTablero"),

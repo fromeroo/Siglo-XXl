@@ -1,0 +1,59 @@
+{% extends 'app/base.html' %}
+
+  
+{% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script>
+        function ejecutarloader(id)
+        {
+            Swal.fire({
+                title: 'Generando Boleta',
+                text: '......',
+                timer: 2000,
+                showConfirmButton: false
+            }).then(function() {
+                window.location.href = "imprimir-boleta/"+id+"/"
+            })
+        }
+
+
+  </script>
+
+
+
+{% endblock %}
+
+{% block contenido %}
+{% load static %}
+
+  <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
+    
+      <h2>Descargue su Boleta</h2>
+      <hr>
+        <input type="hidden" name="p_id_boleta" id="p_id_boleta" value="{{id_boleta}}">
+        
+        <div class="col mt-4">
+            <div class="row">
+                <div class="col-4">
+
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-primary text-center" onclick="ejecutarloader({{id_boleta}})">
+                        <i class="fa fa-download"> Descargar Boleta </i>
+                    </button>
+
+                </div>
+            </div>  
+        </div>
+
+  </div>
+
+  <style>
+    #user-table{
+      font-size: 14px;
+    }
+  </style>
+  
+  {% endblock %}
+

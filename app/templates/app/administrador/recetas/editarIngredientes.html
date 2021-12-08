@@ -1,0 +1,59 @@
+{% extends 'app/base.html' %}
+
+  
+{% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block contenido %}
+{% load static %}
+
+  <div id="register" class="col-lg-6 col-sm-9 mt-5 mx-1 d-block mx-auto" style="text-align:center;">
+    <form action="/editar-ingredientes-recetas/" method="GET">
+      <h2>Editar Ingrediente</h2>
+      <hr>      
+      {% for i in Ingredientes %}
+      <div class="col">
+        <div class="row">
+          <input type="hidden" name="p_id_receta" class="form-control" value="{{id}}"/>
+          <div class="form-group col-md-6">
+            <label for="p_nom_receta">Ingrediente:</label>
+            <select class="form-control" name="p_id_insumo" id="" disabled>
+                {% for in in Insumos %}
+                    <option value="{{in.0}}"
+                        {% if i.2 == in.0 %}
+                            selected
+                        {% endif %}
+                    >
+                        {{in.1}}
+                    </option>
+                {% endfor %}
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="p_cantidad_nueva">Cantidad:</label>
+            <input type="number" name="p_cantidad_nueva" class="form-control" value="{{i.3}}" required>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="col mt-4">
+        <div class="row">
+          <a class="btn btn-primary d-flex mr-auto" href="{% url 'indexRecetas' %}">
+            Volver
+          </a>
+          <button class="btn btn-primary d-flex ml-auto" type="submit">Aceptar</button>
+        </div>  
+      </div>
+    </form>
+  </div>
+
+
+  <style>
+    #user-table{
+      font-size: 14px;
+    }
+  </style>
+  
+  {% endblock %}
+
