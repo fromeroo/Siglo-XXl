@@ -14,7 +14,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, crearCuadraturaCajasFinanzas, \
     indexPedidosBodegas, detallePedidosBodegas, \
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, indexAperturaCajasFinanzas, detalleCajasFinanzasAperturas, \
-    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, \
+    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, indexReporteUtilidad, \
     indexInformes, \
     indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, \
     indexTablero, \
@@ -149,6 +149,8 @@ urlpatterns = [
     path('finanzas/gestion-facturas/descargar-factura-por-id/<int:id>/', views.ListFacturaById.as_view(), name="listarFacturasPorId"),
 
     path('finanzas/informes/', indexInformes, name="indexInformes"),
+    path('finanzas/reporte-utilidad/', indexReporteUtilidad, name="indexReporteUtilidad"),
+    path('finanzas/reporte-utilidad/generar-pdf/', views.ListReporteUtilidadDiaria.as_view(), name="listaReporteUtilidadDiaria"),
 
     path('caja/pago-efectivo/', indexPagoEfectivo, name="indexPagoEfectivo"),
     path('caja/pago-efectivo/detalle/<id>/', detalleMesasCajas, name="detalleMesasCajas"),

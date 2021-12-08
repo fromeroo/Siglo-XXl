@@ -2292,3 +2292,31 @@ class ListFacturaById(View):
         
         pdf = render_to_pdf('app/finanzas/informes/listafacturas.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
+
+def indexReporteUtilidad(request):
+    return render(request, 'app/finanzas/reporte/utilidad.html')
+
+class ListReporteUtilidadDiaria(View):
+
+    def get(self, request, *args, **kwargs):
+        
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()
+        salida_two = cursor.var(cx_Oracle.NUMBER)
+        salida_three = cursor.var(cx_Oracle.NUMBER)
+
+        cursor.callproc("PKG_REPORTES.generarTotalVentaDiaria", [out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        print(lista)
+
+        data = {
+            'salida_one': lista
+        }
+        
+        pdf = render_to_pdf('app/finanzas/reporte/utilidad-mensual-pdf.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')

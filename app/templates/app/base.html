@@ -175,7 +175,7 @@
       </li>
 
       <li class="nav-item dropdown">
-        {% if perms.app.add_caja %}
+        {% if perms.app.change_estadofactura %}
         <a class="nav-link dropdown-toggle dropdown-btn" href="#" id="pagesDropdown" role="button"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-user"></i>
@@ -197,6 +197,10 @@
           <a class="nav-link" href="{% url 'indexInformes' %}" select>
             <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
             <span>Informes</span>
+          </a>
+          <a class="nav-link" href="{% url 'indexReporteUtilidad' %}" select>
+            <!-- <i class="fas fa-fw fa-tachometer-alt"></i> -->
+            <span>Reporte Utilidad</span>
           </a>
         </div>
         {% endif %}
