@@ -28,6 +28,24 @@
       }
     }
   </script>
+
+  <script>
+    $(document).ready(function () {
+      $.ajax({
+        url:'http://127.0.0.1:8000/api/listar-notificacion/',
+        dataType:'JSON',
+        success:function(data){
+          for (let i = 0; i < data.notificaciones.length; i++) {
+            let row = $('<tr><td class="bg-warning font-weight-bold">'+data.notificaciones[i][3]+'</td><td class="bg-warning font-weight-bold">Solicita Revision - Enviar a Garzon</td><td class="bg-warning font-weight-bold">'+data.notificaciones[i][4]+'</td>');
+            $('#tabla-modal').append(row);
+          }
+        }
+      });
+    });
+
+  </script>
+
+
 {% endblock %}
 
 
@@ -81,7 +99,7 @@
   <div class="modal-content">
     <span class="close mb-3">&times;</span>
     <h3 class="text-dark"><b>Notificaciones Hoy</b></h1>
-    <table class="table table-sm">
+    <table id="tabla-modal" class="table table-sm">
       <thead>
         <tr>
           <th class="bg-dark" scope="col">Mesa</th>
@@ -90,16 +108,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th class="bg-warning font-weight-bold" >1</th>
-          <td class="bg-warning font-weight-bold">Solicita Revision - Enviar a Garzon</td>
-          <td class="bg-warning font-weight-bold">07/12/2021 16:45</td>
-        </tr>
-        <tr>
-          <th class="bg-warning font-weight-bold">2</th>
-          <td class="bg-warning font-weight-bold">Solicita Revision - Enviar a Garzon</td>
-          <td class="bg-warning font-weight-bold">07/12/2021 16:45</td>
-        </tr>
+        
       </tbody>
     </table>
   </div>

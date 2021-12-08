@@ -312,3 +312,20 @@ class IngresarNotificacionAPIView(generics.GenericAPIView):
                 'message': 'Error al enviar Notificacion'
             })
             
+class ListarNotificacionesAPIView(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()
+
+        cursor.callproc("PKG_PAGOS.listarRechazos", [out_cur])
+        
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        data = {
+            'notificaciones': lista,
+        }
+
+        return JsonResponse(data)
