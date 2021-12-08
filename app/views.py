@@ -2295,6 +2295,25 @@ def ingresarPagotarjeta(request):
         return redirect('clienteMenu')
     else:
         del request.session['id_mesa'] 
+        
+        subject = 'Pago Realizado'
+
+        template = render_to_string('email_template_transferencia.html', {
+            'numero_boleta': int(salida_boleta),
+            'precio': int(salida_monto),
+            'fecha': salida_fecha,
+        })
+
+        email = EmailMessage(
+            subject,
+            template,
+            settings.EMAIL_HOST_USER,
+            [p_correo]
+        )
+        
+        email.fail_silently = False
+        email.send()
+
         messages.success(request, "redirigiendo a webpay")
         return redirect('seleccionarMesa')
 
@@ -2351,7 +2370,6 @@ def CrearReserva(request):
     for fila in out_cur:
         data.append(fila)
         
-    print(data[0])
     fecha_reserva = data[0][3]
     hora_reserva = data[0][4]
     rut = request.GET["p_rut"]
