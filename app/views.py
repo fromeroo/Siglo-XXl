@@ -19,7 +19,9 @@ from django.db import connection
 
 import cx_Oracle
 from datetime import datetime
-
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.conf import settings
 
 @login_required #Etiqueta para que solo pueda ingresar a la def si esta logeado
 # Obtiene lista de usuarios mediante models.py
@@ -794,6 +796,71 @@ def crearIngredientesRecetas(request):
     else:
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexIngredientesRecetas', id = str(p_id_receta))
+
+@login_required
+def modificarIngredientesRecetas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+
+    id_receta = id
+
+    cursor.callproc("PKG_RECETA.buscarIngrediente", [id_receta, out_cur])
+    
+    cursor.callproc("PKG_INSUMO.listarInsumo", [out_cur_two])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    lista_insumo = []
+    for fila in out_cur_two:
+        lista_insumo.append(fila)
+
+    data = {
+        'Ingredientes': lista,
+        'Insumos': lista_insumo,
+        'id': id_receta
+    }
+
+    return render(request, 'app/administrador/recetas/editarIngredientes.html', data)
+    
+@login_required
+def editarIngredientesRecetas(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    salida_id_receta = cursor.var(cx_Oracle.NUMBER)
+
+    p_id_receta = int(request.GET["p_id_receta"])
+    p_cantidad_nueva = int(request.GET["p_cantidad_nueva"])
+
+    cursor.callproc("PKG_RECETA.modificarIngrediente", [p_id_receta, p_cantidad_nueva, salida, salida_id_receta])
+    
+    res = salida.getvalue()
+    res_dos = salida_id_receta.getvalue()
+
+    if res == 1:
+        messages.success(request, "¡El Ingrediente ha sido editado exitosamente!")
+        return redirect('indexRecetas')
+    else:
+        messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
+        return redirect('indexRecetas')
+
+@login_required
+def eliminarIngredientesRecetas(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    salida_dos = cursor.var(cx_Oracle.NUMBER)
+    id_receta = id
+
+    cursor.callproc("PKG_RECETA.eliminarIngrediente", [id_receta, salida, salida_dos])
+    
+    messages.success(request, "¡El Ingrediente ha sido eliminado exitosamente!")
+    return redirect(to="indexRecetas")
+
 
 @login_required
 def indexPedidosProveedor(request):
@@ -2212,7 +2279,8 @@ def ingresarPagotarjeta(request):
     p_id_mesa = int(request.session['id_mesa'])
     p_id_orden = int(request.GET.get('p_id_orden'))
     p_monto_venta = int(request.GET.get('p_monto_venta'))
-    print("id_mesa",p_id_mesa,"id_orden",p_id_orden,"monto_venta",p_monto_venta)
+    p_correo = request.GET.get('p_correo')
+    print("id_mesa",p_id_mesa,"id_orden",p_id_orden,"monto_venta",p_monto_venta, "correo", p_correo)
     cursor.callproc("PKG_PAGOS.ingresarPagotarjeta", [p_id_mesa, p_id_orden, p_monto_venta, salida,salida_dos,salida_tres,salida_cuatro])
     salida_boleta = salida_dos.getvalue()
     salida_monto = salida_tres.getvalue()
@@ -2283,6 +2351,7 @@ def CrearReserva(request):
     for fila in out_cur:
         data.append(fila)
         
+    print(data[0])
     fecha_reserva = data[0][3]
     hora_reserva = data[0][4]
     rut = request.GET["p_rut"]
@@ -2294,6 +2363,25 @@ def CrearReserva(request):
     if salida == 1:
         return redirect('principal')
     else:
+        subject = 'Reserva Realizada'
+
+        template = render_to_string('email_template.html', {
+            'nombre': nombre,
+            'fecha': fecha_reserva,
+            'hora': hora_reserva,
+            'asistentes': asistentes
+        })
+
+        email = EmailMessage(
+            subject,
+            template,
+            settings.EMAIL_HOST_USER,
+            [correo]
+        )
+        
+        email.fail_silently = False
+        email.send()
+
         messages.success(request, "¡Reserva registrada exitosamente!")
         return redirect('principal')
 
@@ -2383,4 +2471,32 @@ class ListFacturaById(View):
         }
         
         pdf = render_to_pdf('app/finanzas/informes/listafacturas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+def indexReporteUtilidad(request):
+    return render(request, 'app/finanzas/reporte/utilidad.html')
+
+class ListReporteUtilidadDiaria(View):
+
+    def get(self, request, *args, **kwargs):
+        
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()
+        salida_two = cursor.var(cx_Oracle.NUMBER)
+        salida_three = cursor.var(cx_Oracle.NUMBER)
+
+        cursor.callproc("PKG_REPORTES.generarTotalVentaDiaria", [out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        print(lista)
+
+        data = {
+            'salida_one': lista
+        }
+        
+        pdf = render_to_pdf('app/finanzas/reporte/utilidad-mensual-pdf.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
