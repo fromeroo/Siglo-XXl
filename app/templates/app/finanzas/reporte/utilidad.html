@@ -7,7 +7,7 @@
 <div id="register" class="col-lg-6 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
     <h2>Reporte Utilidad</h2>
     <hr>
-    <form action="" method="post">
+    <form action="/descargar-utilidad-pdf/" method="GET">
         <div class="col">
             <div class="row">
                 <div class="form-group col-md-12">
@@ -15,7 +15,7 @@
                     <input type="date" class="form-control"> -->
                 
                     <label for="" class="mt-4">Seleccione una opción de descarga</label>
-                    <select name="" id="tipos-facturas" class="form-control">
+                    <select name="tipo" id="tipos-facturas" class="form-control">
                         <option value="1">Generar reporte utilidad diaria (HOY)</option>
                         <option value="2">Generar reporte utilidad del MES ACTUAL</option>
                     </select>
@@ -25,12 +25,12 @@
                     <input type="date" class="form-control">
                 </div> -->
 
-                <button type="button" class="btn btn-primary d-flex mr-auto mt-4">
-                <a href="{% url 'indexGestionFacturas' %}" 
+             
+                <a class="btn btn-primary d-flex mr-auto mt-4" href="{% url 'indexGestionFacturas' %}" 
                 style="color: white;"
                 >Volver</a>
-                </button>
-                <a id="btn-reporte" class="btn btn-primary d-flex ml-auto mt-4" type="button" href="generar-pdf" style="color: white;" target="_blank">Generar reporte</a>
+           
+                <button id="btn-reporte" class="btn btn-primary d-flex ml-auto mt-4"  style="color: white;" target="_blank">Generar reporte</button>
             </div>
         </div>
     </form>
