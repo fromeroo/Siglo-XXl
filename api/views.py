@@ -289,3 +289,43 @@ class EliminarAsignacionMesaAPIView(generics.GenericAPIView):
                 'message': 'Error al eliminar Asignacion'
             })
             
+class IngresarNotificacionAPIView(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        
+        p_id_orden = int(request.data["p_id_orden"])
+        v_salida = cursor.var(cx_Oracle.NUMBER)
+        
+        cursor.callproc("PKG_PAGOS.rechazarDetalleOrden", [p_id_orden, v_salida])
+
+        res = v_salida.getvalue()
+
+        if res == 1:
+            return Response({
+                'status': 200,
+                'message': 'Notificacion Enviada'
+            })
+        else:
+            return Response({
+                'status': 400,
+                'message': 'Error al enviar Notificacion'
+            })
+            
+class ListarNotificacionesAPIView(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        django_cursor = connection.cursor()
+        cursor = django_cursor.connection.cursor()
+        out_cur = django_cursor.connection.cursor()
+
+        cursor.callproc("PKG_PAGOS.listarRechazos", [out_cur])
+        
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        data = {
+            'notificaciones': lista,
+        }
+
+        return JsonResponse(data)

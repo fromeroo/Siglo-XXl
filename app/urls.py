@@ -7,7 +7,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
     indexDisponibilidades, registroDisponibilidades, crearDisponibilidades, modificarDisponibilidades, editarDisponibilidades, eliminarDisponibilidades, \
     indexRecetas, indexRecetasTwo, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
-    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, modificarIngredientesRecetas, editarIngredientesRecetas, eliminarIngredientesRecetas, \
+   indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, modificarIngredientesRecetas, editarIngredientesRecetas, eliminarIngredientesRecetas, \
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
     indexGestionCajas, registroGestionCajas, modificarGestionCajas, eliminarGestionCajas, asignarUsuarioCaja, cuadrarCajasFinanzas, crearGestionCajas, \
@@ -19,7 +19,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, imprimirBoleta, \
     indexTablero, \
     dashboard, \
-    clienteMenu, listarDetalleOrden, pagoCliente,crearOrden, seleccionarMesa, crearDetalleOrden,   \
+    clienteMenu, listarDetalleOrden, pagoCliente,crearOrden, seleccionarMesa, crearDetalleOrden, ingresarPagotarjeta,   \
     reservaCliente, \
     principal, CrearReserva, eliminarReserva, buscarReservaRut, \
     listarRolesUsuario, cambiarRolUsuario, \
@@ -100,6 +100,7 @@ urlpatterns = [
     path('administracion/recetas/eliminar/<id>/', eliminarRecetas, name="eliminarRecetas"),
     path('administracion/recetas/registro/', registroRecetas, name="registroRecetas"),
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
+
     path('administracion/ingredientes/modificar/<id>/', modificarIngredientesRecetas, name="modificarIngredientesRecetas"),
     path('administracion/ingredientes/eliminar/<id>/', eliminarIngredientesRecetas, name="eliminarIngredientesRecetas"),
     path('editar-ingredientes-recetas/', editarIngredientesRecetas, name="editarIngredientesRecetas"),
@@ -174,6 +175,7 @@ urlpatterns = [
     path('cliente/clienteMenu/<id>/', clienteMenu, name="clienteMenu"),
     path('listarDetalleOrden/<id>/', listarDetalleOrden, name="listarDetalleOrden"),
     path('cliente/pagoCliente/', pagoCliente, name="pagoCliente"),
+    path('ingresar-Pago-tarjeta/', ingresarPagotarjeta, name="ingresarPagotarjeta"),
     path('crear-orden/', crearOrden, name="crearOrden"),
     path('detalle-orden/', crearDetalleOrden, name="crearDetalleOrden"),
 
@@ -216,5 +218,9 @@ urlpatterns = [
     path('api/asignar-mesa/', api_views.AsignarMesaAPIView.as_view() , name="asignarMesa"),
     
     path('api/eliminar-asignacion/', api_views.EliminarAsignacionMesaAPIView.as_view() , name="eliminarAsignacion"),
+    
+    path('api/ingresar-notificacion/', api_views.IngresarNotificacionAPIView.as_view() , name="ingresarNotificacion"),
+    
+    path('api/listar-notificacion/', api_views.ListarNotificacionesAPIView.as_view() , name="listarNotificacion"),
 
 ]

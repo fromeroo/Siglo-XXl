@@ -19,7 +19,9 @@ from django.db import connection
 
 import cx_Oracle
 from datetime import datetime
-
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.conf import settings
 
 @login_required #Etiqueta para que solo pueda ingresar a la def si esta logeado
 # Obtiene lista de usuarios mediante models.py
@@ -380,11 +382,10 @@ def actualizarInsumos(request):
     id_insumo = int(request.GET["p_id_insumo"])
     nombre_insumo = request.GET["p_nom_insumo"]
     tipo_insumo = int(request.GET["p_id_tipo_insumo"])
-    categoria_insumo = int(request.GET["p_id_cat_insumo"])
 
     salida = cursor.var(cx_Oracle.NUMBER)
 
-    cursor.callproc("PKG_INSUMO.modificarInsumo", [id_insumo, nombre_insumo, tipo_insumo, categoria_insumo, salida])
+    cursor.callproc("PKG_INSUMO.modificarInsumo", [id_insumo, nombre_insumo, tipo_insumo, salida])
     
     if salida.getvalue() == 1:
         # ACA ES EL MENSAJE DE ERROR
@@ -824,7 +825,7 @@ def modificarIngredientesRecetas(request, id):
     }
 
     return render(request, 'app/administrador/recetas/editarIngredientes.html', data)
-
+    
 @login_required
 def editarIngredientesRecetas(request):
     django_cursor = connection.cursor()
@@ -859,6 +860,7 @@ def eliminarIngredientesRecetas(request, id):
     
     messages.success(request, "¡El Ingrediente ha sido eliminado exitosamente!")
     return redirect(to="indexRecetas")
+
 
 @login_required
 def indexPedidosProveedor(request):
@@ -2266,7 +2268,54 @@ def pagoCliente(request):
         del request.session['id_mesa'] 
         messages.success(request, "¡Se le realizara el cobro!")
         return redirect('seleccionarMesa')
-    
+
+def ingresarPagotarjeta(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+    salida_dos = cursor.var(cx_Oracle.NUMBER)
+    salida_tres = cursor.var(cx_Oracle.NUMBER)
+    salida_cuatro = cursor.var(cx_Oracle.DATETIME)
+    p_id_mesa = int(request.session['id_mesa'])
+    p_id_orden = int(request.GET.get('p_id_orden'))
+    p_monto_venta = int(request.GET.get('p_monto_venta'))
+    p_correo = request.GET.get('p_correo')
+    print("id_mesa",p_id_mesa,"id_orden",p_id_orden,"monto_venta",p_monto_venta, "correo", p_correo)
+    cursor.callproc("PKG_PAGOS.ingresarPagotarjeta", [p_id_mesa, p_id_orden, p_monto_venta, salida,salida_dos,salida_tres,salida_cuatro])
+    salida_boleta = salida_dos.getvalue()
+    salida_monto = salida_tres.getvalue()
+    salida_fecha = salida_cuatro.getvalue()
+    print(salida_boleta,' ',salida_monto,' ',salida_fecha )
+    # data = {
+    #     'id_boleta': int(salida_boleta),
+    #     'monto_boleta':  int(salida_monto),
+    #     'fecha_boleta': salida_fecha
+    # }
+    if salida == 1:
+        return redirect('clienteMenu')
+    else:
+        del request.session['id_mesa'] 
+        
+        subject = 'Pago Realizado'
+
+        template = render_to_string('email_template_transferencia.html', {
+            'numero_boleta': int(salida_boleta),
+            'precio': int(salida_monto),
+            'fecha': salida_fecha,
+        })
+
+        email = EmailMessage(
+            subject,
+            template,
+            settings.EMAIL_HOST_USER,
+            [p_correo]
+        )
+        
+        email.fail_silently = False
+        email.send()
+
+        messages.success(request, "redirigiendo a webpay")
+        return redirect('seleccionarMesa')
 
 # ----------------------------------------RESERVA CLIENTE--------------------------------
 def reservaCliente(request):
@@ -2332,6 +2381,25 @@ def CrearReserva(request):
     if salida == 1:
         return redirect('principal')
     else:
+        subject = 'Reserva Realizada'
+
+        template = render_to_string('email_template.html', {
+            'nombre': nombre,
+            'fecha': fecha_reserva,
+            'hora': hora_reserva,
+            'asistentes': asistentes
+        })
+
+        email = EmailMessage(
+            subject,
+            template,
+            settings.EMAIL_HOST_USER,
+            [correo]
+        )
+        
+        email.fail_silently = False
+        email.send()
+
         messages.success(request, "¡Reserva registrada exitosamente!")
         return redirect('principal')
 

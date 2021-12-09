@@ -48,27 +48,56 @@
     </div>
 </div> -->
 <br>
-<div>
-    <h2 class="total">Total a Pagar: $ {{total}}</h2>
-</div>
-<br>
+<form action="/ingresar-Pago-tarjeta/" method="GET">
+    
+    <div class="modal fade" id="staticBackdropTwo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropTwoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropTwoLabel">Envio de Comprobante</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" name="p_id_orden" id="p_id_orden" value="{{id_orden}}">
+                        <input type="hidden" name="p_monto_venta" id="p_monto_venta" value="{{total}}">
+                        <div class="form-group col-md-12 center">
+                            <label>Ingrese Correo Electronico:</label>
+                            <input class="form-control" type="email" name="p_correo" id="p_correo" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Volver</button>
+                    <button type="submit" class="btn btn-primary" href="{% url 'ingresarPagotarjeta'  %}">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<input type="hidden" name="p_id_orden" value="{{id_orden}}">
-<div class="d-flex justify-content-center">
-    <a type="button" class="btn btn-primary btn-xl btn-lg" href="{% url 'clienteMenu' id_orden %}">Volver a Pedir</a>
-</div>
-<br>
-</div>
-<br>
-<div class="d-flex justify-content-center">
-    <a type="button" class="btn btn-primary btn-lg" href="{% url 'pagoCliente' %}">Pago en efectivo</a>
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop">Solicitar Revision</button>
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Pago
-        con Tarjeta</button>
-</div>
+    <div>
+        <h2 class="total" name="p_monto_venta" for="p_monto_venta">Total a Pagar: $ {{total}}</h2>
+    </div>
+    <br>
+
+    <div class="d-flex justify-content-center">
+        <a type="button" class="btn btn-primary btn-xl btn-lg" href="{% url 'clienteMenu' id_orden %}">Volver a
+            Pedir</a>
+    </div>
+    <br>
+    </div>
+    <br>
+    <div class="d-flex justify-content-center">
+        <a type="button" class="btn btn-primary btn-lg" href="{% url 'pagoCliente' %}">Pago en efectivo</a>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <a type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop" onclick="ingresarNotificacion({{id_orden}})">Solicitar Revision</a>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <a type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+            data-bs-target="#staticBackdropTwo">Pago con Tarjeta</a>
+    </div>
+</form>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -91,5 +120,31 @@
         </div>
     </div>
 </div>
+
+{% csrf_token %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    function ingresarNotificacion(id) {
+                          
+        $.ajax({
+            type: "POST",
+            headers: {'X-CSRFToken': csrftoken},
+            mode: 'same-origin',
+            url: 'http://127.0.0.1:8000/api/ingresar-notificacion/',
+            data: {
+                'p_id_orden': id 
+            },
+            success: function () {
+                console.log('Funcionamos');
+            }
+        });
+    }
+        
+
+</script>
+
+
 
 {% endblock %}
