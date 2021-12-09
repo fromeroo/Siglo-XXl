@@ -30,7 +30,12 @@
               <label for="p_id_cat">Categoria:</label>
               <select name="p_id_cat" id="" class="form-control">
                 {% for c in Categorias %}
-                <option value="{{c.0}}">{{c.1}}</option>
+                  {% if p.3 == c.0 %}
+                  <option value="{{c.0}}" selected>{{c.1}}</option>
+                  {% else %}
+                  <option value="{{c.0}}">{{c.1}}</option>
+                  {% endif %}
+                
                 {% endfor %}
               </select>
             </div>
@@ -38,15 +43,25 @@
               <label for="p_id_tipo">Tipo:</label>
               <select name="p_id_tipo" id="" class="form-control">
                 {% for t in TipoProductos %}
-                <option value="{{t.0}}">{{t.1}}</option>
+                  {% if p.5 == t.0 %}
+                  <option value="{{t.0}}" selected>{{t.1}}</option>
+                  {% else %}
+                  <option value="{{t.0}}">{{t.1}}</option>
+                  {% endif %}
+                
                 {% endfor %}
               </select>
             </div>
             <div class="form-group col-md-6">
               <label for="p_id_receta">Receta:</label>
               <select name="p_id_receta" id="" class="form-control">
-                {% for r in Recetas %}
-                <option value="{{r.0}}">{{r.1}}</option>
+                  {% for r in Recetas %}
+                    {% if p.7 == r.0 %}
+                    <option value="{{r.0}}" selected>{{r.1}}</option>
+                    {% else %}
+                    <option value="{{r.0}}">{{r.1}}</option>
+                    {% endif %}
+                
                 {% endfor %}
               </select>
             </div>
