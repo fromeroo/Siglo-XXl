@@ -119,17 +119,17 @@
             </div>
             <div class="form-group col-md-6">
               <label for="p_num_dir">N° Dirección</label>
-              <input type="number" name="p_num_dir" id="" value="{{ Proveedor.0.11 }}" class="form-control" required>
+              <input type="number" name="p_num_dir" id="" value="{{ Proveedor.0.10 }}" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
               <label for="p_nro_casa">N° Casa</label>
-              <input type="number" name="p_nro_casa" id="" value="{{ Proveedor.0.12 }}" class="form-control" required>
+              <input type="number" name="p_nro_casa" id="" value="{{ Proveedor.0.11 }}" class="form-control" required>
             </div>
             <div class="form-group col-md-6">
               <label for="p_tipo_dir">Tipo Dirección</label>
               <select class="form-control" name="p_tipo_dir" id="" required>
                 {% for ltd in ListaTipoDireccion %}
-                  {% if Proveedor.0.16 == ltd.0 %}
+                  {% if Proveedor.0.14 == ltd.0 %}
                       <option value="{{ltd.0}}" selected>{{ltd.1}}</option>
                     {% else %}
                       <option value="{{ltd.0}}">{{ltd.1}}</option>
@@ -141,7 +141,7 @@
               <label for="p_id_com">Comuna</label>
               <select class="form-control" name="p_id_com" id="" required>
                 {% for lc in ListaComuna %}
-                  {% if Proveedor.0.14 == lc.0 %}
+                  {% if Proveedor.0.12 == lc.0 %}
                     <option value="{{lc.0}}" selected>{{lc.1}}</option>
                   {% else %}
                     <option value="{{lc.0}}">{{lc.1}}</option>
