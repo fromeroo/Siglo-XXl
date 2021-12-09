@@ -1238,6 +1238,9 @@ def crearGestionCajas(request):
     if res == 1:
         messages.success(request, "¡La Caja ha sido creada exitosamente!")
         return redirect('indexGestionCajas')
+    elif res == 2:
+        messages.error(request, "¡Usuario ya tiene una caja asignada!")
+        return redirect('indexGestionCajas')
     else:
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexGestionCajas')
