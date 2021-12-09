@@ -207,7 +207,10 @@ def crearProveedor(request):
     id_giro = int(request.GET["p_id_giro"])
     direccion = request.GET["p_direccion"]
     numero_dirrecion = int(request.GET["p_num_dir"])
-    numero_casa = int(request.GET["p_nro_casa"])
+    if request.GET["p_nro_casa"]:
+        numero_casa = int(request.GET["p_nro_casa"])
+    else: 
+        numero_casa = ''
     tipo_direccion = int(request.GET["p_tipo_dir"])
     id_comuna= int(request.GET["p_id_com"])
     
@@ -235,7 +238,10 @@ def actualizarProveedores(request):
     id_giro = int(request.GET["p_id_giro"])
     direccion = request.GET["p_direccion"]
     numero_direcion = request.GET["p_num_dir"]
-    numero_casa = int(request.GET["p_nro_casa"])
+    if request.GET["p_nro_casa"]:
+        numero_casa = int(request.GET["p_nro_casa"])
+    else: 
+        numero_casa = ''
     tipo_direccion = int(request.GET["p_tipo_dir"])
     id_comuna= int(request.GET["p_id_com"])
     salida = cursor.var(cx_Oracle.NUMBER)
