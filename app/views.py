@@ -1012,6 +1012,9 @@ def crearMesas(request):
     if res == 1:
         messages.success(request, "¡La Mesa ha sido registrado exitosamente!")
         return redirect('indexMesas')
+    elif res == 2:
+        messages.error(request, "¡El Numero de mesa ingresado ya existe!")
+        return redirect('indexMesas')
     else:
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
         return redirect('indexMesas')
@@ -1063,6 +1066,9 @@ def editarMesas(request):
 
     if res == 1:
         messages.success(request, "¡La Mesa ha sido editada exitosamente!")
+        return redirect('indexMesas')
+    elif res == 2:
+        messages.error(request, "¡El Numero de mesa ingresado ya existe!")
         return redirect('indexMesas')
     else:
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
