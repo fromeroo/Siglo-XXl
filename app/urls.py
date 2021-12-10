@@ -14,7 +14,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexStockProductos, registroStockProductos, modificarStockProductos, editarStockProducto, registroRealizarPedido, crearRealizarPedido, agregarRealizarPedido, crearCuadraturaCajasFinanzas, \
     indexPedidosBodegas, detallePedidosBodegas, \
     indexGestionCajaFinanzas, buscarCajasFinanzas, abrirCajasFinanzas, detalleCajasFinanzas, indexAperturaCajasFinanzas, detalleCajasFinanzasAperturas, \
-    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, indexReporteUtilidad, \
+    indexGestionFacturas, modificarGestionFacturas, registroFacturas, crearFactura, actualizarFacturas, eliminarFacturas, verGestionFactura, indexReporteUtilidad, descargarReporteUtilidad, \
     indexInformes, \
     indexPagoEfectivo, detalleMesasCajas, ingresarPagoEfectivo, crearIngresarPagoEfectivo, imprimirBoleta, \
     indexTablero, \
@@ -154,6 +154,8 @@ urlpatterns = [
 
     path('finanzas/informes/', indexInformes, name="indexInformes"),
     path('finanzas/reporte-utilidad/', indexReporteUtilidad, name="indexReporteUtilidad"),
+    path('descargar-utilidad-pdf/', descargarReporteUtilidad, name="descargarReporteUtilidad"),
+
     path('finanzas/reporte-utilidad/generar-pdf/', views.ListReporteUtilidadDiaria.as_view(), name="listaReporteUtilidadDiaria"),
 
     path('caja/pago-efectivo/', indexPagoEfectivo, name="indexPagoEfectivo"),

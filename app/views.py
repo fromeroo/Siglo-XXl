@@ -2015,10 +2015,11 @@ def imprimirBoleta(request, id):
     for fila in out_cur:
         lista.append(fila)
 
+    print(lista[0])
+
     data = {
-        'boletas': lista,
+        'boletas': lista[0],
     }
-    print(data)
 
     pdf = render_to_pdf('app/caja/informes/boletaEfectivo.html', data)
 
@@ -2466,10 +2467,10 @@ class ListaFacturaListView(ListView):
 class ListFacturasPasadasPdf(View):
 
     def get(self, request, *args, **kwargs):
-        facturas = Factura.objects.all().filter(id_est_factura=3)
+        facturas = Factura.objects.all().filter(id_est_factura=1)
         data = {
             'facturas': facturas,
-            'estado': 3
+            'estado': 1
         }
         pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
@@ -2477,10 +2478,10 @@ class ListFacturasPasadasPdf(View):
 class ListFacturasPagadasPdf(View):
 
     def get(self, request, *args, **kwargs):
-        facturas = Factura.objects.all().filter(id_est_factura=4)
+        facturas = Factura.objects.all().filter(id_est_factura=2)
         data = {
             'facturas': facturas,
-            'estado': 4
+            'estado': 2
         }
         pdf = render_to_pdf('app/finanzas/informes/facturas.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
@@ -2509,6 +2510,83 @@ class ListFacturaById(View):
 def indexReporteUtilidad(request):
     return render(request, 'app/finanzas/reporte/utilidad.html')
 
+def descargarReporteUtilidad(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    out_cur_two = django_cursor.connection.cursor()
+    salida_one = cursor.var(cx_Oracle.STRING)
+    salida_two = cursor.var(cx_Oracle.NUMBER)
+
+    tipo = int(request.GET["tipo"])
+
+    if tipo == 1:
+        cursor.callproc("PKG_REPORTES.generarTotalVentaDiaria", [out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        p_one = int(lista[0][0] if lista[0][0] is not None else 1)
+
+        cursor.callproc("PKG_REPORTES.generarTotalFacturaDiaria", [out_cur_two])
+
+        lista_two= []
+        for fila in out_cur_two:
+            lista_two.append(fila)
+
+        p_two = int(lista_two[0][0] if lista_two[0][0] is not None else 1)
+
+        print(int(p_one), int(p_two))
+
+        cursor.callproc("PKG_REPORTES.mostrarUtilidadDiaria", [p_one, p_two, salida_one, salida_two])
+
+        utilidad = salida_one.getvalue()
+
+        print(utilidad)
+
+
+        data = {
+            'titulo': 'Utilidad Diaria',
+            'salida_one': utilidad
+        }
+        
+        pdf = render_to_pdf('app/finanzas/reporte/utilidad-mensual-pdf.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+    else:
+        cursor.callproc("PKG_REPORTES.generarTotalVentaMensual", [out_cur])
+
+        lista= []
+        for fila in out_cur:
+            lista.append(fila)
+
+        p_one = int(lista[0][0] if lista[0][0] is not None else 1)
+
+        cursor.callproc("PKG_REPORTES.generarTotalFacturaMensual", [out_cur_two])
+
+        lista_two= []
+        for fila in out_cur_two:
+            lista_two.append(fila)
+
+        p_two = int(lista_two[0][0] if lista_two[0][0] is not None else 1)
+
+        print(int(p_one), int(p_two))
+
+        cursor.callproc("PKG_REPORTES.generarUtilidadMensual", [p_one, p_two, salida_one, salida_two])
+
+        utilidad = salida_one.getvalue()
+
+        print(utilidad)
+
+        data = {
+            'titulo': 'Utilidad Mes Actual',
+            'salida_one': utilidad
+        }
+        
+        pdf = render_to_pdf('app/finanzas/reporte/utilidad-mensual-pdf.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+        
 class ListReporteUtilidadDiaria(View):
 
     def get(self, request, *args, **kwargs):

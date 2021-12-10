@@ -8,11 +8,14 @@
 
 <div class="d-flex justify-content-center" type="button">
     <form action="/detalle-orden/" method="GET">
+        <h3> Entradas :</h3>
+        <hr>
         {% for ltd in listarProducto %}
+        {% if ltd.4 == 'Entrada' %}
         <div class="cartaMenu">
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="p_id_producto" id="inlineRadio1" value="{{ltd.0}}" required>
-                <label class="form-check-label" for="inlineRadio1">{{ltd.1}} $ {{ltd.2}}</label>
+                <label class="form-check-label" for="inlineRadio1">{{ltd.1}} <br/> ${{ltd.2}}</label>
             </div>
             <img src="{{ ltd.9 }}" alt="Plato 1">
             <div class="descripcion">
@@ -21,7 +24,99 @@
                 <span class="Precio"><span class="simbolo"></span></span>
             </div>
         </div>
+        {% endif %}
         {% endfor %}
+        <h3> Platos de Fondo :</h3>
+        <hr>
+        {% for ltd in listarProducto %}
+        {% if ltd.4 == 'Fondo' %}
+        <div class="cartaMenu">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="p_id_producto" id="inlineRadio1" value="{{ltd.0}}" required>
+                <label class="form-check-label" for="inlineRadio1">{{ltd.1}} <br/> ${{ltd.2}}</label>
+            </div>
+            <img src="{{ ltd.9 }}" alt="Plato 1">
+            <div class="descripcion">
+                <a href="" class="text-dark font-weight-bold"></a>
+                <br>
+                <span class="Precio"><span class="simbolo"></span></span>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <h3> Agregados :</h3>
+        <hr>
+        {% for ltd in listarProducto %}
+        {% if ltd.4 == 'Agregado' %}
+        <div class="cartaMenu">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="p_id_producto" id="inlineRadio1" value="{{ltd.0}}" required>
+                <label class="form-check-label" for="inlineRadio1">{{ltd.1}} <br/> ${{ltd.2}}</label>
+            </div>
+            <img src="{{ ltd.9 }}" alt="Plato 1">
+            <div class="descripcion">
+                <a href="" class="text-dark font-weight-bold"></a>
+                <br>
+                <span class="Precio"><span class="simbolo"></span></span>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <h3> Bebestibles :</h3>
+        <hr>
+        {% for ltd in listarProducto %}
+        {% if ltd.4 == 'Líquidos' %}
+        <div class="cartaMenu">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="p_id_producto" id="inlineRadio1" value="{{ltd.0}}" required>
+                <label class="form-check-label" for="inlineRadio1">{{ltd.1}} <br/> ${{ltd.2}}</label>
+            </div>
+            <img src="{{ ltd.9 }}" alt="Plato 1">
+            <div class="descripcion">
+                <a href="" class="text-dark font-weight-bold"></a>
+                <br>
+                <span class="Precio"><span class="simbolo"></span></span>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <h3> Vinos y Cervezas :</h3>
+        <hr>
+        {% for ltd in listarProducto %}
+        {% if ltd.4 == 'Vinos, cervezas y cócteles' %}
+        <div class="cartaMenu">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="p_id_producto" id="inlineRadio1" value="{{ltd.0}}" required>
+                <label class="form-check-label" for="inlineRadio1">{{ltd.1}} <br/> ${{ltd.2}}</label>
+            </div>
+            <img src="{{ ltd.9 }}" alt="Plato 1">
+            <div class="descripcion">
+                <a href="" class="text-dark font-weight-bold"></a>
+                <br>
+                <span class="Precio"><span class="simbolo"></span></span>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <h3> Postres :</h3>
+        <hr>
+        {% for ltd in listarProducto %}
+        {% if ltd.4 == 'Postre' %}
+        <div class="cartaMenu">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="p_id_producto" id="inlineRadio1" value="{{ltd.0}}" required>
+                <label class="form-check-label" for="inlineRadio1">{{ltd.1}} <br/> ${{ltd.2}}</label>
+            </div>
+            <img src="{{ ltd.9 }}" alt="Plato 1">
+            <div class="descripcion">
+                <a href="" class="text-dark font-weight-bold"></a>
+                <br>
+                <span class="Precio"><span class="simbolo"></span></span>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
         <input type="hidden" name="p_cantidad" value="1" />
         <input type="hidden" name="p_id_orden" id="p_id_orden"  value="{{id_orden}}">
  
@@ -51,6 +146,7 @@
             {% endfor %}
         </tbody>
     </table>
+    <br>
 </div>
 <!-- --------------------LISTADO----------------------- -->
 </tbody>
