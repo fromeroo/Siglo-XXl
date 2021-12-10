@@ -36,7 +36,7 @@
         dataType:'JSON',
         success:function(data){
           for (let i = 0; i < data.notificaciones.length; i++) {
-            let row = $('<tr><td class="bg-warning font-weight-bold">'+data.notificaciones[i][3]+'</td><td class="bg-warning font-weight-bold">Solicita Revision - Enviar a Garzon</td><td class="bg-warning font-weight-bold">'+data.notificaciones[i][4]+'</td>');
+            let row = $('<tr><td class="bg-warning font-weight-bold">'+data.notificaciones[i][3]+'</td><td class="bg-warning font-weight-bold">Solicita revisión - Enviar a garzón</td><td class="bg-warning font-weight-bold">'+data.notificaciones[i][4]+'</td>');
             $('#tabla-modal').append(row);
           }
         }

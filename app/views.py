@@ -1370,7 +1370,7 @@ def editarStockProducto(request):
     res = salida.getvalue()
 
     if res == 1:
-        messages.success(request, "¡El Insumos ha sido editado exitosamente!")
+        messages.success(request, "¡El Insumo ha sido editado exitosamente!")
         return redirect(to='indexStockProductos')
     else:
         messages.error(request, "¡Ha ocurrido un error, favor contactar con administrador!")
@@ -2264,7 +2264,7 @@ def crearDetalleOrden(request):
     if salida == 1:
         return render(request, 'app/cliente/clienteMenu.html', data)
     else:
-        messages.success(request, "¡producto agregado!")
+        messages.success(request, "¡Producto agregado!")
         return render(request, 'app/cliente/clienteMenu.html', data)
 
 
@@ -2301,7 +2301,7 @@ def pagoCliente(request):
         return redirect('clienteMenu')
     else:
         del request.session['id_mesa'] 
-        messages.success(request, "¡Se le realizara el cobro!")
+        messages.success(request, "¡Se le realizará el cobro!")
         return redirect('seleccionarMesa')
 
 def ingresarPagotarjeta(request):
