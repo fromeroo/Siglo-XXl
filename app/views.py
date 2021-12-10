@@ -2547,8 +2547,11 @@ def descargarReporteUtilidad(request):
 
 
         data = {
+            'tipo': 1,
             'titulo': 'Utilidad Diaria',
-            'salida_one': utilidad
+            'utilidad': utilidad,
+            'total_venta_diaria': p_one,
+            'total_factura_diaria': p_two,
         }
         
         pdf = render_to_pdf('app/finanzas/reporte/utilidad-mensual-pdf.html', data)
@@ -2579,14 +2582,15 @@ def descargarReporteUtilidad(request):
         print(utilidad)
 
         data = {
+            'tipo': 2,
             'titulo': 'Utilidad Mes Actual',
-            'salida_one': utilidad
+            'utilidad': utilidad,
+            'total_venta_mensual': p_one,
+            'total_factura_mensual': p_two,
         }
         
         pdf = render_to_pdf('app/finanzas/reporte/utilidad-mensual-pdf.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
-
-        
 class ListReporteUtilidadDiaria(View):
 
     def get(self, request, *args, **kwargs):
@@ -2611,3 +2615,45 @@ class ListReporteUtilidadDiaria(View):
         
         pdf = render_to_pdf('app/finanzas/reporte/utilidad-mensual-pdf.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
+
+
+def generarReporteAdministrador(request):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor_one = django_cursor.connection.cursor()
+    cursor_two = django_cursor.connection.cursor()
+    cursor_three = django_cursor.connection.cursor()
+
+    p_fec_disp = request.GET["initial_date"]
+    p_fecha_inicial = datetime.strftime(datetime.strptime(p_fec_disp, "%Y-%m-%d"), "%Y-%m-%d")
+
+    p_fec_disp = request.GET["finish_date"]
+    p_fecha_final = datetime.strftime(datetime.strptime(p_fec_disp, "%Y-%m-%d"), "%Y-%m-%d")
+
+    cursor.callproc("PKG_REPORTES.informeClientesAtendidos", [p_fecha_inicial, p_fecha_final, cursor_one])    
+    cursor.callproc("PKG_REPORTES.informePlatosConsumidos", [p_fecha_inicial, p_fecha_final, cursor_two])    
+    cursor.callproc("PKG_REPORTES.tiempoAtencion", [p_fecha_inicial, p_fecha_final, cursor_three])    
+
+    clientes_atendidos = []
+    for cliente_atendido in cursor_one:
+        clientes_atendidos.append(cliente_atendido)
+
+    platos_consumidos = []
+    for plato_consumido in cursor_one:
+        platos_consumidos.append(plato_consumido)
+
+    tiempo_atencion = []
+    for t_atencion in cursor_one:
+        tiempo_atencion.append(t_atencion)
+
+    data = {
+        'clientes_atendidos': clientes_atendidos,
+        'platos_consumidos': platos_consumidos,
+        'tiempo_atencion': platos_consumidos,
+    }
+
+    pdf = render_to_pdf('app/administrador/reporte/generarReporte.html', data)
+    return HttpResponse(pdf, content_type='application/pdf')
+
+def indexReporteAdministrador(request):
+    return render(request, 'app/administrador/reporte/indexReporte.html')

@@ -1,0 +1,31 @@
+<div class="col-lg-6 col-sm-9 mt-5 d-block mx-auto mb-5" style="text-align:center; padding-bottom: 20px; border-bottom: 2px black solid;">
+    <h1>
+        Resumen de reportería para administradores
+    </h1>
+</div>
+
+<div>
+    <h3>Total Clientes Atendidos: 
+        {% if clientes_atendidos.0.0 is not None %}
+            {{ clientes_atendidos.0.0 }}
+        {% else %}
+            0
+        {% endif %}
+    </h3>
+    <br>
+    <h3>Total Platos Consumidos: 
+        {% if platos_consumidos.0.0 is not None %}
+            {{platos_consumidos.0.0}}
+        {% else %}
+            0
+        {% endif %}
+    </h3>
+    <br>
+    <h3>Promedio Tiempo de Atención:
+        {% if tiempo_atencion.0.0 is not None %}
+            {{ tiempo_atencion.0.0 }}
+        {% else %}
+            0
+        {% endif %}
+    </h3>
+</div>

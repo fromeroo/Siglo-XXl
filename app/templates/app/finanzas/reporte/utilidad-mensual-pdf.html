@@ -1,14 +1,23 @@
-<h1>
-    {{titulo}}
+<div id="productos-table" class="col-lg-10 col-sm-9 mt-5 d-block mx-auto" style="text-align:center;">
+    <h1 style="text-align: center; border-bottom: 1px black solid;">
+        {{titulo}}
+</div>
 </h1>
 
-<table border="1">
-    <thead>
-        <th style="padding-top:5px;">Total</th>
-    </thead>
-    <tbody>
-        <tr style="padding-top:5px;">
-            <td><center>{{ salida_one }}</center></td>
-        </tr>
-    </tbody>
-</table>
+<div>
+    {% if tipo == 1 %}
+        <h3>Total Venta Diaria: ${{ total_venta_diaria }}</h3>
+        <br>
+        <h3>Total Factura Diaria: ${{ total_factura_diaria }}</h3>
+        <br>
+        <h3>Total Utilidad Diaria: {{ utilidad }}</h3>
+        <br>
+    {% else %}
+        <h3>Total Venta Mensual: ${{ total_venta_mensual }}</h3>
+        <br>
+        <h3>Total Factura Mensual: ${{ total_factura_mensual }}</h3>
+        <br>
+        <h3>Total Utilidad Mensual: {{ utilidad }}</h3>
+    {% endif %}
+    <br>
+</div>
