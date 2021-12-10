@@ -680,6 +680,25 @@ def modificarRecetas(request, id):
     
     return render(request, 'app/administrador/recetas/editarRecetas.html', data)
 
+@login_required
+def modificarRecetasTwo(request, id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+    id_receta = id
+
+    cursor.callproc("PKG_RECETA.buscarReceta", [id_receta, out_cur])
+
+    lista= []
+    for fila in out_cur:
+        lista.append(fila)
+
+    data = {
+        'Recetas': lista
+    }
+    
+    return render(request, 'app/administrador/recetas/editarRecetasTwo.html', data)
+
 def editarRecetas(request):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()

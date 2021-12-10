@@ -6,7 +6,7 @@ from .views import index, administrador, registro, indexUser, eliminar_usuario, 
     indexProductos, crearProductos, editarProductos, registroProductos, modificarProductos, eliminarProductos, \
     indexMesas, crearMesas, editarMesas, eliminarMesas, registroMesas, modificarMesas, \
     indexDisponibilidades, registroDisponibilidades, crearDisponibilidades, modificarDisponibilidades, editarDisponibilidades, eliminarDisponibilidades, \
-    indexRecetas, indexRecetasTwo, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, \
+    indexRecetas, indexRecetasTwo, registroRecetas, modificarRecetas, crearRecetas, editarRecetas, eliminarRecetas, modificarRecetasTwo, \
    indexIngredientesRecetas, registroIngredientesRecetas, crearIngredientesRecetas, indexIngredientesRecetasTwo, modificarIngredientesRecetas, editarIngredientesRecetas, eliminarIngredientesRecetas, \
     indexPedidosProveedor, detallePedidosProveedor, autorizarPedidosProveedor, \
     registrarOrdenCompra, crearOrdenCompra, \
@@ -100,6 +100,7 @@ urlpatterns = [
     path('administracion/recetas/eliminar/<id>/', eliminarRecetas, name="eliminarRecetas"),
     path('administracion/recetas/registro/', registroRecetas, name="registroRecetas"),
     path('administracion/recetas/modificar/<id>/', modificarRecetas, name="modificarRecetas"),
+    path('administracion/recetas/visualizar/<id>/', modificarRecetasTwo, name="modificarRecetasTwo"),
 
     path('administracion/ingredientes/modificar/<id>/', modificarIngredientesRecetas, name="modificarIngredientesRecetas"),
     path('administracion/ingredientes/eliminar/<id>/', eliminarIngredientesRecetas, name="eliminarIngredientesRecetas"),
