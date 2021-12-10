@@ -15,7 +15,8 @@
             text: "Para realizar el descuento, ingrese la clave de administradores",
             input: 'password',
             showCancelButton: true,
-            inputPlaceholder: "Ingrese la clave"        
+            inputPlaceholder: "Ingrese la clave",
+            cancelButtonText: "Cancelar",        
         }).then((result) => {
           if (result.value && result.value == "admin123") {
             document.theForm.submit();
